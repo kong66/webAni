@@ -58,7 +58,7 @@ html
 	content:"";
   display: block;
   border-radius: .2em;
-  transform: translateZ(-.1px);
+  transform: translateZ(-1px);
   background-color: #e0e0e0;
 }
 .axis-face{
