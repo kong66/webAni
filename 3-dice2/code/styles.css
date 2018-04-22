@@ -3,49 +3,82 @@ html
 	background-color: black;
 	font-size:100px;
 	padding: 1em;
+	text-align: center;
 }
+.btn-group{
+	display: inline-block;
+}
+
 /*骰子动画*/
-.vertical{
-	animation: rotateX 5s infinite linear;
+.dice.ani .vertical{
+	animation: jump 1s linear;
 }
-.horizontal{
-	animation: rotateY 5s infinite linear;
+.dice.ani .horizontal{
+	animation: rotateY 2s ease-out;
 }
-.cube{
-	transform: rotateX(-50deg) rotateY(45deg);
+.dice.ani .cube{
+	transition: transform 2.1s ;
 }
+
 @keyframes rotateY {
 	from{transform:rotateY(0);}
-	to{transform:rotateY(360deg);}
+	to{transform:rotateY(1800deg);}
 }
-@keyframes rotateX {
+/*@keyframes rotateX {
 	from{transform:rotateX(0);}
-	to{transform:rotateX(360deg);}
-}
-/*面的样式*/
-/*.up,.down{
-	background-color: rgba(100,100,100,.8);
-}
-.right,.left{
-	background-color: rgba(100,100,100,.8);
-}
-.front,.back{
-	background-color: rgba(100,100,100,.8);
+	to{transform:rotateX(3600deg);}
 }*/
-.vertical,.horizontal,.cube,.face{
+@keyframes jump {
+		from{transform: translateY(-3.6em);}
+		30%{transform: translateY(-3em);}
+		60%{transform: translateY(0);}
+		70%{transform: translateY(-1.5em);}
+		80%{transform: translateY(0);}
+		90%{transform: translateY(-.6em);}
+		to,10%{transform: translateY(0);}
+}
+
+/*转到对应点数的动画*/
+.cube{
+	transform: rotateX(-45deg) rotateY(45deg);
+}
+.cube[point=p1]{
+  transform: rotateX(-10deg) rotateY(10deg);
+}
+.cube[point=p2]{
+  transform: rotateX(-10deg) rotateY(190deg);
+}
+.cube[point=p3]{
+  transform: rotateX(-100deg) rotateY(0) rotateZ(10deg);
+}
+.cube[point=p4]{
+  transform: rotateX(80deg) rotateY(0) rotateZ(-10deg);
+}
+.cube[point=p5]{
+  transform: rotateX(-10deg) rotateY(100deg);
+}
+.cube[point=p6]{
+  transform: rotateX(-10deg) rotateY(-80deg);
+}
+
+/*面的样式*/
+.dice,.vertical,.horizontal,.cube,.face{
 	transform-style:preserve-3d;
+}
+.dice,.vertical,.horizontal,.cube,.face,.face::after,.axis-face{
+	width:1em;
+	height: 1em;
+}
+.dice{
+	margin: auto;
 }
 .cube{
   position: relative;
 }
-.face,.axis-face,.face::after{
+.face,.face::after,.axis-face{
 	position: absolute;
   top:0;
   left: 0;
-}
-.dice,.vertical,.horizontal,.cube,.face,.axis-face,.face::after{
-	width:1em;
-	height: 1em;
 }
 .face{
 	box-sizing: border-box;
@@ -55,15 +88,16 @@ html
   box-shadow: 0 0 .2em #ccc inset;
 }
 .face::after{
-	content:"";
+  content:"";
   display: block;
   border-radius: .2em;
-  transform: translateZ(-1px);
+  transform: translateZ(-.1px);
   background-color: #e0e0e0;
 }
 .axis-face{
   background:#e0e0e0;
 }
+
 /*点的样式*/
 .dot{
   width:.2em;
@@ -100,6 +134,7 @@ html
 }
 .axis-face.z{
 }
+
 /* 点的排列布局*/
 .face,.dot-row{
   display: flex;
