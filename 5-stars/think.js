@@ -1,45 +1,77 @@
 jQuery(function($){
-	var $sky = $('.sky'),
-			$win = $(window),
-			$star = $('.star'),
-			w,
+	var w,
 			h,
 			period = 5,
 			colors=["#78b6e3","#fff","#fffda8","#fedc00","#db7000","#ad3406"];
-	$win.on('resize',onResize);
-	refreshWH();
-	createStarEles();
+
+	(function(){
+		$(window).on('resize',onResize);
+		refreshWH();
+		createStars();
+	})();
 
 	function onResize(){
 		refreshWH();
 	}
 	function refreshWH(){
+		var $win = $(window);
 		w = $win.width();
 		h = $win.height();
 	}
-	function createStarEles(){
+	function createStars(){
 		var i,
-				$stars;
+				$sky = $('.sky'),
+				$star = $('.star'),
+				stars = [$star],
+				item;
+
 		for(i=0;i<30;++i){
-			$sky.append($star.clone());
+			item = $star.clone();
+			stars.push(item);
+			$sky.append(item);
 		}
-		$stars = $('.star');
-		$stars.each(function(){
-			var $this = $(this);
-			createStars($this);
-			$this.on("animationend",onAniEnd);
-		});
+		for(i=0;i<stars.length;++i){
+			item = stars[i];
+			setStar(item);
+			item.on("animationend",onAniEnd);
+		}
 	}
-	function createStars($s){
+	function setStar($s){
+		setAni($s);
+		setShadow($s);
+		$s.addClass('ani');
+
+	}
+	function getRandomTime(){
+		return Math.floor(Math.random()*(period*10))/10;
+	}
+	function setAni($s){
+		var dur,
+				begin,
+				delay=0;
+			// begin = parseFloat($s.attr('begin'));
+			begin = $s.mybegin;
+			if(!begin){
+				begin = getRandomTime();
+				delay = begin;
+			}
+			dur = getRandomTime();
+			// $s.attr('begin',dur);
+			$s.mybegin = dur;
+			dur += period - begin;
+			$s.css({
+				animationDuration:dur+"s",
+				animationDelay:delay+"s",
+			});
+	}
+	function setShadow($s){
 		var color,
 				x,y,
 				blur,
 				spread,
 				i,
-				boxShadow ="",
-				dur,
-				begin,
-				delay=0;
+				boxShadow ="";
+
 		for(i=0;i<30;++i){
 			color =colors[Math.floor(Math.random()*colors.length)];
 			x = parseInt(2*w*Math.random()-w/2);
@@ -52,36 +84,18 @@ jQuery(function($){
 			boxShadow += x +"px "+ y+"px "
 				+ blur + "px "+color;
 		}
-		begin = parseFloat($s.attr('begin'));
-		if(!begin){
-			begin = getRandomTime();
-			delay = begin;
-		}
-		dur = getRandomTime();
-		$s.attr('begin',dur);
-		dur += period - begin;
-		$s.css({
-			boxShadow:boxShadow,
-			animationDuration:dur+"s",
-			animationDelay:delay+"s",
-		});
-		$s.addClass('ani');
-
-	}
-	function getRandomTime(){
-		return Math.floor(Math.random()*(period*10))/10;
-	}
-	function createShadow(){
-
+		$s.css({boxShadow:boxShadow});
 	}
 	function onAniEnd(e){
 		$this = $(this);
 		$this.removeClass('ani');
+		//**********方法1
 		e.target.offsetWidth;
-		createStars($this);
-
+		//void element.offsetWidth;
+		//**********方法2
 		// window.setTimeout(function(){
-		// 	createStars($this);
+		// 	setStar($this);
 		// },0);
+		setStar($this);
 	}
 });﻿
