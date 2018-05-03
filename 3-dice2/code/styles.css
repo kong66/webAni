@@ -40,7 +40,7 @@ html
 
 /*转到对应点数的动画*/
 .cube{
-	transform: rotateX(-45deg) rotateY(45deg);
+	transform: rotateX(-10deg) rotateY(10deg);
 }
 .cube[point=p1]{
   transform: rotateX(-10deg) rotateY(10deg);

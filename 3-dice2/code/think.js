@@ -9,12 +9,14 @@
 		var point,
 				prePoint,
 				pointStr,
+				num,
 				$btn;
 		if(!$dice.hasClass('ani') && e.target.tagName =="BUTTON"){
 			$btn = $(e.target);
 			point = parseInt($btn.attr('point'));
 			pointStr = $cube.attr('point').match(/\d/);
-			prePoint = parseInt(pointStr && pointStr.length>0 && pointStr[0]);
+			num = pointStr && pointStr.length>0 && pointStr[0];
+			prePoint = parseInt(num);
 			if(prePoint != point){
 				$cube.attr("point","p"+point);
 				$dice.addClass('ani');
