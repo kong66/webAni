@@ -27,7 +27,7 @@ html
 	opacity: 0;
 }
 .star{
-	transform: translateZ(-1000px);
+	transform: translateZ(-1500px);
 }
 .star.ani{
 	animation: move 1s;

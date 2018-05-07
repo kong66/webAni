@@ -28,28 +28,29 @@ jQuery(function($){
 			$sky.append($star);
 			$star.on("animationend",onAniEnd);
 			setStar($star);
+			startAni($star);
 		}
 	}
 	function setStar($s){
 		setAni($s);
 		setShadow($s);
-		startAni($s);
 	}
 	function getRandomTime(){
 		return Math.floor(Math.random()*(period*10))/10;
 	}
 	function setAni($s){
 		var dur,
-				begin,
+				begin1,
+				begin2,
 				delay=0;
-			begin = $s.mybegin;
-			if(!begin){
-				begin = getRandomTime();
-				delay = begin;
+			begin1 = $s.mybegin;
+			if(!begin1){
+				begin1 = getRandomTime();
+				delay = begin1;
 			}
-			dur = getRandomTime();
-			$s.mybegin = dur;
-			dur += period - begin;
+			begin2 = getRandomTime();
+			$s.mybegin = begin2;
+			dur = period - begin1 + begin2;
 			$s.css({
 				animationDuration:dur+"s",
 				animationDelay:delay+"s",
@@ -79,14 +80,9 @@ jQuery(function($){
 	function onAniEnd(e){
 		$this = $(this);
 		stopAni($this);
-		//**********方法1
 		e.target.offsetWidth;
-
-		//**********方法2
-		// window.setTimeout(function(){
-		// 	setStar($this);
-		// },0);
 		setStar($this);
+		startAni($this);
 	}
 	function startAni($s){
 		$s.addClass('ani');
