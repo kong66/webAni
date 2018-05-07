@@ -3,17 +3,19 @@ html
 	background-color: black;
 	font-size:100px;
 }
+
 .sky{
-	transform-style: preserve-3d;
-	perspective: 500px;
-	perspective-origin: center center;
 	position: fixed;
 	left:0;
 	top:0;
 	width: 100%;
 	height: 100%;
 }
-
+.sky{
+	transform-style: preserve-3d;
+	perspective: 500px;
+	perspective-origin: center center;
+}
 .star{
 	width: 6px;
 	height: 6px;
@@ -23,6 +25,8 @@ html
 	border-radius: 50%;
 	background-color: transparent;
 	opacity: 0;
+}
+.star{
 	transform: translateZ(-1000px);
 }
 .star.ani{
