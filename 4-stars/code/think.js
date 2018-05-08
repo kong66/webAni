@@ -44,7 +44,7 @@ jQuery(function($){
 				begin2,
 				delay=0;
 			begin1 = $s.mybegin;
-			if(!begin1){
+			if(begin1==undefined){
 				begin1 = getRandomTime();
 				delay = begin1;
 			}
