@@ -1,0 +1,44 @@
+html{
+  font-size: 100px;
+  font-family: "Microsoft YaHei",sans-serif;
+}
+h1,p{
+  font-size: 1rem;
+}
+.threeD-letter{
+  color:#e3531b;
+  position: relative;
+  perspective: 500px;
+  transform-style: preserve-3d;
+}
+.threeD-letter:before,.threeD-letter:after{
+  content:attr(letter);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: left center;
+  transition: all .5s ease-in;
+}
+.threeD-letter:hover:before,.threeD-letter:hover:after{
+  transition: all .2s ease-out;
+}
+.threeD-letter:before{
+  color:white;
+  z-index: 2;
+  transform: rotateY(15deg);
+  text-shadow:
+    1px 1px #888,
+    -1px -1px #eee;
+}
+.threeD-letter:hover:before{
+  transform: rotateY(40deg);
+}
+.threeD-letter:after{
+  color:rgba(0,0,0,.15);
+  z-index: 1;
+  filter:blur(1px);
+  transform: scale(1.05,1) skewY(2deg);
+}
+.threeD-letter:hover:after{
+  transform: rotateY(40deg) skewY(20deg) scale(1.1,1);
+}
