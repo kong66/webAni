@@ -2,15 +2,17 @@ html{
   font-size: 100px;
   font-family: "Microsoft YaHei",sans-serif;
 }
-h1,p{
+p{
   font-size: 1rem;
 }
+
 .threeD-letter{
   color:#e3531b;
   position: relative;
-  perspective: 500px;
+  perspective: 1000px;
   transform-style: preserve-3d;
 }
+
 .threeD-letter:before,.threeD-letter:after{
   content:attr(letter);
   position: absolute;
@@ -25,16 +27,14 @@ h1,p{
 .threeD-letter:before{
   color:white;
   z-index: 2;
-  transform: rotateY(15deg);
-  text-shadow:
-    1px 1px #888,
-    -1px -1px #eee;
+  transform: rotateY(20deg);
+  text-shadow:1px 1px #888,-1px -1px #eee;
 }
 .threeD-letter:hover:before{
-  transform: rotateY(40deg);
+  transform: rotateY(45deg);
 }
 .threeD-letter:after{
-  color:rgba(0,0,0,.15);
+  color:rgba(0,0,0,.2);
   z-index: 1;
   filter:blur(1px);
   transform: scale(1.05,1) skewY(2deg);

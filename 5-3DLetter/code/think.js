@@ -1,14 +1,20 @@
 jQuery(function($){
-  var TDs = $(".threeD"),
-      i,
-      $item;
 
-  var letters = TDs.text().split("");
-  TDs.text("");
-  for(i=0;i<letters.length;++i){
-    $item = $('<span class="threeD-letter"></span>');
-    $item.text(letters[i]);
-    $item.attr('letter',letters[i]);
-    TDs.append($item);
+  $(".threeD").each(function(){
+    TransformTo3D($(this));
+  });
+
+  function TransformTo3D($td){
+    var i,
+        $item,
+        letters = $td.text().split("");
+    $td.text("");
+    for(i=0;i<letters.length;++i){
+      $item = $('<span class="threeD-letter"></span>');
+      $item.text(letters[i]);
+      $item.attr('letter',letters[i]);
+      $td.append($item);
+    }
   }
+
 });
