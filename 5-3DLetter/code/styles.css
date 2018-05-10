@@ -13,7 +13,8 @@ p{
   transform-style: preserve-3d;
 }
 
-.threeD-letter:before,.threeD-letter:after{
+.threeD-letter:before,
+.threeD-letter:after{
   content:attr(letter);
   position: absolute;
   top: 0;
