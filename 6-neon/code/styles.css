@@ -7,15 +7,24 @@ html{
   font-family: "Pacifico",sans-serif;
   background: black;
 }
+input{
+  display: none;
+}
 .neon{
   font-size: 1rem;
   color:#ff5722;
+  text-shadow: none;
+  transition: color 1.5s .5s ease-out;
+  animation: neon-off 1s .5s both;
 }
 input:checked~.neon{
   color:white;
-  animation: neon 2s ease-in-out infinite alternate;
+  transition: color 1s .5s ease-out;
+  animation: neon 2s .8s ease-in-out infinite alternate;
 }
+
 .switch{
+  font-size: .5rem;
   display: block;
   position:  relative;
   width: 4em;
@@ -28,32 +37,36 @@ input:checked~.neon{
     2px 2px 4px #322 inset,
     3px 3px 6px #544 inset;
   overflow:hidden;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.3) 0%,
+      rgba(255,255,255,0.3) 25%,
+      transparent 25%,
+      transparent 50%) center/5px 5px,
+    /*repeating-linear-gradient(
+      -45deg,
+      rgba(255,255,255,0.3) 0%,
+      rgba(255,255,255,0.3) 25%,
+      transparent 25%,
+      transparent 50%) center/5px 5px,*/
+      linear-gradient(90deg,red 50%,black 50%) -3.2em /200% 100% no-repeat;
+  transition: background-position .5s;
 }
-/*.switch::after{
-  content: "";
-  display: block;
-  border-radius: .5em;
-  border:1px solid gray;
-  position:  absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom: 0;
-  box-shadow:
-    1px 1px 2px #211 inset,
-    2px 2px 4px #322 inset,
-    3px 3px 6px #544 inset;
-}*/
+input:checked~.switch{
+  background-position:-0.8em;
+  transition: background-position .5s;
+
+}
+
 .switch::before{
   content: "";
   display: block;
   box-sizing: border-box;
-  background-color:silver;
+
   position: absolute;
-  top:50%;
+  top:calc(50% - .75em);
   left:1%;
-  transform: translateY(-50%);
-  /*background-color: linear-gradient(45deg,gray 30%,white 100% );*/
   width: 1.5em;
   height: 1.5em;
   border-radius: 50%;
@@ -62,23 +75,69 @@ input:checked~.neon{
     2px 2px 1px #444 ,
     3px 3px 1px #333 ,
     5px 5px 10px black;
-  background:
-      radial-gradient(ellipse at
-      50% 0%,
-      at 8% 50%,
-      hsla(0,0%,100%,.5) 0%,
-      hsla(0,0%,100%,0) 100%),
-
-      /*-webkit-radial-gradient(  50%   0%,   8% 50%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),*/
-      /*-webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0,0%,100%,.6) 0%, hsla(0,0%,100%,0) 100%),
-      -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
-      -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
-      -webkit-repeating-radial-gradient(    50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
-      -webkit-repeating-radial-gradient(    50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
-      -webkit-repeating-radial-gradient(    50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.2) 2.2%),
-      -webkit-radial-gradient(    50% 50%, 200% 50%, hsla(0,0%,90%,1) 5%, hsla(0,0%,85%,1) 30%, hsla(0,0%,60%,1) 100%)*/
-      ;
+  background-color:red;
+  background-image:
+      radial-gradient(
+        ellipse 8% 50% at 50% 0%,
+        hsla(0,0%,100%,.5) 0%,
+        hsla(0,0%,100%,0) 100%),
+      radial-gradient(
+        ellipse 12% 50% at 50% 100%,
+        hsla(0,0%,100%,.6) 0,
+        hsla(0,0%,100%,0) 100%),
+      radial-gradient(
+        ellipse 50% 7% at 0 50%,
+        hsla(0,0%,100%,.5) 0,
+        hsla(0,0%,100%,0) 100%),
+      radial-gradient(
+        ellipse 50% 5% at 100% 50%,
+        hsla(0,0%,100%,.5) 0,
+        hsla(0,0%,100%,0) 100%),
+      repeating-radial-gradient(
+        100% 100% at 50% 50%,
+        hsla(0,0%,0%,0) 0%,
+        hsla(0,0%,0%,0) 7%,
+        hsla(0,0%,0%,.1) 8.5%),
+      repeating-radial-gradient(
+        100% 100% at 50% 50%,
+        hsla(0,0%,100%,0) 0%,
+        hsla(0,0%,100%,0) 15%,
+        hsla(0,0%,100%,.1) 18%),
+      repeating-radial-gradient(
+        100% 100% at 50% 50%,
+        hsla(0,0%,100%,0) 0%,
+        hsla(0,0%,100%,0) 3%,
+        hsla(0,0%,100%,.2) 4%),
+      radial-gradient(
+        200% 50% at 50% 50%,
+        hsla(0,0%,90%,1) 5%,
+        hsla(0,0%,85%,1) 30%,
+        hsla(0,0%,60%,1) 100%);
+  transform: rotate(5deg);
+  transition: left .5s,transform .8s ;
 }
+input:checked+.switch::before{
+  left:calc(99% - 1.5em);
+  transform: rotate(15deg);
+  transition: left .5s,transform .8s ;
+}
+@keyframes neon-off {
+  from{
+    text-shadow:
+    0 0 8px #fff,
+    0 0 15px #fff,
+    0 0 25px #fff,
+    0 0 30px #ff5722,
+    0 0 50px #ff5722,
+    0 0 60px #ff5722,
+    0 0 80px #ff5722,
+    0 0 90px #ff5722;
+  }
+  to{
+    text-shadow: none;
+  }
+}
+
 @keyframes neon {
   from{
     text-shadow:
