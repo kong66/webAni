@@ -1,8 +1,121 @@
+@font-face {
+  font-family: Pacifico;
+  src:url(Pacifico.ttf);
+}
 html{
   font-size: 100px;
-  font-family: "Pacifico",sans-serif;
-  background: silver;
+  font-family: "Microsoft YaHei",sans-serif;
+  background: #333;
 }
+
+.neon{
+  font-family: "Pacifico",sans-serif;
+  margin:1rem auto;
+  width: 6rem;
+  height: 2.5rem;
+  text-align: center;
+  position: relative;
+  /*border:solid yellow 1px;*/
+  /*border-top-left-radius: 10rem 10rem;
+  border-top-right-radius: 18rem 10rem;
+  border-bottom-left-radius: 3rem;
+  border-bottom-right-radius: 3rem;*/
+  /*animation:flick 0.1s ease-in-out infinite*/
+}
+.neon::before{
+  content:"";
+  display: block;
+  height: 1.5rem;
+  width:5rem;
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  border-top-left-radius: 6rem 5rem;
+  border-top-right-radius: 15rem 5rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  animation:flick 0.1s ease-in-out infinite;
+  box-shadow:
+    0 0 10px 10px rgba(255,0,0,.1),
+    0 0 10px 15px rgba(235,0,0,.1),
+    0 0 10px 20px rgba(220,0,0,.1),
+    0 0 10px 25px rgba(200,0,0,.1),
+    0 0 10px 30px rgba(180,0,0,.1),
+    0 0 10px 35px rgba(160,0,0,.1),
+    0 0 10px 40px rgba(120,0,0,.1),
+    0 0 10px 50px rgba(100,0,0,.1),
+    0 0 10px 70px rgba(60,0,0,.1),
+
+    0 0 10px 10px rgba(255,0,0,.1) inset,
+    0 0 10px 15px rgba(235,0,0,.1) inset,
+    0 0 10px 20px rgba(220,0,0,.1) inset,
+    0 0 10px 25px rgba(200,0,0,.1) inset,
+    0 0 10px 30px rgba(180,0,0,.1) inset,
+    0 0 10px 35px rgba(160,0,0,.1) inset,
+    0 0 10px 40px rgba(120,0,0,.1) inset,
+    0 0 10px 50px rgba(100,0,0,.1) inset,
+    0 0 10px 70px rgba(60,0,0,.1) inset;
+}
+.frame{
+  height: 1.5rem;
+  width:5rem;
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  border-top-left-radius: 6rem 5rem;
+  border-top-right-radius: 15rem 5rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  box-shadow:
+    0 0 2px 4px rgba(255,200,200,0.5),
+    0 -2px 2px 3px rgba(255,200,200,0.5) inset,
+    0 0 2px 10px rgba(255,100,100,0.9),
+    0 0 2px 7px rgba(255,100,100,1) inset,
+    0 0 12px 13px rgba(255,0,0,0.9),
+    0 0 12px 11px rgba(255,0,0,0.7) inset,
+    0 8px 30px 18px rgba(0,0,0,0.8),
+    0 8px 25px 12px rgba(0,0,0,0.7) inset;
+}
+
+.text{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-100%);
+  font-size: .8rem;
+  color:rgba(255, 232, 50, 0.9);
+  text-shadow: 0 0 5px rgba(255,245,0,1), 0 0 28px rgba(255,44,0,0.9), 0 8px 38px black, 0 8px 10px black, 0 2px 12px black, 0 0 50px rgba(255,120,0,0.5), 0 0 24px rgba(255,255,255,0.8);
+}
+
+@keyframes flick {
+  50%{
+    box-shadow:
+      0 0 10px 10px rgba(255,0,0,.05),
+      0 0 10px 15px rgba(235,0,0,.05),
+      0 0 10px 20px rgba(220,0,0,.05),
+      0 0 10px 25px rgba(200,0,0,.05),
+      0 0 10px 30px rgba(180,0,0,.05),
+      0 0 10px 35px rgba(160,0,0,.05),
+      0 0 10px 40px rgba(120,0,0,.05),
+      0 0 10px 50px rgba(100,0,0,.05),
+      0 0 10px 70px rgba(60,0,0,.05),
+
+      0 0 10px 10px rgba(255,0,0,.05) inset,
+      0 0 10px 15px rgba(235,0,0,.05) inset,
+      0 0 10px 20px rgba(220,0,0,.05) inset,
+      0 0 10px 25px rgba(200,0,0,.05) inset,
+      0 0 10px 30px rgba(180,0,0,.05) inset,
+      0 0 10px 35px rgba(160,0,0,.05) inset,
+      0 0 10px 40px rgba(120,0,0,.05) inset,
+      0 0 10px 50px rgba(100,0,0,.05) inset,
+      0 0 10px 70px rgba(60,0,0,.05) inset;
+  }
+
+}
+
+
 .switch{
   font-size: 1rem;
   display: block;
@@ -15,14 +128,17 @@ html{
     linear-gradient(to bottom,hsla(0, 0%, 40%, 1),hsla(0, 0%, 95%, 1));
   box-shadow: 0 -2px white inset,0 2px gray inset;
 }
-.switch:before,.switch:after,.switch>input::before,.switch>input::after{
+.switch>input{
+  display: none;
+}
+.switch:before,.switch:after,.switch>.slider::before,.switch>.slider::after{
   content:"";
 }
 .switch:before,
 .switch:after,
-.switch>input,
-.switch>input::before,
-.switch>input::after,
+.switch>.slider,
+.switch>.slider::before,
+.switch>.slider::after,
 .center{
   display: block;
   position: absolute;
@@ -42,26 +158,25 @@ html{
   border-radius: .49rem;
   box-shadow: 0 3px 20px hsla(0,0%,0%,1) inset;
 }
-.switch>input{
-  /*display: none;*/
+.switch>.slider{
   width:0;
   height:0;
   left:.7rem;
   z-index: 2;
   transition: left .5s;
 }
-.switch>input:checked{
+.switch>input:checked~.slider{
   left:2.2rem;
   transition: left .5s;
 }
-.switch>input::before{
+.switch>.slider::before{
   width:1.1rem;
   height: 1.1rem;
   border-radius: 50%;
   background:linear-gradient(to top, #9e9e9e 20%, #f4f4f4);
   box-shadow: 0 2px 10px black;
 }
-.switch>input::after{
+.switch>.slider::after{
   width:.9rem;
   height: .9rem;
   border-radius: 50%;
@@ -77,7 +192,7 @@ html{
     0 1px 30px hsla(0,0%,0%,1) inset,
     0 2px 10px 2px hsla(0,0%,0%,1) inset;
 }
-.center:before,.center:after{
+.center::before,.center::after{
   box-sizing: border-box;
   display: block;
   position: absolute;
@@ -89,102 +204,44 @@ html{
   font-size: .3rem;
   font-weight: bold;
 }
-.center:before{
+.center::before{
     content:"on";
-    right:calc(100% - .4rem);
     background: rgba(226,96,17,1);
     border-top-left-radius: .45rem;
     border-bottom-left-radius: .45rem;
     padding-left: 25%;
-    animation: green-off 1s forwards;
+    left:-1.48rem;
+    color:rgba(0,255,0,.5);
+    text-shadow:none;
+    transition: left .5s,color .5s,text-shadow .5s;
 }
-.center:after{
+.center::after{
     content:"off";
-    left:.4rem;
     background: gray;
     text-align: right;
     border-top-right-radius: .45rem;
     border-bottom-right-radius: .45rem;
     padding-right: 25%;
-    animation: red-on 1s  both;
-}
-.switch>input:checked~.center:before{
-  animation: green-on 1s  both;
-}
-.switch>input:checked~.center:after{
-  animation: red-off 1s  both;
-}
-@keyframes red-on {
-  0%{
-    left:calc(100% - .4rem);
-    color:rgba(255,0,0,.3);
-    text-shadow: none;
-  }
-  50%{
-    left:.4rem;
-    color:rgba(255,0,0,.3);
-    text-shadow: none;
-  }
-  100%{
-    left:.4rem;
+    left:.48rem;
     color:rgba(255,0,0,.8);
     text-shadow:
       0px 0px 1px hsla(0,0%,50%,.3),
       0 0 15px rgba(255,0,0,.8),
       0 0 20px rgba(255,0,0,1);
-  }
+    transition: left .5s,color .5s .5s,text-shadow .5s .5s;
 }
-@keyframes red-off {
-  0%{
-    left:.4rem;
-    color:rgba(255,0,0,1);
-    text-shadow: text-shadow:
-      0px 0px 1px hsla(0,0%,50%,.3),
-      0 0 15px rgba(255,0,0,.8),
-      0 0 20px rgba(255,0,0,1);
-  }
-  50%{
-    left:calc(100% - .4rem);
-  }
-  100%{
-    left:calc(100% - .4rem);
-    color:rgba(255,0,0,.5);
-    text-shadow: none;
-  }
-
+.switch>input:checked ~.center::before{
+  left:0;
+  color:rgba(0,255,0,1);
+  text-shadow:
+    0px 0px 2px hsla(0,0%,50%,.3),
+    0 0 15px rgba(0,255,0,.8),
+    0 0 20px rgba(0,255,0,1);
+  transition: left .5s,color .5s .5s,text-shadow .5s .5s;
 }
-@keyframes green-on {
-  0%{
-    right:calc(100% - .4rem);
-    color:rgba(0,255,0,.5);
-    text-shadow: none;
-  }
-  50%{
-    right:.4rem;
-    color:rgba(0,255,0,.5);
-    text-shadow: none;
-  }
-  100%{
-    right:.4rem;
-    color:rgba(0,255,0,1);
-    text-shadow:
-      0px 0px 2px hsla(0,0%,50%,.3),
-      0 0 15px rgba(0,255,0,.8),
-      0 0 20px rgba(0,255,0,1);
-  }
-}
-@keyframes green-off {
-  0%{
-    right:.4rem;
-    color:rgba(0,255,0,1);
-    text-shadow:
-      0px 0px 2px hsla(0,0%,50%,.3),
-      0 0 15px rgba(0,255,0,.8),
-      0 0 20px rgba(0,255,0,1);
-  }
-  100%{
-    right:calc(100% - .4rem);
-    color:rgba(0,255,0,.5);
-    text-shadow: none;
-  }
+.switch>input:checked ~.center::after{
+  left:1.96rem;
+  color:rgba(255,0,0,.3);
+  text-shadow: none;
+  transition: left .5s,color .5s,text-shadow .5s;
 }
