@@ -6,21 +6,31 @@ html{
   font-size: 100px;
   font-family: "Microsoft YaHei",sans-serif;
   background: #333;
+  text-align: center;
 }
 
+.page{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.neon-area{
+  width: 100%;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
 .neon{
   font-family: "Pacifico",sans-serif;
-  margin:1rem auto;
   width: 6rem;
   height: 2.5rem;
-  text-align: center;
   position: relative;
-  /*border:solid yellow 1px;*/
-  /*border-top-left-radius: 10rem 10rem;
-  border-top-right-radius: 18rem 10rem;
-  border-bottom-left-radius: 3rem;
-  border-bottom-right-radius: 3rem;*/
-  /*animation:flick 0.1s ease-in-out infinite*/
 }
 .neon::before{
   content:"";
@@ -35,7 +45,11 @@ html{
   border-top-right-radius: 15rem 5rem;
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
-  animation:flick 0.1s ease-in-out infinite;
+  box-shadow: none;
+  transition: box-shadow .5s 1s;
+}
+.neon.on::before{
+
   box-shadow:
     0 0 10px 10px rgba(255,0,0,.1),
     0 0 10px 15px rgba(235,0,0,.1),
@@ -56,6 +70,8 @@ html{
     0 0 10px 40px rgba(120,0,0,.1) inset,
     0 0 10px 50px rgba(100,0,0,.1) inset,
     0 0 10px 70px rgba(60,0,0,.1) inset;
+    transition: box-shadow .5s 1s;
+    animation:blink-d 0.1s ease-in-out infinite 1s;
 }
 .frame{
   height: 1.5rem;
@@ -69,27 +85,115 @@ html{
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
   box-shadow:
+    0 0 2px 4px rgba(155,100,100,0.1),
+    0 -2px 2px 3px rgba(155,100,100,0.1) inset,
+    0 0 2px 10px rgba(255,100,100,0.1),
+    0 0 2px 7px rgba(255,100,100,0.1) inset,
+    0 0 12px 13px rgba(100,0,0,0.1),
+    0 0 12px 11px rgba(100,0,0,0.1) inset,
+    0 15px 30px 18px rgba(0,0,0,1),
+    0 20px 25px 12px rgba(0,0,0,1) inset;
+  transition: box-shadow .5s 1s;
+}
+.neon.on .frame{
+  box-shadow:
     0 0 2px 4px rgba(255,200,200,0.5),
     0 -2px 2px 3px rgba(255,200,200,0.5) inset,
     0 0 2px 10px rgba(255,100,100,0.9),
     0 0 2px 7px rgba(255,100,100,1) inset,
     0 0 12px 13px rgba(255,0,0,0.9),
     0 0 12px 11px rgba(255,0,0,0.7) inset,
-    0 8px 30px 18px rgba(0,0,0,0.8),
-    0 8px 25px 12px rgba(0,0,0,0.7) inset;
+    0 15px 30px 18px rgba(0,0,0,.9),
+    0 20px 25px 12px rgba(0,0,0,.9) inset;
+  transition: box-shadow .5s 1s;
 }
 
 .text{
   position: absolute;
   top:50%;
   left:50%;
-  transform: translate(-50%,-100%);
-  font-size: .8rem;
+  transform: translate(-50%,-40%) rotate(5deg);
+  font-size: 0;
+  white-space: nowrap;
+  color:#3a3720;
+  text-shadow:
+    0 15px 38px black,
+    0 15px 10px black,
+    0 5px 12px black;
+  transition: text-shadow .5s .5s,color .5s .5s;
+}
+.neon.on .text{
   color:rgba(255, 232, 50, 0.9);
-  text-shadow: 0 0 5px rgba(255,245,0,1), 0 0 28px rgba(255,44,0,0.9), 0 8px 38px black, 0 8px 10px black, 0 2px 12px black, 0 0 50px rgba(255,120,0,0.5), 0 0 24px rgba(255,255,255,0.8);
+  text-shadow:
+    0 2px 8px rgba(0,0,0,.4),
+    0 1px 6px rgba(0,0,0,.6),
+    0 0 2px rgba(0,0,0,.8),
+    0 0 5px rgba(255,200,0,1),
+    0 0 28px rgba(255,50,0,0.9),
+    0 15px 38px black,
+    0 15px 10px black,
+    0 5px 12px black,
+    0 0 40px rgba(255,120,0,0.3),
+    0 0 30px rgba(255,255,255,0.6);
+  transition: text-shadow .5s .5s,color .5s .5s;
+}
+.text>span{
+  font-size: .8rem;
+}
+.text>span:nth-child(1){
+  font-size: 1rem;
+}
+.neon.on .blink-1{
+  animation:blink-a 0.01s infinite;
+}
+.neon.on .blink-2{
+  animation:blink-b 5s infinite;
+}
+.neon.on .blink-3{
+  animation:blink-b 2s infinite;
+}
+.neon.on .blink-4{
+  animation:blink-c 5s infinite;
 }
 
-@keyframes flick {
+@keyframes blink-a{
+  50%{
+    color:#3a3720;
+    text-shadow:
+      0 15px 38px black,
+      0 15px 10px black,
+      0 5px 12px black;
+    }
+}
+@keyframes blink-b {
+  50%,52%,54%,56%,58%,60%{
+    color:inherit;
+    text-shadow: inherit;
+  }
+  51%,53%,55%,57%,59%{
+    color:#3a3720;
+    text-shadow:
+      0 15px 38px black,
+      0 15px 10px black,
+      0 5px 12px black;
+  }
+}
+@keyframes blink-c{
+  0%,2%,40%,42%,44%{
+    color:#3a3720;
+    text-shadow:
+      0 15px 38px black,
+      0 15px 10px black,
+      0 5px 12px black;
+  }
+  1%,41%,43%,45%,100%{
+    color:inherit;
+    text-shadow: inherit;
+  }
+
+}
+
+@keyframes blink-d {
   50%{
     box-shadow:
       0 0 10px 10px rgba(255,0,0,.05),
@@ -115,7 +219,13 @@ html{
 
 }
 
-
+.switch-area{
+  width:100%;
+  height: 2em;
+  background: silver;
+  display: flex;
+  align-items: center;
+}
 .switch{
   font-size: 1rem;
   display: block;
@@ -209,7 +319,6 @@ html{
     background: rgba(226,96,17,1);
     border-top-left-radius: .45rem;
     border-bottom-left-radius: .45rem;
-    padding-left: 25%;
     left:-1.48rem;
     color:rgba(0,255,0,.5);
     text-shadow:none;
