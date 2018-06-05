@@ -4,7 +4,7 @@
 }
 html{
   font-size: 100px;
-  font-family: "Microsoft YaHei",sans-serif;
+  font-family: Arial,sans-serif;
   background: #333;
   text-align: center;
 }
@@ -13,18 +13,16 @@ html{
   position: fixed;
   width: 100%;
   height: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 .neon-area{
-  width: 100%;
-  background: #111;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-grow: 1;
+  background: #111;
 }
 .neon{
   font-family: "Pacifico",sans-serif;
@@ -32,24 +30,26 @@ html{
   height: 2.5rem;
   position: relative;
 }
-.neon::before{
-  content:"";
-  display: block;
-  height: 1.5rem;
+.neon::before,.frame{
   width:5rem;
+  height: 1.5rem;
   position: absolute;
   top:50%;
   left:50%;
   transform: translate(-50%,-50%);
-  border-top-left-radius: 6rem 5rem;
-  border-top-right-radius: 15rem 5rem;
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
+
+  border-top-left-radius: 1.8rem 1.5rem;
+  border-top-right-radius: 4.5rem 1.5rem;
+  border-bottom-left-radius: .3rem;
+  border-bottom-right-radius: .3rem;
+}
+.neon::before{
+  content:"";
+  display: block;
   box-shadow: none;
   transition: box-shadow .5s 1s;
 }
 .neon.on::before{
-
   box-shadow:
     0 0 10px 10px rgba(255,0,0,.1),
     0 0 10px 15px rgba(235,0,0,.1),
@@ -60,7 +60,6 @@ html{
     0 0 10px 40px rgba(120,0,0,.1),
     0 0 10px 50px rgba(100,0,0,.1),
     0 0 10px 70px rgba(60,0,0,.1),
-
     0 0 10px 10px rgba(255,0,0,.1) inset,
     0 0 10px 15px rgba(235,0,0,.1) inset,
     0 0 10px 20px rgba(220,0,0,.1) inset,
@@ -74,16 +73,6 @@ html{
     animation:blink-d 0.1s ease-in-out infinite 1s;
 }
 .frame{
-  height: 1.5rem;
-  width:5rem;
-  position: absolute;
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%);
-  border-top-left-radius: 6rem 5rem;
-  border-top-right-radius: 15rem 5rem;
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
   box-shadow:
     0 0 2px 4px rgba(155,100,100,0.1),
     0 -2px 2px 3px rgba(155,100,100,0.1) inset,
@@ -133,8 +122,8 @@ html{
     0 15px 38px black,
     0 15px 10px black,
     0 5px 12px black,
-    0 0 40px rgba(255,120,0,0.3),
-    0 0 30px rgba(255,255,255,0.6);
+    0 0 60px rgba(226,221,0,0.5),
+    0 0 30px rgba(185,245,7,0.7);
   transition: text-shadow .5s .5s,color .5s .5s;
 }
 .text>span{
@@ -147,7 +136,7 @@ html{
   animation:blink-a 0.01s infinite;
 }
 .neon.on .blink-2{
-  animation:blink-b 5s infinite;
+  animation:blink-b 7s infinite;
 }
 .neon.on .blink-3{
   animation:blink-b 2s infinite;
@@ -190,7 +179,6 @@ html{
     color:inherit;
     text-shadow: inherit;
   }
-
 }
 
 @keyframes blink-d {
@@ -205,7 +193,6 @@ html{
       0 0 10px 40px rgba(120,0,0,.05),
       0 0 10px 50px rgba(100,0,0,.05),
       0 0 10px 70px rgba(60,0,0,.05),
-
       0 0 10px 10px rgba(255,0,0,.05) inset,
       0 0 10px 15px rgba(235,0,0,.05) inset,
       0 0 10px 20px rgba(220,0,0,.05) inset,
@@ -216,15 +203,13 @@ html{
       0 0 10px 50px rgba(100,0,0,.05) inset,
       0 0 10px 70px rgba(60,0,0,.05) inset;
   }
-
 }
 
 .switch-area{
-  width:100%;
   height: 2em;
-  background: silver;
   display: flex;
   align-items: center;
+  background: silver;
 }
 .switch{
   font-size: 1rem;
