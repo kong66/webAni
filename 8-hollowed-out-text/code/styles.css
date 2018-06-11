@@ -27,21 +27,24 @@ html{
 }*/
 
 .text{
-  width:8em;
-  background: url("./sunflowers.jpg") center center/130% auto no-repeat;
+  height: 1.5rem;
+  width:100%;
+  /*background: url("./sunflowers.jpg") center center/8rem 1.5rem no-repeat;*/
 }
 svg{
-  width:100%;
+  background: url("./sunflowers.jpg") center center/150% auto no-repeat;
 }
 .mask-rect{
-  width: 8em;
+
 }
 .mask-text{
   font-weight: bold;
-  font-size: 1.5rem;
+  /*font-size: 1rem;*/
+  /*text-anchor: middle;
+  dominant-baseline: middle;*/
 }
 .svg-rect{
-  width: 8em;
-  fill:black;
+  /*width: 8em;*/
+  fill:#222;
   mask:url(#mask);
 }

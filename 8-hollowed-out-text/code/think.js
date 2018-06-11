@@ -1,6 +1,6 @@
 jQuery(
   function($){
-    var $tex = $('.text'),
+    var $tex = $('svg'),
         $win = $(window),
         $doc = $(document),
         cw,
