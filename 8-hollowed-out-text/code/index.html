@@ -6,20 +6,30 @@
   </head>
   <body>
     <div class="page">
-      <!-- <div class="text">KONG66</div> -->
-      <div class="text">
-        <svg  width="800" height="150" viewbox="0 0 800 150" align="xMidyMid">
-            <defs>
-                <mask id="mask" >
-                  <rect class="mask-rect" x="0" y="0" width="100%" height="100%" fill="white"></rect>
-                  <text class="mask-text" x="400" y="75" width="10" height="10" dx="" dy="" fill="black"  font-size="150"  text-anchor="middle" dominant-baseline="central">KONG66</text>
-                </mask>
-            </defs>
+      <svg class="svg-defs" width="800" height="150" viewbox="0 0 800 150" align="xMidyMid">
+        <defs>
+          <mask id="mask">
+            <rect class="mask-rect" x="-1" y="-1" width="802" height="152"></rect>
+            <text class="mask-text" x="400" y="130">KONG66</text>
+          </mask>
+          <clipPath id="clippath-svg">
+            <text class="clippath-text" x="400" y="75">KONG66</text>
+          </clipPath>
+        </defs>
+      </svg>
 
-            <rect class="svg-rect" x="0" y="0" width="100%" height="100%"  ></rect>
+      <div class="css-bg-clip">KONG66</div>
 
-        </svg>
-      </div>
+      <svg class="svg-mask-for-svg" width="800" height="150" viewbox="0 0 800 150" align="xMidyMid">
+        <rect class="svg-rect" width="803" height="153"></rect>
+      </svg>
+
+      <svg class="svg-clip-path-for-svg" width="800" height="150" viewbox="0 0 800 150" align="xMidyMid">
+        <image xlink:href="./sunflowers.jpg" width="100%" height="100%" align="xMaxYMax  "></image>
+      </svg>
+
+      <div class="svg-clip-path-for-html"></div>
+
     </div>
     <script src="jquery-1.12.4.js"></script>
     <script src="think.js"></script>

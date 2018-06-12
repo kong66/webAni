@@ -1,0 +1,8 @@
+<svg class="mask-image-svg" width="800" height="150" viewbox="0 0 800 150" align="xMidyMid" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <!-- <defs> -->
+    <!-- <mask id="mask2" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox"> -->
+      <!-- <rect class="mask-rect" x="0" y="0" width="200" height="150" fill="white"></rect> -->
+      <text class="mask-text" x="400" y="75" fill="#" font-size="150" text-anchor="middle" dominant-baseline="central">KONG66</text>
+    <!-- </mask> -->
+  <!-- </defs> -->
+</svg>

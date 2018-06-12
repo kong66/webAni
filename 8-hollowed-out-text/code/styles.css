@@ -4,10 +4,9 @@
 }
 html{
   font-size: 100px;
-  font-family: "Microsolf YaHei",sans-serif;
+  font-family: Georgia,"Microsolf YaHei",sans-serif;
   background: #222;
   text-align: center;
-  text-rendering: optimizelegibility;
 }
 .page{
   position: fixed;
@@ -15,36 +14,63 @@ html{
   height: 100%;
   display: flex;
   align-items: center;
+  flex-direction: column;
+  justify-content:space-around;
   text-align: center;
-  justify-content: center;
 }
-/*.text{
-  font-size: 1.5rem;
+
+
+.svg-defs{
+  position: absolute;
+  top:-9999px;
+}
+/*  css background-clip */
+.css-bg-clip{
   font-weight: bold;
+  font-size: 1.5rem;
+  background: url("./sunflowers.jpg") center center/130% auto no-repeat;
   color:transparent;
-  background: url("./sunflowers.jpg") center center/130% auto repeat;
   -webkit-background-clip:text;
-}*/
-
-.text{
-  height: 1.5rem;
-  width:100%;
-  /*background: url("./sunflowers.jpg") center center/8rem 1.5rem no-repeat;*/
 }
-svg{
-  background: url("./sunflowers.jpg") center center/150% auto no-repeat;
-}
+/*  svg  mask for svg*/
 .mask-rect{
-
+  fill:white;
 }
 .mask-text{
+  font-size: 150;
   font-weight: bold;
-  /*font-size: 1rem;*/
-  /*text-anchor: middle;
-  dominant-baseline: middle;*/
+  text-anchor:middle;
+  dominant-baseline:baseline;
+  fill:black;
 }
-.svg-rect{
-  /*width: 8em;*/
+.svg-mask-for-svg{
+  background: url("./sunflowers.jpg") center center/130% auto no-repeat;
+}
+.svg-mask-for-svg .svg-rect{
   fill:#222;
   mask:url(#mask);
+}
+/* clip path for html*/
+.clippath-text{
+  font-size: 150;
+  font-weight: bold;
+  text-anchor:middle;
+  dominant-baseline:central;
+  fill:black;
+}
+.svg-clip-path-for-html{
+  width: 8rem;
+  height: 1.5rem;
+  background: url("./sunflowers.jpg") center center/130% auto no-repeat;
+  clip-path:url(#clippath-svg);
+}
+/* clip path for svg*/
+.svg-clip-path-for-svg{
+  width: 8rem;
+  height: 1.5rem;
+  /*background: url("./sunflowers.jpg") center center/130% auto no-repeat;*/
+  /*clip-path:url(#clippath-svg);*/
+}
+.svg-clip-path-for-svg image{
+  /*clip-path:url(#clippath-svg);*/
 }
