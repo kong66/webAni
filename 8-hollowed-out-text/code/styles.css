@@ -68,9 +68,8 @@ html{
 .svg-clip-path-for-svg{
   width: 8rem;
   height: 1.5rem;
-  /*background: url("./sunflowers.jpg") center center/130% auto no-repeat;*/
-  /*clip-path:url(#clippath-svg);*/
+  /* clip-path:url(#clippath-svg); */
 }
 .svg-clip-path-for-svg image{
-  /*clip-path:url(#clippath-svg);*/
+  clip-path:url(#clippath-svg);
 }
