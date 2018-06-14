@@ -1,4 +1,3 @@
-
 html,body,div,p{
   margin:0;
   padding: 0;
@@ -6,7 +5,6 @@ html,body,div,p{
 html{
   font-size: 100px;
   font-family: Impact,"Microsolf YaHei",sans-serif;
-  background: #222;
   text-align: center;
 }
 .page{
@@ -26,25 +24,31 @@ html{
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background: white;
 }
-.video-bg{
-  width:100%;
+.video-bg video{
+  /*position: absolute;
+  top: 0%;
+  left: 0%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;*/
+  object-fit:fill;
 }
 .svg{
   width: 100%;
   height: 100%;
-  position: absolute;
-  top:0;
-  left:0;
+  position: relative;
 }
 .mask-rect{
-  fill:rgba(240,240,240,1);
+  fill:rgb(240,240,240);
 }
 .mask-text{
   font-size: 100;
   font-weight: 900;
   text-anchor:middle;
-  /*dominant-baseline:baseline;*/
+  dominant-baseline:baseline;
   fill:black;
 }
 .svg-rect{
