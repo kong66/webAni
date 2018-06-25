@@ -1,0 +1,14 @@
+html{
+  font-size: 100px;
+  font-family: "Microsolf YaHei",sans-serif;
+  background: gray;
+  text-align: center;
+}
+
+.text{
+  font-size: 30;
+
+}
+defs path{
+  /*transform:translate(-100 0);*/
+}
