@@ -1,33 +1,33 @@
 jQuery(function($){
-  var path=$("defs path"),
-      textPath =$("textPath");
-  var val = -300;
-  var max = 300;
-  var th,th2;
-  var val2 = 100,
-      min = 0;
+  var $svgEle = $('svg text'),
+      $pathAni = $('svg defs path animate'),
+      inAni = false;
 
-  // th2 = window.setInterval(function(){
-  //     if(val2> min){
-  //       val2-=.5;
-  //       var str = val2+"%";
-  //       textPath.attr("startOffset",str);
-  //       console.log("str="+str);
-  //     }else {
-  //       window.clearInterval(th2);
-  //     }
-  //
-  // },1000/30);
+  console.log();
 
- // th = window.setInterval(function(){
- //   if(val<=max){
- //      val += 1;
- //      var str = "translate("+val+",0)"
- //      path.attr("transform",str);
- //      //console.log("str="+str);
- //   }else {
- //     window.clearInterval(th);
- //   }
- //  },1000/30
- //  );
+  $svgEle.on(
+    'mouseover',
+    function onmouseover(e){
+      console.log("mouseOver");
+      $pathAni[0].beginElement();
+    });
+
+  $svgEle.on(
+    'mouseout',
+    function onmouseout(e){
+      console.log("mouseOut");
+      // $pathAni[0].endElement();
+    });
+
+  $pathAni[0].onend = function(){
+    console.log("onend");
+  };
+  $pathAni[0].onbegin = function(){
+    console.log("onbegin");
+  };
+
+
+
+
+
 });

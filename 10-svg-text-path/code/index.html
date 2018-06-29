@@ -6,20 +6,39 @@
   </head>
   <body>
     <div class="page">
-      <svg class="" width="600" height="300" viewbox="0 0 600 500">
+      <svg width="1000" height="150" viewbox="0 0 1000 150" xmlns="http://www.w3.org/2000/svg"  preserveAspectRatio="xMidYMid slice">
         <defs>
-          <g id="g1" transform="translate(300,0)">
-            <path transform="translate(0,0)" id="wave-path" d="M3.858,58.607
-  	  	      c16.784-5.985,33.921-10.518,51.695-12.99c50.522-7.028,101.982,0.51,151.892,8.283c17.83,2.777,35.632,5.711,53.437,8.628	c51.69,8.469,103.241,11.438,155.3,3.794c53.714-7.887,106.383-20.968,159.374-32.228c11.166-2.373,27.644-7.155,39.231-4.449"/>
-            <!-- <animate attributeName="transform" from="translate(0,0)" to="translate(500,0)" dur="5s" repeatCount="indefinite" /> -->
-          </g>
+            <path id="wave-path"  d="
+            M0,80
+            h662
+            c59.7,0,70.8-23,106.9-23
+            s47.4,23,118.1,23
+            h94
+            ">
+            <animate attributeName="d"
+              values=
+              "
+              M0,80
+              h662
+              c59.7,0,70.8-23,106.9-23
+              s47.4,23,118.1,23
+              h94;
+              M0,80
+              h70
+              c59.7,0,70.8-23,106.9-23
+              s47.4,23,118.1,23
+              h699
+              "
+              keyTimes="0;1"
+              begin="infinite" dur="2s"
+              repeatCount="1" fill="freeze"/>
+          </path>
         </defs>
-        <text class="text" x="-0" y="100%">
-          <textPath   startOffset="-100" xlink:href="#wave-path">Hello,Kong66!Hello,Kong66!Hello,Kong66!
-            <!-- <animate attributeName="startOffset" from="0%" to="100%" dur="5s" repeatCount="indefinite" /> -->
+        <use class="path-show" xlink:href="#wave-path"/>
+        <text class="text" x="0" y="0" width="500"  height="300">
+          <textPath   startOffset="50%"  xlink:href="#wave-path">Hello,Kong66!
           </textPath>
         </text>
-
       </svg>
     </div>
     <script src="jquery-1.12.4.js"></script>

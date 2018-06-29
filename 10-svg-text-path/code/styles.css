@@ -1,14 +1,19 @@
 html{
   font-size: 100px;
   font-family: "Microsolf YaHei",sans-serif;
-  background: gray;
+  background: black;
   text-align: center;
 }
 
-.text{
-  font-size: 30;
-
+.path-show{
+  stroke:red;
+  stroke-width:6;
+  fill:none;
 }
-defs path{
-  /*transform:translate(-100 0);*/
+.text{
+  stroke:yellow;
+  stroke-width:1px;
+  fill:black;
+  font-size: 50;
+  text-anchor: middle;
 }
