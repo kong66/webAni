@@ -5,12 +5,23 @@ html{
   text-align: center;
 }
 
-.path-show{
+.text-circle{
+  stroke:none;
+  fill:yellow;
+  font-size: 20;
+}
+.circle-path-show{
+  stroke:red;
+  stroke-width:2;
+  fill:none;
+}
+
+.wave-path-show{
   stroke:red;
   stroke-width:6;
   fill:none;
 }
-.text{
+.text-wave{
   stroke:yellow;
   stroke-width:1px;
   fill:black;
