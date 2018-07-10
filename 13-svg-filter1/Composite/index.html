@@ -1,0 +1,58 @@
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>SVG-Gradient</title>
+  <link rel="stylesheet" href="./styles.css"/>
+</head>
+<body>
+  <div class="page">
+
+    <svg width="100%" height="100%" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+      <defs >
+        <g>
+          <path id="BlueA" d="M 0 0 L 100 0 L 100 100 z" fill="#00ffff" />
+          <path id="RedA" d="M 0 0 L 0 100 L 100 0 z" fill="#ff00ff" />
+          <path id="BlueB" d="M 0 125 L 100 125 L 100 225 z" fill="#00ffff" fill-opacity=".5" />
+          <path id="RedB" d="M 0 125 L 0 225 L 100 125 z" fill="#ff00ff" fill-opacity=".5" />
+        </g>
+
+        <filter id="overNoFlood" filterUnits="objectBoundingBox" x="-5%" y="-5%" width="110%" height="110%">
+          <feComposite in="SourceGraphic" in2="BackgroundImage" operator="over" result="comp"/>
+        </filter>
+
+        <filter id="inNoFlood" filterUnits="objectBoundingBox" x="-5%" y="-5%" width="110%" height="110%">
+          <feComposite in="SourceGraphic" in2="BackgroundImage" operator="in" result="comp"/>
+        </filter>
+
+        <filter id="outNoFlood" filterUnits="objectBoundingBox" x="-5%" y="-5%" width="110%" height="110%">
+          <feComposite in="SourceGraphic" in2="BackgroundImage" operator="out" result="comp"/>
+        </filter>
+      </defs>
+
+      <!-- over -->
+      <g>
+        <use xlink:href="#BlueA" filter="url(#overNoFlood)"/>
+        <use xlink:href="#RedA" filter="url(#overNoFlood)"/>
+        <text x="50" y="130" width="100" text-anchor="middle" font-size="30">over</text>
+      </g>
+      <!-- in -->
+      <g transform="translate(120,0)">
+        <use xlink:href="#BlueA" />
+        <use xlink:href="#RedA" filter="url(#inNoFlood)"/>
+        <text x="50" y="130" width="100" text-anchor="middle" font-size="30">in</text>
+      </g>
+      <!-- out -->
+      <g transform="translate(240,0)">
+        <use xlink:href="#BlueA" filter="url(#outNoFlood)"/>
+        <use xlink:href="#RedA" filter="url(#outNoFlood)"/>
+        <text x="50" y="130" width="100" text-anchor="middle" font-size="30">out</text>
+      </g>
+
+
+
+
+    </svg>
+  </div>
+
+</body>
+</html>
