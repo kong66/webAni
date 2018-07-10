@@ -12,8 +12,8 @@
         <g>
           <path id="BlueA" d="M 0 0 L 100 0 L 100 100 z" fill="#00ffff" />
           <path id="RedA" d="M 0 0 L 0 100 L 100 0 z" fill="#ff00ff" />
-          <path id="BlueB" d="M 0 125 L 100 125 L 100 225 z" fill="#00ffff" fill-opacity=".5" />
-          <path id="RedB" d="M 0 125 L 0 225 L 100 125 z" fill="#ff00ff" fill-opacity=".5" />
+          <path id="BlueB" d="M 0 0 L 100 0 L 100 100 z" fill="#00ffff" fill-opacity=".5" />
+          <path id="RedB" d="M 0 0 L 0 100 L 100 0 z" fill="#ff00ff" fill-opacity=".5" />
         </g>
 
         <filter id="overNoFlood" filterUnits="objectBoundingBox" x="-5%" y="-5%" width="110%" height="110%">
@@ -27,29 +27,102 @@
         <filter id="outNoFlood" filterUnits="objectBoundingBox" x="-5%" y="-5%" width="110%" height="110%">
           <feComposite in="SourceGraphic" in2="BackgroundImage" operator="out" result="comp"/>
         </filter>
+
+        <filter id="atopNoFlood" filterUnits="objectBoundingBox" x="-5%" y="-5%" width="110%" height="110%">
+          <feComposite in="SourceGraphic" in2="BackgroundImage" operator="atop" result="comp"/>
+        </filter>
+
+        <filter id="xorNoFlood" filterUnits="objectBoundingBox" x="-5%" y="-5%" width="110%" height="110%">
+          <feComposite in="SourceGraphic" in2="BackgroundImage" operator="xor" result="comp"/>
+        </filter>
+
+        <filter id="arithmeticNoFlood" filterUnits="objectBoundingBox" x="-5%" y="-5%" width="110%" height="110%">
+          <feComposite in="SourceGraphic" in2="BackgroundImage" operator="arithmetic" k1=".5" k2=".5" k3=".5" k4=".5" result="comp"/>
+        </filter>
       </defs>
-
-      <!-- over -->
       <g>
-        <use xlink:href="#BlueA" filter="url(#overNoFlood)"/>
-        <use xlink:href="#RedA" filter="url(#overNoFlood)"/>
-        <text x="50" y="130" width="100" text-anchor="middle" font-size="30">over</text>
-      </g>
-      <!-- in -->
-      <g transform="translate(120,0)">
-        <use xlink:href="#BlueA" />
-        <use xlink:href="#RedA" filter="url(#inNoFlood)"/>
-        <text x="50" y="130" width="100" text-anchor="middle" font-size="30">in</text>
-      </g>
-      <!-- out -->
-      <g transform="translate(240,0)">
-        <use xlink:href="#BlueA" filter="url(#outNoFlood)"/>
-        <use xlink:href="#RedA" filter="url(#outNoFlood)"/>
-        <text x="50" y="130" width="100" text-anchor="middle" font-size="30">out</text>
+        <!-- over -->
+        <g>
+          <use xlink:href="#BlueA" />
+          <use xlink:href="#RedA" filter="url(#overNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">over</text>
+        </g>
+        <!-- in -->
+        <g transform="translate(120,0)">
+          <use xlink:href="#BlueA" />
+          <use xlink:href="#RedA" filter="url(#inNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">in</text>
+        </g>
+        <!-- out -->
+        <g transform="translate(240,0)">
+          <use xlink:href="#BlueA"/>
+          <use xlink:href="#RedA" filter="url(#outNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">out</text>
+        </g>
+        <!-- atop -->
+        <g transform="translate(360,0)">
+          <use xlink:href="#BlueA" />
+          <use xlink:href="#RedA" filter="url(#atopNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">out</text>
+        </g>
+
+        <!-- xor -->
+        <g transform="translate(480,0)">
+          <use xlink:href="#BlueA" />
+          <use xlink:href="#RedA" filter="url(#xorNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">out</text>
+        </g>
+
+        <!-- arithmetic -->
+        <g transform="translate(600,0)">
+          <use xlink:href="#BlueA" />
+          <use xlink:href="#RedA" filter="url(#arithmeticNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">out</text>
+        </g>
       </g>
 
 
 
+      <g transform="translate(0 ,150)">
+        <!-- over -->
+        <g>
+          <use xlink:href="#BlueB" />
+          <use xlink:href="#RedB" filter="url(#overNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">over</text>
+        </g>
+        <!-- in -->
+        <g transform="translate(120,0)">
+          <use xlink:href="#BlueB" />
+          <use xlink:href="#RedB" filter="url(#inNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">in</text>
+        </g>
+        <!-- out -->
+        <g transform="translate(240,0)">
+          <use xlink:href="#BlueB"/>
+          <use xlink:href="#RedB" filter="url(#outNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">out</text>
+        </g>
+        <!-- atop -->
+        <g transform="translate(360,0)">
+          <use xlink:href="#BlueB" />
+          <use xlink:href="#RedB" filter="url(#atopNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">out</text>
+        </g>
+
+        <!-- xor -->
+        <g transform="translate(480,0)">
+          <use xlink:href="#BlueB" />
+          <use xlink:href="#RedB" filter="url(#xorNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">out</text>
+        </g>
+
+        <!-- arithmetic -->
+        <g transform="translate(600,0)">
+          <use xlink:href="#BlueB" />
+          <use xlink:href="#RedB" filter="url(#arithmeticNoFlood)"/>
+          <text x="50" y="130" width="100" text-anchor="middle" font-size="30">out</text>
+        </g>
+      </g>
 
     </svg>
   </div>
