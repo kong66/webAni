@@ -9,10 +9,116 @@
 
       <svg width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid meet">
         <defs >
-            
+            <radialGradient id="gradient" cx="50%" cy="50%" r="10%" spreadMethod="reflect">
+              <stop offset="0%" style="stop-color:white;stop-opacity:0"/>
+              <stop offset="25%" style="stop-color:white;stop-opacity:.25"/>
+              <stop offset="50%" style="stop-color:white;stop-opacity:.5"/>
+              <stop offset="75%" style="stop-color:white;stop-opacity:.75"/>
+              <stop offset="100%" style="stop-color:white;stop-opacity:1"/>
+            </radialGradient>
+            <circle id="circle" cx="200" cy="200" r="100"  style="stroke:none;fill:url(#gradient)"/>
 
+            <filter id="filter-diffuse-point">
+              <feImage xlink:href="#circle" result="height" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"/>
+              <feDiffuseLighting in="height" result="light" lighting-color="white" surfaceScale="1" diffuseConstant="1">
+                <fePointLight x="100" y="100" z="30"/>
+              </feDiffuseLighting>
+              <feComposite in="SourceGraphic" in2="light"
+                           operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/>
+            </filter>
+
+            <filter id="filter-diffuse-distant">
+              <feImage xlink:href="#circle" result="height" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"/>
+              <feDiffuseLighting in="height" result="light" lighting-color="yellow" surfaceScale="1" diffuseConstant="1">
+                <feDistantLight azimuth="45" elevation="10"/>
+                <!-- azimuth xy平面上，顺时针方向的，和x轴夹角
+                  elevation 光线和z轴的夹角 -->
+              </feDiffuseLighting>
+              <feComposite in="SourceGraphic" in2="light"
+                           operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/>
+            </filter>
+            <filter id="filter-diffuse-spot">
+              <feImage xlink:href="#circle" result="height" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"/>
+              <feDiffuseLighting in="height" result="light" lighting-color="white" surfaceScale="1" diffuseConstant="1">
+                <feSpotLight x="100" y="100" z="20" limitingConeAngle="20"
+                   pointsAtX="200" pointsAtY="200" pointsAtZ="0">
+                   <animate attributeName="limitingConeAngle" dur="2s"
+                     calcMode="linear"
+                     values="0;30"
+                     keyTimes="0;1"
+                     repeatCount="indefinite">
+                   </animate>
+                 </feSpotLight>
+                   <!-- X,Y,Z表示光源所在位置
+                   pointsAtX,Y,Z表示光源指向的点
+                   limitingConeAngle 探照灯张角
+                  -->
+              </feDiffuseLighting>
+              <feComposite in="SourceGraphic" in2="light"
+                           operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/>
+            </filter>
+
+            <filter id="filter-specular-point">
+              <feImage xlink:href="#circle" result="height" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"/>
+              <feSpecularLighting in="height" result="light" lighting-color="white" surfaceScale="1" specularConstant="1" specularExponent="10">
+                <fePointLight x="100" y="100" z="30"/>
+              </feSpecularLighting>
+              <feComposite in="light" in2="SourceGraphic"
+                           operator="in" result="light2"/>
+              <feComposite in="SourceGraphic" in2="light2"
+                           operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/>
+
+            </filter>
+
+            <filter id="filter-specular-distant">
+              <feImage xlink:href="#circle" result="height" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"/>
+              <feSpecularLighting in="height" result="light" lighting-color="yellow" surfaceScale="1" specularConstant="1" specularExponent="10">
+                <feDistantLight azimuth="45" elevation="10"/>
+              </feSpecularLighting>
+              <feComposite in="light" in2="SourceGraphic"
+                           operator="in" result="light2"/>
+              <feComposite in="SourceGraphic" in2="light2"
+                           operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/>
+            </filter>
+
+            <filter id="filter-specular-spot">
+              <feImage xlink:href="#circle" result="height" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"/>
+              <feSpecularLighting in="height" result="light" lighting-color="white" surfaceScale="1" specularConstant="1" specularExponent="5">
+                <feSpotLight x="200" y="100" z="10" limitingConeAngle="15"
+                   pointsAtX="300" pointsAtY="300" pointsAtZ="0">
+                   <animate attributeName="pointsAtX" dur="4s"
+                     calcMode="linear"
+                     values="100;300;100"
+                     keyTimes="0;.5;1"
+                     repeatCount="indefinite">
+                   </animate>
+
+                 </feSpotLight>
+              </feSpecularLighting>
+              <feComposite in="SourceGraphic" in2="light"
+                           operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/>
+            </filter>
         </defs>
 
+        <circle transform="translate(0,0)" cx="200" cy="200" r="100" fill="green" />
+
+        <circle transform="translate(250,0)" cx="200" cy="200" r="100" fill="green"
+            filter="url(#filter-diffuse-point)" />
+
+        <circle transform="translate(500,0)" cx="200" cy="200" r="100" fill="green"
+            filter="url(#filter-diffuse-distant)" />
+
+        <circle transform="translate(750,0)" cx="200" cy="200" r="100" fill="green"
+            filter="url(#filter-diffuse-spot)" />
+
+        <circle transform="translate(250,250)" cx="200" cy="200" r="100" fill="green"
+            filter="url(#filter-specular-point)" />
+
+        <circle transform="translate(500,250)" cx="200" cy="200" r="100" fill="green"
+            filter="url(#filter-specular-distant)" />
+
+        <circle transform="translate(750,250)" cx="200" cy="200" r="100" fill="green"
+            filter="url(#filter-specular-spot)" />
 
   		</svg>
     </div>
