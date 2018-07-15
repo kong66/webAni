@@ -9,7 +9,7 @@
 
       <svg width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid meet">
         <defs>
-          <linearGradient id="gradient" spreadMethod="repeat">
+          <linearGradient id="gradient-rainbow">
             <stop offset="0%" stop-color="crimson" />
             <stop offset="10%" stop-color="purple" />
             <stop offset="10%" stop-color="red" />
@@ -31,7 +31,7 @@
             <stop offset="90%" stop-color="purple" />
             <stop offset="100%" stop-color="mediumpurple" />
           </linearGradient>
-          <linearGradient id="gradient2" x1="10%" y1="30%" x2="80%" y2="60%" spreadMethod="pad">
+          <linearGradient id="gradient-specular" x1="10%" y1="30%" x2="80%" y2="60%" spreadMethod="pad">
             <stop offset="0%" stop-color="black" stop-opacity=".3"/>
             <stop offset="43%" stop-color="black" stop-opacity=".5"/>
             <stop offset="50%" stop-color="white" stop-opacity=".9"/>
@@ -41,9 +41,9 @@
             <stop offset="87%" stop-color="black" stop-opacity=".5"/>
             <stop offset="100%" stop-color="black" stop-opacity=".3"/>
           </linearGradient>
-          <pattern id="p-stripes" x="0" y="0" width="300" height="400" patternUnits="userSpaceOnUse" viewbox="0 0 300 400" >
+          <pattern id="pattern-rainbow" x="0" y="0" width="300" height="400" patternUnits="userSpaceOnUse" viewbox="0 0 300 400" >
               <rect width="300" height="400"
-                fill="url(#gradient)"/>
+                fill="url(#gradient-rainbow)"/>
               <animate attributeName="x" dur="8s"
                 calcMode="linear"
                 values="0;300"
@@ -51,9 +51,9 @@
                 repeatCount="indefinite">
               </animate>
           </pattern>
-          <pattern id="p-stripes2" x="0" y="0" width="1600" height="400" patternUnits="userSpaceOnUse" viewbox="0 0 600 500" preserveAspectRatio="xMidYMid slice">
+          <pattern id="pattern-specular" x="0" y="0" width="1600" height="400" patternUnits="userSpaceOnUse" viewbox="0 0 600 500" preserveAspectRatio="xMidYMid slice">
               <rect width="600" height="400"
-                fill="url(#gradient2)"/>
+                fill="url(#gradient-specular)"/>
               <animate attributeName="x" dur="2s"
                 calcMode="linear"
                 values="1600;0"
@@ -61,12 +61,42 @@
                 repeatCount="indefinite">
               </animate>
           </pattern>
+
+          <!-- <g>
+            <linearGradient id="gradient" spreadMethod="reflect">
+              <stop offset="10%" stop-color="orange" stop-opacity="1"/>
+              <stop offset="20%" stop-color="purple" stop-opacity="1"/>
+              <stop offset="30%" stop-color="green" stop-opacity="1"/>
+            </linearGradient>
+            <linearGradient id="gradient2" xlink:href="#gradient"
+              x1="40%" y1="40%" x2="60%" y2="60%">
+            </linearGradient>
+            <linearGradient id="gradient3" xlink:href="#gradient"
+              x1="40%" y1="40%" x2="60%" y2="60%" >
+            </linearGradient>
+          </g>
+          <g>
+            <radialGradient id="r-gradient"cx="20%" cy="30%" r="30%" >
+              <stop offset="40%" style="stop-color:orange;"/>
+              <stop offset="50%" style="stop-color:purple;"/>
+              <stop offset="60%" style="stop-color:green;"/>
+            </radialGradient>
+            <radialGradient id="r-gradient2"cx="50%" cy="50%" r="50%" xlink:href="#r-gradient" fx="15%" fy="80%" >
+            </radialGradient>
+            <radialGradient id="r-gradient3"cx="50%" cy="50%" r="30%" xlink:href="#r-gradient" fx="30%" fy="30%" spreadMethod="reflect">
+            </radialGradient>
+          </g> -->
+
         </defs>
 
-        <text x="600" y="190" width="1200" height="300" style="font-size:230;font-weight:600;text-anchor:middle;fill:url(#p-stripes);">KONG66</text>
-        <text x="600" y="190" width="1200" height="300" style="font-size:230;font-weight:600;text-anchor:middle;fill:url(#p-stripes2);">KONG66</text>
-        <!-- <rect x="0" y="0" width="1200" height="300" style="fill:url(#p-stripes)"/>
-        <rect x="0" y="0" width="1200" height="300" style="fill:url(#p-stripes2)"/> -->
+        <!-- <rect x="300" y="300" width="500" height="300" style="fill:url(#r-gradient3);stroke:red;"/> -->
+
+        <text x="600" y="190" width="1200" height="300" style="font-size:230;font-weight:600;text-anchor:middle;fill:url(#pattern-rainbow);">KONG66</text>
+        <text x="600" y="190" width="1200" height="300" style="font-size:230;font-weight:600;text-anchor:middle;fill:url(#pattern-specular);">KONG66</text>
+        <!-- <rect x="0" y="0" width="1200" height="300" style="fill:url(#pattern-rainbow)"/>
+        <rect x="0" y="0" width="1200" height="300" style="fill:url(#pattern-specular)"/> -->
+
+
   		</svg>
     </div>
 
