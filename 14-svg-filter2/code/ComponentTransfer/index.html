@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>ComponentTransfer</title>
+    <link rel="stylesheet" href="./../css/styles.css"/>
+  </head>
+  <body>
+    <div class="page">
+
+      <svg width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="gradient" >
+            <stop offset="0" stop-color="#000000"/>
+            <stop offset="1" stop-color="#ff0000"/>
+          </linearGradient>
+          <filter id="f1">
+            <feComponentTransfer in="SourceGraphic">
+              <!-- <feFuncR type="linear" slop="1.9" intercept="0"> -->
+                <!-- <animate attributeName="slop" dur="5s"
+                  calcMode="linear"
+                  values="0.1;100;0.1"
+                  keyTimes="0;0.5;1"
+                  repeatCount="indefinite"> -->
+              </feFuncR>
+            </feComponentTransfer>
+          </filter>
+          <filter id="f2">
+            <feComponentTransfer in="SourceGraphic">
+              <feFuncR type="gamma" amplitude="1" exponent="0.7" offset="0"/>
+                <!-- <animate attributeName="exponent" dur="5s"
+                  calcMode="linear"
+                  values="0.7;1.67"
+                  keyTimes="0;1"
+                  repeatCount="indefinite"/> -->
+              </feFuncR>
+            </feComponentTransfer>
+          </filter>
+        </defs>
+
+        <rect x="100" y="0" width="1000" height="100" style="fill:url(#gradient);"/>
+        <rect x="100" y="150" width="1000" height="100" style="fill:url(#gradient);filter:url(#f1);"/>
+        <rect x="100" y="300" width="1000" height="100" style="fill:url(#gradient);filter:url(#f2);"/>
+
+  		</svg>
+    </div>
+
+  </body>
+</html>
