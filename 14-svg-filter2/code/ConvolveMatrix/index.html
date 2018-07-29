@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>ComponentTransfer</title>
+    <link rel="stylesheet" href="./../css/styles.css"/>
+  </head>
+  <body>
+
+    <div class="page">
+
+      <svg width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <circle id="circle" cx="300" cy="200" r="200"/>
+          <filter id="f1">
+            <feConvolveMatrix preserveAlpha="true"
+              kernelMatrix="
+                1 0 0
+                0 0 0
+                0 0 -1" bias="0">
+                <animate attributeName="bias" dur="10s"
+                  calcMode="linear"
+                  values="0;1;0"
+                  keyTimes="0;0.5;1"
+                  repeatCount="indefinite"/>
+            </feConvolveMatrix>
+          </filter>
+        </defs>
+
+        <image xlink:href="./../images/teacher.jpg" x="0" y="0"
+      height="300" width="300" style="filter:url(#f1);" />
+
+
+
+  		</svg>
+    </div>
+
+  </body>
+</html>
