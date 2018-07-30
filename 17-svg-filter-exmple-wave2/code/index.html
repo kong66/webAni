@@ -1,0 +1,97 @@
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>svg-filter-wave</title>
+  <link rel="stylesheet" href="./styles.css"/>
+</head>
+<body>
+  <div class="page">
+
+    <svg width="200px" height="200px" viewBox="0 0 200 200"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+    <defs>
+      <radialGradient id="rg" cx="0.5" cy="0.5" r="0.25" spreadMethod="repeat">
+        <stop offset="0" stop-color="hsla(0, 95%, 25%, 1)">
+          <animate id="anim" attributeName="stop-opacity"
+          calcMode="linear" begin="0s" dur="6s"
+          values="0;1;0" keiTimes="0;0.5;1" repeatCount="indefinite"/>
+        </stop>
+        <stop stop-color="hsla(0, 95%, 25%, 1)">
+          <animate attributeName="offset"
+          calcMode="linear" begin="0s" dur="6s"
+          values="0;0;0.5" keiTimes="0;0.5;1" repeatCount="indefinite"/>
+          <animate attributeName="stop-opacity"
+          calcMode="linear" begin="0s" dur="6s"
+          values="0;1;1" keiTimes="0;0.5;1" repeatCount="indefinite"/>
+        </stop>
+        <stop  stop-color="hsla(0, 95%, 25%, 1)" stop-opacity="0">
+          <animate attributeName="offset"
+          calcMode="linear" begin="0s" dur="6s"
+          values="0;1" keiTimes="0;1" repeatCount="indefinite"/>
+        </stop>
+        <stop stop-color="hsla(0, 95%, 25%, 1)">
+          <animate attributeName="offset"
+          calcMode="linear" begin="0s" dur="6s"
+          values="0.5;1;1" keiTimes="0;0.5;1" repeatCount="indefinite"/>
+          <animate attributeName="stop-opacity"
+          calcMode="linear" begin="0s" dur="6s"
+          values="1;1;0" keiTimes="0;0.5;1" repeatCount="indefinite"/>
+        </stop>
+        <stop offset="1" stop-color="hsla(0, 95%, 25%, 1)">
+          <animate attributeName="stop-opacity"
+          calcMode="linear" begin="0s" dur="6s"
+          values="0;1;0" keiTimes="0;0.5;1" repeatCount="indefinite"/>
+        </stop>
+      </radialGradient>
+      <radialGradient id="rg2" cx="0.5" cy="0.5" r="1">
+        <stop offset="0%" stop-opacity="0"/>
+        <stop offset="100%" stop-opacity="1"/>
+      </radialGradient>
+      <filter id="sazanami" filterUnits="userSpaceOnUse" x="0" y="0" width="200" height="200">
+        <feImage xlink:href="#wave" result="wave"/>
+        <feGaussianBlur in="wave" stdDeviation="8" result="wave2"/>
+        <feDiffuseLighting in="wave2" lighting-color="hsla(255,255%,255%,1)"
+        surfaceScale="50" diffuseConstant="0.3" result="wave3">
+        <feDistantLight azimuth="-90" elevation="60"/>
+      </feDiffuseLighting>
+      <feDisplacementMap in="SourceGraphic" in2="wave2" scale="-10" result="wave4"/>
+      <feBlend in="wave3" in2="wave4" mode="screen"/>
+    </filter>
+
+    <filter id="sazanamiF" filterUnits="userSpaceOnUse" x="0" y="0" width="400" height="200">
+      <feOffset in="SourceGraphic" result="wave" dx="-200"
+      x="0" y="0" width="200" height="200"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="wave2"
+      x="0" y="0" width="200" height="200"/>
+      <feDiffuseLighting in="wave2" lighting-color="hsla(255,255%,255%,1)"
+      surfaceScale="50" diffuseConstant="0.3" result="wave3"
+      x="0" y="0" width="200" height="200">
+        <feDistantLight azimuth="-90" elevation="60"/>
+      </feDiffuseLighting>
+      <feDisplacementMap in="SourceGraphic" in2="wave2" scale="-10" result="wave4"
+      x="0" y="0" width="200" height="200"/>
+      <feBlend in="wave3" in2="wave4" mode="screen"
+      x="0" y="0" width="200" height="200"/>
+    </filter>
+  <g id="wave">
+    <rect width="200" height="200" fill="url(#rg)"/>
+    <rect width="200" height="200" fill="url(#rg2)"/>
+  </g>
+</defs>
+<switch>
+  <g filter="url(#sazanami)" requiredFeatures="http://www.w3.org/TR/SVG11/feature#SVG-animation">
+    <rect x="0" y ="0" width="200" height="200" fill="hsla(221, 95%, 25%, 1)"/>
+    <image xlink:href="./electricwolf.jpg" width="200" height="200"/>
+  </g>
+  <g filter="url(#sazanamiF)">
+    <rect x="0" y ="0" width="200" height="200" fill="hsla(221, 95%, 25%, 1)"/>
+    <image xlink:href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/131045/electricwolf.jpg" width="200" height="200"/>
+    <use x="200" y="0" xlink:href="#wave"/>
+  </g>
+</switch>
+</svg>
+</div>
+
+</body>
+</html>
