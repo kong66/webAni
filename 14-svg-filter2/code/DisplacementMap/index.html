@@ -8,98 +8,19 @@
 
     <div class="page">
 
-      <!-- <svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <linearGradient id="gradient">
-            <stop offset="0" style="stop-color:#ff0000;"/>
-            <stop offset="0.5" style="stop-color:#00ff00;"/>
-            <stop offset="1" style="stop-color:#000000"/>
-          </linearGradient>
-
-          <rect id="rect" x="0" y="0" width="200" height="200" style="fill:url(#gradient);"/>
-
-          <filter id="displace">
-            <feImage xlink:href="#rect" result="image" width="200" height="200" preserveAspectRatio="xMidYMid meet"/>
-            <feDisplacementMap
-                in2="image"
-                in="SourceGraphic"
-                scale="50"
-                xChannelSelector="R"
-                yChannelSelector="R"/>
-          </filter>
-        </defs>
-
-        <image xlink:href="./../images/teacher.jpg" x="0" y="0"
-      height="200" width="200" filter="url(#displace)" />
-      </svg> -->
-
-      <!-- <svg width="200" height="200" viewBox="0 0 220 220"
+      <svg width="1200" height="600" viewBox="0 0 1200 600"
      xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="gradient">
-            <stop offset="0" style="stop-color:#ff0000;"/>
-            <stop offset="0.5" style="stop-color:#00ff00;"/>
-            <stop offset="1" style="stop-color:#000000"/>
-          </linearGradient>
-          <rect id="rect" x="0" y="0" width="200" height="200" style="fill:url(#gradient);"/>
-        </defs>
-
         <filter id="displacementFilter">
-          <feTurbulence type="turbulence" baseFrequency="0.05"
-              numOctaves="2" result="turbulence"/>
-          <feImage xlink:href="#rect" result="turbulence" width="200" height="200"></feImage>
+          <feTurbulence type="turbulence" baseFrequency="0.1"
+              numOctaves="1" result="turbulence"/>
           <feDisplacementMap in2="turbulence" in="SourceGraphic"
-              scale="500" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+              scale="50" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
+        
+        <text x="600" y="300"  style="fill:red;font-size:200;font-weight:bold;text-anchor:middle;filter:url(#displacementFilter);" >KONG66</text>
+      </svg>
 
-        <circle cx="100" cy="100" r="100"
-            style="fill:#600;filter: url(#displacementFilter)"/>
-      </svg> -->
 
-      <svg width="340" height="231">
-  <defs>
-    <filter id="f" filterUnits="objectBoundingBox" x="20" y="20" width="390" height="280">
-      <feImage xlink:href="#MyImage1" result="pict1"></feImage>
-      <feImage xlink:href="#MyImage2" result="pict2"></feImage>
-      <feDisplacementMap id="fdm" scale="50" xChannelSelector="R" yChannelSelector="R" in2="pict2" in="pict1"></feDisplacementMap>
-    </filter>
-    <radialGradient id="r" cx=".5" cy=".5" r=".8">
-      <stop offset="0" stop-color="#000">
-        <animate attributeName="offset" to=".2" dur="1s" repeatCount="indefinite"></animate>
-      </stop>
-      <stop offset=".1" stop-color="#f00">
-        <animate attributeName="offset" to=".3" dur="1s" repeatCount="indefinite"></animate>
-      </stop>
-      <stop offset=".2" stop-color="#000">
-        <animate attributeName="offset" to=".4" dur="1s" repeatCount="indefinite"></animate>
-      </stop>
-      <stop offset=".3" stop-color="#f00">
-        <animate attributeName="offset" to=".5" dur="1s" repeatCount="indefinite"></animate>
-      </stop>
-      <stop offset=".4" stop-color="#000">
-        <animate attributeName="offset" to=".6" dur="1s" repeatCount="indefinite"></animate>
-      </stop>
-      <stop offset=".5" stop-color="#f00">
-        <animate attributeName="offset" to=".7" dur="1s" repeatCount="indefinite"></animate>
-      </stop>
-      <stop offset=".6" stop-color="#000">
-        <animate attributeName="offset" to=".8" dur="1s" repeatCount="indefinite"></animate>
-      </stop>
-      <stop offset=".7" stop-color="#f00">
-        <animate attributeName="offset" to=".9" dur="1s" repeatCount="indefinite"></animate>
-      </stop>
-      <stop offset=".8" stop-color="#000">
-        <animate attributeName="offset" to="1" dur="1s" repeatCount="indefinite"></animate>
-      </stop>
-      <stop offset=".9" stop-color="#f00">
-        <animate attributeName="offset" to="1.1" dur="1s" repeatCount="indefinite"></animate>
-      </stop>
-    </radialGradient>
-    <rect id="MyImage2" x="0" y="0" width="390" height="281" fill="url(#r)"></rect>
-    <image id="MyImage1" x="-20" y="-140" width="450" height="400" xlink:href="../images/teacher.jpg"></image>
-  </defs>
-  <use filter="url(#f)" x="-50" y="-50"></use>
-</svg>
     </div>
 
   </body>
