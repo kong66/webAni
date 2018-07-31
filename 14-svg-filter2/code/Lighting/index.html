@@ -20,7 +20,7 @@
 
             <filter id="filter-diffuse-point">
               <feImage xlink:href="#circle" result="height" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"/>
-              <feDiffuseLighting in="height" result="light" lighting-color="white" surfaceScale="1" diffuseConstant="1">
+              <feDiffuseLighting  in="height" result="light" lighting-color="white" surfaceScale="1" diffuseConstant="1">
                 <fePointLight x="100" y="100" z="30"/>
               </feDiffuseLighting>
               <feComposite in="SourceGraphic" in2="light"
@@ -39,15 +39,15 @@
             </filter>
             <filter id="filter-diffuse-spot">
               <feImage xlink:href="#circle" result="height" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"/>
-              <feDiffuseLighting in="height" result="light" lighting-color="white" surfaceScale="1" diffuseConstant="1">
+              <feDiffuseLighting  in="height" result="light" lighting-color="white" surfaceScale="1" diffuseConstant="1">
                 <feSpotLight x="100" y="100" z="20" limitingConeAngle="20"
                    pointsAtX="200" pointsAtY="200" pointsAtZ="0">
-                   <animate attributeName="limitingConeAngle" dur="2s"
+                   <!-- <animate attributeName="limitingConeAngle" dur="2s"
                      calcMode="linear"
                      values="0;30"
                      keyTimes="0;1"
                      repeatCount="indefinite">
-                   </animate>
+                   </animate> -->
                  </feSpotLight>
                    <!-- X,Y,Z表示光源所在位置
                    pointsAtX,Y,Z表示光源指向的点
@@ -61,7 +61,7 @@
             <filter id="filter-specular-point">
               <feImage xlink:href="#circle" result="height" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"/>
               <feSpecularLighting in="height" result="light" lighting-color="white" surfaceScale="1" specularConstant="1" specularExponent="10">
-                <fePointLight x="100" y="100" z="30"/>
+                <fePointLight x="100" y="100" z="200"/>
               </feSpecularLighting>
               <feComposite in="light" in2="SourceGraphic"
                            operator="in" result="light2"/>
@@ -73,7 +73,7 @@
             <filter id="filter-specular-distant">
               <feImage xlink:href="#circle" result="height" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"/>
               <feSpecularLighting in="height" result="light" lighting-color="yellow" surfaceScale="1" specularConstant="1" specularExponent="10">
-                <feDistantLight azimuth="45" elevation="10"/>
+                <feDistantLight azimuth="225" elevation="10"/>
               </feSpecularLighting>
               <feComposite in="light" in2="SourceGraphic"
                            operator="in" result="light2"/>
@@ -85,13 +85,13 @@
               <feImage xlink:href="#circle" result="height" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"/>
               <feSpecularLighting in="height" result="light" lighting-color="white" surfaceScale="1" specularConstant="1" specularExponent="5">
                 <feSpotLight x="200" y="100" z="10" limitingConeAngle="15"
-                   pointsAtX="300" pointsAtY="300" pointsAtZ="0">
-                   <animate attributeName="pointsAtX" dur="4s"
+                   pointsAtX="200" pointsAtY="300" pointsAtZ="0">
+                   <!-- <animate attributeName="pointsAtX" dur="4s"
                      calcMode="linear"
                      values="100;300;100"
                      keyTimes="0;.5;1"
                      repeatCount="indefinite">
-                   </animate>
+                   </animate> -->
 
                  </feSpotLight>
               </feSpecularLighting>
@@ -101,6 +101,8 @@
         </defs>
 
         <circle transform="translate(0,0)" cx="200" cy="200" r="100" fill="green" />
+
+        <use xlink:href="#circle" transform="translate(0,250)"/>
 
         <circle transform="translate(250,0)" cx="200" cy="200" r="100" fill="green"
             filter="url(#filter-diffuse-point)" />

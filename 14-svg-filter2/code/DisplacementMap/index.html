@@ -12,11 +12,17 @@
      xmlns="http://www.w3.org/2000/svg">
         <filter id="displacementFilter">
           <feTurbulence type="turbulence" baseFrequency="0.1"
-              numOctaves="1" result="turbulence"/>
+              numOctaves="1" result="turbulence">
+              <animate attributeName="baseFrequency" dur="20s"
+                calcMode="linear"
+                values="0.1;0.2;0.1"
+                keyTimes="0;0.5;1"
+                repeatCount="indefinite"/>
+          </feTurbulence>
           <feDisplacementMap in2="turbulence" in="SourceGraphic"
               scale="50" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
-        
+
         <text x="600" y="300"  style="fill:red;font-size:200;font-weight:bold;text-anchor:middle;filter:url(#displacementFilter);" >KONG66</text>
       </svg>
 
