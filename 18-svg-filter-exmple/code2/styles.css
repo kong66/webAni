@@ -8,3 +8,11 @@ html{
 	width:100%;
 	height:100%;
 }
+text {
+  filter: url(#filter);
+  fill: white;
+  font-family: 'Arial', sans-serif;
+  font-size: 100px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
