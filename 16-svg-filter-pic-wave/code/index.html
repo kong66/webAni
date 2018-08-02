@@ -13,21 +13,20 @@
             <feTurbulence type="fractalNoise" baseFrequency="0.01 0.3" numOctaves="3" result="turbulence">
               <animate
                 attributeName="baseFrequency"
-                dur="90s"
+                dur="60s"
                 calcMode="linear"
-                values="0.01 0.3;0.01 0.5"
-                keyTimes="0;1"
-                repeatCount="indefinite"/>
-            </feTurbulence>
-            <feDisplacementMap xChannelSelector="R" yChannelSelector="G" in="SourceGraphic" in2="turbulence" scale="30" >
-              <animate
-                attributeName="scale"
-				        begin="text.click"
-                dur="10s"
-                calcMode="linear"
-                values="30;50;30"
+                values="0.01 0.5;0.015 0.3;0.01 0.5"
                 keyTimes="0;0.5;1"
                 repeatCount="indefinite"/>
+            </feTurbulence>
+            <feDisplacementMap xChannelSelector="R" yChannelSelector="G" in="SourceGraphic" in2="turbulence" scale="40" >
+              <!-- <animate
+                attributeName="scale"
+                dur="10s"
+                calcMode="linear"
+                values="20;30;20"
+                keyTimes="0;0.5;1"
+                repeatCount="indefinite"/> -->
             </feDisplacementMap>
           </filter>
         </defs>
