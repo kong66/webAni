@@ -7,8 +7,8 @@
 <body>
   <div class="page">
 
-    <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
-    width="600px" height="120px" viewBox="0 0 600 100">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+    width="600" height="120" viewBox="0 0 600 100">
 
     <defs>
       <filter id="filter">
@@ -22,20 +22,30 @@
         <feComposite in="flood_red" in2="offset_right_1" operator="in"  result="comp_red" />
         <feComposite in="flood_green" in2="offset_left_1" operator="in" result="comp_green" />
 
-        <feMerge x="0" width="100%" result="merge1">
+        <feMerge x="0" y="0" width="100%" result="merge1">
           <feMergeNode in = "flood_black" />
           <feMergeNode in = "comp_red" />
           <feMergeNode in = "offset_right_2" />
 
+          <animate
+            attributeName="y"
+            dur ="2s"
+            values = '110; 110; 20; 70;0;110;110'
+            keyTimes = '0; 0.2;0.5;0.6; 0.7;0.9; 1 '
+            repeatCount = "indefinite" />
+          <animate attributeName="height"
+            dur ="4s"
+            values = '10;10;60;30;60;100;100'
+            keyTimes = '0;0.2;0.5;0.6;0.7;0.9;1'
+            repeatCount = "indefinite" />
           <!-- <animate
-          attributeName="y"
-          dur ="4s"
-          values = '104px; 104px; 30px; 105px; 30px; 2px; 2px; 50px; 40px; 105px; 105px; 20px; 6ßpx; 40px; 104px; 40px; 70px; 10px; 30px; 104px; 102px'
+            attributeName="y"
+            dur ="4s"
+            values = '104; 104; 30; 105; 30; 2; 2; 50; 40; 105; 105; 20; 60; 40; 104; 40; 70; 10; 30; 104; 102'
 
-          keyTimes = '0; 0.362; 0.368; 0.421; 0.440; 0.477; 0.518; 0.564; 0.593; 0.613; 0.644; 0.693; 0.721; 0.736; 0.772; 0.818; 0.844; 0.894; 0.925; 0.939; 1'
+            keyTimes = '0; 0.362; 0.368; 0.421; 0.440; 0.477; 0.518; 0.564; 0.593; 0.613; 0.644; 0.693; 0.721; 0.736; 0.772; 0.818; 0.844; 0.894; 0.925; 0.939; 1'
 
-          repeatCount = "indefinite" /> -->
-
+            repeatCount = "indefinite" /> -->
           <!-- <animate attributeName="height"
             dur ="4s"
             values = '10px; 0px; 10px; 30px; 50px; 0px; 10px; 0px; 0px; 0px; 10px; 50px; 40px; 0px; 0px; 0px; 40px; 30px; 10px; 0px; 50px'
@@ -49,8 +59,19 @@
           <feMergeNode in = "flood_black" />
           <feMergeNode in = "comp_green" />
           <feMergeNode in = "offset_left_2" />
-
           <animate
+            attributeName="y"
+            dur ="2s"
+            values = '20; 20; 110; 50;30;0;0'
+            keyTimes = '0; 0.2;0.5;0.6; 0.7;0.9; 1 '
+            repeatCount = "indefinite" />
+          <animate
+            attributeName="height"
+            dur ="4s"
+            values = '10;10;60;30;60;100;100'
+            keyTimes = '0;0.2;0.5;0.6;0.7;0.9;1'
+            repeatCount = "indefinite" />
+          <!-- <animate
             attributeName="y"
             dur ="4s"
             values = '103px; 104px; 69px; 53px; 42px; 104px; 78px; 89px; 96px; 100px; 67px; 50px; 96px; 66px; 88px; 42px; 13px; 100px; 100px; 104px;'
@@ -60,15 +81,13 @@
             attributeName="height"
             dur = "4s"
             values = '0px; 0px; 0px; 16px; 16px; 12px; 12px; 0px; 0px; 5px; 10px; 22px; 33px; 11px; 0px; 0px; 10px'
-
             keyTimes = '0; 0.055; 0.100; 0.125; 0.159; 0.182; 0.202; 0.236; 0.268; 0.326; 0.357; 0.400; 0.408; 0.461; 0.493; 0.513;  1'
-
-            repeatCount = "indefinite" />
+            repeatCount = "indefinite" /> -->
         </feMerge>
 
         <feMerge>
           <feMergeNode in="SourceGraphic" />
-          <!-- <feMergeNode in="merge1" /> -->
+          <feMergeNode in="merge1" />
           <feMergeNode in="merge2" />
         </feMerge>
 
