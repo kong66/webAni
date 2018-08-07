@@ -1,30 +1,33 @@
 <html>
 <head>
   <meta charset="utf-8"/>
-  <title>SVG-Gradient</title>
+  <title>SVG-Text-Screen-Effect</title>
   <link rel="stylesheet" href="./styles.css"/>
 </head>
 <body>
   <div class="page">
 
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-    width="600" height="120" viewBox="0 0 600 100">
+    width="600" height="100" viewBox="0 0 600 100">
 
     <defs>
       <filter id="filter">
+        <!-- 黑底 -->
         <feFlood flood-color="black" result="flood_black" />
+        <!-- 右偏移 -->
+        <feOffset in="SourceGraphic" dx="2" dy="0" result="offset_right"/>
+        <!-- 左偏移 -->
+        <feOffset in="SourceGraphic" dx="-2" dy="0" result="offset_left"/>
+        <!-- 红色右边缘 -->
         <feFlood flood-color="red" result="flood_red" />
-        <feFlood flood-color="blue" result="flood_green" />
-        <feOffset in="SourceGraphic" dx="4" dy="0" result="offset_right_1"/>
-        <feOffset in="SourceGraphic" dx="2" dy="0" result="offset_right_2"/>
-        <feOffset in="SourceGraphic" dx="-4" dy="0" result="offset_left_1"/>
-        <feOffset in="SourceGraphic" dx="-2" dy="0" result="offset_left_2"/>
-        <feComposite in="flood_red" in2="offset_right_1" operator="in"  result="comp_red" />
-        <feComposite in="flood_green" in2="offset_left_1" operator="in" result="comp_green" />
-        <feMerge x="0" y="0" width="100%" result="merge1">
-          <feMergeNode in = "flood_black" />
-          <feMergeNode in = "comp_red" />
-          <feMergeNode in = "offset_right_2" />
+        <feOffset in="SourceGraphic" dx="4" dy="0" result="offset_right_red"/>
+        <feComposite in="flood_red" in2="offset_right_red" operator="in"  result="comp_right_red" />
+        <!-- 蓝色左边缘 -->
+        <feFlood flood-color="blue" result="flood_blue" />
+        <feOffset in="SourceGraphic" dx="-4" dy="0" result="offset_left_blue"/>
+        <feComposite in="flood_blue" in2="offset_left_blue" operator="in"  result="comp_left_blue" />
+        <!--右偏移+动画-->
+        <feMerge x="0" y="30" width="600" height="30" result="merge_offset_right">
           <animate
             attributeName="y"
             dur ="2s"
@@ -36,11 +39,12 @@
             values = '5;5;10;10;20;5;20'
             keyTimes = '0;0.2;0.5;0.6;0.7;0.9;1'
             repeatCount = "indefinite" />
-        </feMerge>
-        <feMerge x="0" width="100%" y="60px" height="65px" result="merge2">
           <feMergeNode in = "flood_black" />
-          <feMergeNode in = "comp_green" />
-          <feMergeNode in = "offset_left_2" />
+          <feMergeNode in = "comp_right_red" />
+          <feMergeNode in = "offset_right" />
+        </feMerge>
+        <!--左偏移+动画-->
+        <feMerge x="0" y="30" width="600" height="30" result="merge_offset_left">
           <animate
             attributeName="y"
             dur ="2s"
@@ -53,17 +57,21 @@
             values = '5;5;10;20;30;100;110'
             keyTimes = '0;0.2;0.5;0.6;0.7;0.9;1'
             repeatCount = "indefinite" />
+          <feMergeNode in = "flood_black" />
+          <feMergeNode in = "comp_left_blue" />
+          <feMergeNode in = "offset_left" />
         </feMerge>
+        <!-- 原图 叠加 左偏移 右偏移 -->
         <feMerge>
           <feMergeNode in = "flood_black" />
           <feMergeNode in="SourceGraphic" />
-          <feMergeNode in="merge1" />
-          <feMergeNode in="merge2" />
+          <feMergeNode in="merge_offset_right" />
+          <feMergeNode in="merge_offset_left" />
         </feMerge>
       </filter>
     </defs>
 
-    <text x="300" y="100" style="text-anchor:middle;">KONG66</text>
+    <text x="300" y="90" style="text-anchor:middle;">KONG66</text>
 
   </svg>
 </div>
