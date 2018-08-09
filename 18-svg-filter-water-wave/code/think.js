@@ -1,30 +1,37 @@
 jQuery(function($){
 
   var $svg = $('svg'),
-      $ripple = $('#ripple'),
-      $ripples = $('#ripples'),
-      $doc = $(document),
-      svgL = $svg.offset().left,
-      svgT = $svg.offset().top,
-      svgW = $svg.height(),
-      svgH = $svg.width();
-
+      $ripple = $('.ripple'),
+      $ripples = $('#ripples');
 
   $svg.on("click",function(e){
     var i,
-        x = (e.pageX - svgL)/svgW*1000,
-        y = (e.pageY - svgT)/svgH*1000;
-        console.log("x,y:"+x+","+y);
+        $ani,
+        $newRipple,
+        matrix = $svg[0].getScreenCTM().inverse(),
+        svgPoint = $svg[0].createSVGPoint(),
+        svgXY;
+        svgPoint.x = e.clientX;
+        svgPoint.y = e.clientY;
+        svgXY = svgPoint.matrixTransform(matrix);
+
         $newRipple = $ripple.clone();
         $ripples.append($newRipple);
-        $newRipple.attr("transform","translate("+x+","+y+")");
+        $newRipple.attr("transform","translate("+svgXY.x+","+svgXY.y+")");
+
         $ani = $newRipple.find('animate');
-        for(i=0;i<$ani.length;++i){
+
+        $newRipple.myEndAniNum = 0;
+        $newRipple.myOnEnd = function(){
+          if(++$newRipple.myEndAniNum==$ani.length){
+            $newRipple.remove();
+          }
+        };
+        
+        $ani.each(function(i){
           $ani[i].beginElement();
-        }
-        // $ani[0].onend = function(){
-        //   $newRipple.remove();
-        // }
+          $ani[i].onend= $newRipple.myOnEnd;
+        });
 
   });
 
