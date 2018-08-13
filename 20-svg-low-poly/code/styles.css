@@ -10,3 +10,17 @@ html,body,.page,svg{
   margin: 0;
   padding: 0;
 }
+
+polygon{
+  transform: scale(0);
+  opacity: 0;
+  animation: s 2s;
+  transform-origin: center center;
+}
+@keyframes s {
+
+  to{
+    transform: scale(1);
+    opacity: 1;
+  }
+}
