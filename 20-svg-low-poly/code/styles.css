@@ -1,0 +1,26 @@
+html{
+  font-size: 100px;
+  font-family: "Microsolf YaHei",sans-serif;
+  background: white;
+  text-align: center;
+}
+html,body,.page,svg{
+	width:100%;
+	height:100%;
+  margin: 0;
+  padding: 0;
+}
+
+polygon{
+  transform: scale(0);
+  opacity: 0;
+  animation: s 2s;
+  transform-origin: center center;
+}
+@keyframes s {
+
+  to{
+    transform: scale(1);
+    opacity: 1;
+  }
+}
