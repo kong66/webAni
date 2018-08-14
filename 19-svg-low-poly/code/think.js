@@ -8,6 +8,7 @@ jQuery(function($){
             x = Math.random()*1000-500,
             y = Math.random()*1000-500,
             svgNS="http://www.w3.org/2000/svg",
+            points = this.getAttribute("points"),
         newAni =document.createElementNS(svgNS,"animateTransform");
         newAni.setAttribute("attributeName","transform");
         newAni.setAttribute("type","translate");

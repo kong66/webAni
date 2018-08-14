@@ -12,10 +12,10 @@ html,body,.page,svg{
 }
 
 polygon{
-  transform: scale(0);
+  /*transform: scale(0);
   opacity: 0;
   animation: s 2s;
-  transform-origin: center center;
+  transform-origin: center center;*/
 }
 @keyframes s {
 
