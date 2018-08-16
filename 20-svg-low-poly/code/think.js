@@ -1,12 +1,13 @@
 jQuery(function($){
 
   var $svg = $('svg'),
-      $triangles = $('polygon:lt(60)'),
+      $triangles = $('polygon'),
       svgNS="http://www.w3.org/2000/svg",
       hueFilters = [document.getElementById("HueRoateA"),
           document.getElementById("HueRoateB")],
-      filterIndex = 0,
-      ok = true;
+      curFilter = hueFilters[0],
+      prevFilter = hueFilters[1];
+
 
   (function(){
     changeFilter();
@@ -18,147 +19,63 @@ jQuery(function($){
   $svg.on("click",onclickTriangles);
 
   function onclickTriangles(){
-    if(ok){
-      //ok = false;
-      changeFilter();
-
-      $triangles.endNum = $triangles.length;
-      console.log($triangles.endNum);
-      $triangles.each(function(index){
-
-        // onClickTriangle(this,function(){
-        //   if(--$triangles.endNum == 0){
-        //     ok = true;
-        //     console.log("ok");
-        //   }
-        // });
-      });
-    }
+    changeFilter();
+    $triangles.each(function(){
+      changePolygonFilter(this);
+    });
   }
   function changeFilter(){
-    filterIndex = (filterIndex+1)%2;
-    hueFilters[filterIndex].children[0].setAttribute("values", Math.round(Math.random()*360)+"");
+    var hue = Math.round(Math.random()*360);
+    var temp = curFilter;
+    curFilter = prevFilter;
+    prevFilter = temp;
+    $(curFilter).children("feColorMatrix").attr("values", hue+"");
   }
-  function setFilter(polygon){
-    var filter = hueFilters[filterIndex],
-        id = filter.getAttribute("id"),
-        str = "url(#"+id+")";
-    polygon.setAttribute("filter",str);
+  function changePolygonFilter(polygon){
+    polygon.setAttribute("filter",getPrevFilter());
+    var ani = $(polygon).children('set');
+    ani[0].setAttribute("from",getPrevFilter());
+    ani[0].setAttribute("to",getCurFilter());
+  }
+  function getCurFilter(){
+    return "url(#"+curFilter.id+")";
+  }
+  function getPrevFilter(){
+    return "url(#"+prevFilter.id+")";
   }
 
   function init(polygon,index){
     var points;
     polygon.mycolor = $(polygon).css("fill");
     points = $(polygon).attr("points").split(/,|\s/),
-    polygon.cx = (points[0]*1 + points[2]*1 +points[4]*1)/3,
-    polygon.cy = (points[1]*1 + points[3]*1 +points[5]*1)/3;
-    setFilter(polygon);
-    createAni2(polygon,index);
+    polygon.cx = ((points[0]*1 + points[2]*1 +points[4]*1)/3).toFixed(0),
+    polygon.cy = ((points[1]*1 + points[3]*1 +points[5]*1)/3).toFixed(0);
+    polygon.setAttribute("filter",getCurFilter());
+    createAni(polygon,index);
   }
 
-  function onClickTriangle(polygon,aniEnd){
-    polygon.anis[0].beginElement();
-    polygon.anis[0].onend= aniGrayEnd;
 
-    function aniGrayEnd(){
-      setFilter(polygon);
-      polygon.aniNum = 2;
-      polygon.aniEnd = aniHideEnd;
-      polygon.anis[1].onend = polygon.aniEnd;
-      polygon.anis[2].onend = polygon.aniEnd;
-      polygon.anis[1].beginElement();
-      polygon.anis[2].beginElement();
-    }
-
-    function aniHideEnd(){
-      if(--polygon.aniNum==0){
-        polygon.aniNum = 4;
-        polygon.aniEnd = aniShowEnd;
-        polygon.anis[3].onend = polygon.aniEnd;
-        polygon.anis[4].onend = polygon.aniEnd;
-        polygon.anis[5].onend = polygon.aniEnd;
-        polygon.anis[6].onend = polygon.aniEnd;
-        polygon.anis[3].beginElement();
-        polygon.anis[4].beginElement();
-        polygon.anis[5].beginElement();
-        polygon.anis[6].beginElement();
-      }
-
-    }
-    function aniShowEnd(){
-      if(--polygon.aniNum==0){
-        aniEnd();
-      }
-    }
-  }
-  function createAni2(polygon,index){
-    var ani,begin,dur,from,to;
-
-    dur = Math.random()*3+0.5;
-    begin = "triangles.click";
-    ani = createAnimateNode(polygon,index,"fill-opacity",
-      "1","0",
-      dur,begin,"freeze","replace");
-    ani.onend = function(){
-      setFilter(polygon);
-    };
-    createAnimateNode(polygon,index,  "translate",
-      "0,0", polygon.cx+","+polygon.cy,
-      dur,begin,"freeze","sum");
-    createAnimateNode(polygon,index,"scale",
-      "1","0",dur,begin,"freeze","sum");
-
-
-    begin = begin+"+"+dur+"s";
-    createAnimateNode(polygon,index,"fill-opacity",
-      "0","1",
-      dur,begin,"freeze","replace");
-    createAnimateNode(polygon,index,  "translate",
-      polygon.cx+","+polygon.cy,  "0,0",
-      dur,begin,"freeze","sum");
-
-    createAnimateNode(polygon,index,"scale",
-      "0","1",dur,begin,"freeze","sum");
-
-  }
   function createAni(polygon,index){
-    var ani,begin,dur,from,to;
-
-    dur = Math.random()*3+0.5;
-    begin = "indefinite";
-    createAnimateNode(polygon,index,"fill",
-      polygon.mycolor,"gray",
-      dur,begin,"freeze","replace");
-
+    var ani,begin,dur,keyTimes,values;
+    dur = (Math.random()*3+0.5).toFixed(1);
+    begin = "triangles.click";
     createAnimateNode(polygon,index,"fill-opacity",
-      "1","0",
+      [0,0.5,1],[1,0,1],
       dur,begin,"freeze","replace");
-
-    createAnimateNode(polygon,index,"translate",
-      polygon.cx+","+polygon.cy,
-      polygon.cx+","+(polygon.cy+300),
-      dur,begin,"remove","sum");
-
-
-    dur = Math.random()*3+0.5;
     createAnimateNode(polygon,index,  "translate",
-      polygon.cx+","+polygon.cy,
-      "0,0",dur,begin,"freeze","sum");
-
+      [0,0.5,1],["0,0", polygon.cx+","+polygon.cy,"0,0"],
+      dur,begin,"freeze","sum");
     createAnimateNode(polygon,index,"scale",
-      "0","1",dur,begin,"freeze","sum");
-
-    createAnimateNode(polygon,index,"fill-opacity",
-      "0","1",3,begin,"freeze","replace");
-
-    createAnimateNode(polygon,index,"fill",
-      "gray",polygon.mycolor,
-      0.5,begin,"freeze","replace");
+      [0,0.5,1],[1,0,1],dur,begin,"freeze","sum");
+    begin += "+" +(dur/2).toFixed(1) +"s";
+    createAnimateNode(polygon,index,"filter",
+      null,[getPrevFilter(),getCurFilter()],
+      0.1,begin,"freeze","sum");
   }
 
   function createAnimateNode(node,index,attr,
-    from,to,dur,begin,fill,additive,keytimes,values){
-    var ani,idStr;
+    keyTimes,values,dur,begin,fill,additive){
+    var ani,str;
     if(attr=="scale" ||
        attr=="translate" ||
        attr=="rotate"){
@@ -166,29 +83,29 @@ jQuery(function($){
         svgNS,"animateTransform");
       ani.setAttribute("attributeName","transform");
       ani.setAttribute("type",attr);
+    }else if(attr=="filter"){
+      ani =document.createElementNS(svgNS,"set");
+      ani.setAttribute("attributeName",attr);
     }else{
       ani =document.createElementNS(svgNS,"animate");
       ani.setAttribute("attributeName",attr);
     }
-    idStr = attr.replace("-","");
-    ani.setAttribute("id",idStr+index);
-
-    ani.setAttribute("from",from);
-    ani.setAttribute("to",to);
+    str = attr.replace("-","");
+    ani.setAttribute("attributeType","XML");
+    ani.setAttribute("id",str+index);
+    if(attr=="filter"){
+      ani.setAttribute("from",values[0]);
+      ani.setAttribute("to",values[1]);
+    }else{
+      ani.setAttribute("keyTimes",keyTimes.join(";"));
+      ani.setAttribute("values",values.join(";"));
+    }
     ani.setAttribute("repeatCount","1");
-
     ani.setAttribute("fill",fill);
     ani.setAttribute("additive",additive);
-
     ani.setAttribute("begin",begin);
     ani.setAttribute("dur",dur+"s");
-    if(!node.anis){
-      node.anis = [];
-    }
-    node.anis.push(ani);
     node.appendChild(ani);
     return ani;
   }
-
-
 });
