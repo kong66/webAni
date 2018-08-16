@@ -56,17 +56,19 @@ jQuery(function($){
 
 
   function createAni(polygon,index){
-    var ani,begin,dur,keyTimes,values;
+    var begin,dur;
     dur = (Math.random()*3+0.5).toFixed(1);
     begin = "triangles.click";
     createAnimateNode(polygon,index,"fill-opacity",
       [0,0.5,1],[1,0,1],
       dur,begin,"freeze","replace");
+
     createAnimateNode(polygon,index,  "translate",
       [0,0.5,1],["0,0", polygon.cx+","+polygon.cy,"0,0"],
       dur,begin,"freeze","sum");
     createAnimateNode(polygon,index,"scale",
       [0,0.5,1],[1,0,1],dur,begin,"freeze","sum");
+
     begin += "+" +(dur/2).toFixed(1) +"s";
     createAnimateNode(polygon,index,"filter",
       null,[getPrevFilter(),getCurFilter()],
