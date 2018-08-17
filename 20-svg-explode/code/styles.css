@@ -10,3 +10,31 @@ html,body,.page,svg{
   margin: 0;
   padding: 0;
 }
+
+#XMLID_76_{
+  transform: translate(10,20);
+  transform-origin: center center;
+  animation: abc 3s;
+}
+@keyframes abc {
+  to{
+    transform:  translate(200px,300px) scale(0.5);
+  }
+}
+
+rect{
+  transform:translate(50px,50px)  translate(150px,150px) rotate(135deg) translate(-150px,-150px) translate(-150px,-150px) scale(2);
+  /*animation: r 3s;*/
+}
+circle{
+  transform: translate(50px,50px);
+}
+@keyframes r {
+  from{
+    transform:translate(0,0)  translate(0,0) rotate(0) translate(0,0) translate(0,0) scale(0);
+  }
+  to{
+    transform:translate(50px,50px)  translate(150px,150px) rotate(135deg) translate(-150px,-150px) translate(-150px,-150px) scale(2);
+
+  }
+}
