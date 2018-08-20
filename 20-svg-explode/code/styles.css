@@ -12,9 +12,9 @@ html,body,.page,svg{
 }
 
 #XMLID_76_{
-  transform: translate(10,20);
+  /*transform: translate(10,20);
   transform-origin: center center;
-  animation: abc 3s;
+  animation: abc 3s;*/
 }
 @keyframes abc {
   to{
@@ -23,7 +23,9 @@ html,body,.page,svg{
 }
 
 rect{
-  transform:translate(50px,50px)  translate(150px,150px) rotate(135deg) translate(-150px,-150px) translate(-150px,-150px) scale(2);
+  /*transform:translate(50px,50px)
+  translate(-150px,-150px) scale(2)
+  translate(150px,150px) rotate(135deg) translate(-150px,-150px) ;*/
   /*animation: r 3s;*/
 }
 circle{
