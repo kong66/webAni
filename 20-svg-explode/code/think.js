@@ -28,8 +28,8 @@ jQuery(function($){
           deg = Math.random()*360,
           dur = Math.random()*1000+1000;
       array.push($this);
-      // setAniInfo($this,dur,[0,tx],[0,ty],[1,1],[1,1],[0,deg]);
-      setAniInfo($this,3000,[0,50],[0,50],[1,2],[1,2],[0,135]);
+      setAniInfo($this,dur,[0,tx],[0,ty],[1,1],[1,1],[0,deg]);
+      // setAniInfo($this,3000,[0,50],[0,50],[1,2],[1,2],[0,135]);
     }
   });
   window.setInterval(function(){
@@ -86,8 +86,8 @@ jQuery(function($){
   function setStyle($ele){
 
     style = getTranslateStyle($ele.tx,$ele.ty)
-          + getScaleStyle($ele.cx,$ele.cy,$ele.sx,$ele.sy)
-          + getRotateStyle($ele.cx,$ele.cy,$ele.r);
+          + getScaleStyle($ele.cx,$ele.cy,$ele.sx,$ele.sy);
+          // + getRotateStyle($ele.cx,$ele.cy,$ele.r);
     //console.log(style);
     $ele.css("transform",style);
   }
