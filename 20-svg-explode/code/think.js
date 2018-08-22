@@ -13,6 +13,10 @@ jQuery(function($){
   init();
 
   function init(){
+    $text.on("click",onClickText);
+  }
+  function setInfo(){
+    pieces = [];
     $letters.each(function(n){
       var $pieces = $(this).find("path");
       pieces.push([]);
@@ -20,7 +24,7 @@ jQuery(function($){
           var $this = $(this),
               tx = getRandom(-500,500),
               ty = getRandom(-300,300),
-              r = getRandom(30,360),
+              r = getRandom(30,1080),
               dur = getRandom(2000,3000);
           pieces[n].push($this);
           setAniInfo($this,800*n,dur,
@@ -32,14 +36,13 @@ jQuery(function($){
               ["o", [1,0]   ]  ]);
       });
     });
-
-    $text.on("click",onClickText);
   }
   function getRandom(begin,end){
     return begin + Math.random()*(end-begin);
   }
   function onClickText(){
     if(aniState==0){
+      setInfo();
       onAniState();
     }
   }
@@ -102,14 +105,11 @@ jQuery(function($){
     }
   }
   function getCenter($ele){
-    // if($ele.attr("id")!="XMLID_93_")
-    //   return [0,0];
     var i,j,
         points=[],
         ave=[0,0],
         commands = $ele.attr("d").match(/[a-zA-Z][^a-zA-Z]*/g);
-    //console.log($ele.attr("d"));
-    //console.log(commands);
+
     for(i=0;i<commands.length;++i){
       commands[i] =
         commands[i].match(/[a-zA-Z]|(-?([^a-zA-Z,\s-])+)/g);
@@ -124,8 +124,7 @@ jQuery(function($){
     }
     ave[0] /=points.length;
     ave[1] /=points.length;
-    // console.log(points);
-    // console.log("center="+ave[0]+","+ave[1]);
+    
     return ave;
   }
   function caculatePoints(command,points){
