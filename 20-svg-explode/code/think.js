@@ -5,7 +5,7 @@ jQuery(function($){
       $letters = $('.text>.letter'),
       $rect = $('rect'),
       frameTime = (1000/30).toFixed(2)*1,
-      array = [],
+      pieces = [],
       aniNum = 0,
       timer = null,
       aniState =0;
@@ -15,27 +15,28 @@ jQuery(function($){
   function init(){
     $letters.each(function(n){
       var $pieces = $(this).find("path");
-      array.push([]);
+      pieces.push([]);
       $pieces.each(function(index){
           var $this = $(this),
-              tx = Math.random()*1000-500,
-              ty = Math.random()*300-150,
-              r = Math.random()*360,
-              dur = Math.random()*1000+2000;
-          array[n].push($this);
+              tx = getRandom(-500,500),
+              ty = getRandom(-300,300),
+              r = getRandom(30,360),
+              dur = getRandom(2000,3000);
+          pieces[n].push($this);
           setAniInfo($this,800*n,dur,
-            [
-              ["tx",[0,tx]  ],
+            [ ["tx",[0,tx]  ],
               ["ty",[0,ty]  ],
               ["sx",[1,0.5] ],
               ["sy",[1,0.5] ],
               ["r", [0,r]   ],
-              ["o", [1,0]   ]
-            ]);
+              ["o", [1,0]   ]  ]);
       });
     });
 
     $text.on("click",onClickText);
+  }
+  function getRandom(begin,end){
+    return begin + Math.random()*(end-begin);
   }
   function onClickText(){
     if(aniState==0){
@@ -44,8 +45,8 @@ jQuery(function($){
   }
   function startAni(direction){
     var letter,it,it2;
-    for(it in array){
-      letter = array[it];
+    for(it in pieces){
+      letter = pieces[it];
       for(it2 in letter){
           letter[it2].ani = true;
           letter[it2].dir = direction;
@@ -71,8 +72,8 @@ jQuery(function($){
   function doAni(){
     timer = window.setInterval(function(){
       var letter,it,it2;
-      for(it in array){
-        letter = array[it];
+      for(it in pieces){
+        letter = pieces[it];
         for(it2 in letter){
           if(actAni(letter[it2])){
             --aniNum;
@@ -101,19 +102,75 @@ jQuery(function($){
     }
   }
   function getCenter($ele){
-    // var d = $ele[0].getAttribute("d");
-    // var str = d.match(/\d+\.?\d*,\d+\.?\d*/);
-    // var c = str[0].split(",");
-    //console.log(c);
-    // var x = $ele[0].getAttribute("x")*1,
-    //     y = $ele[0].getAttribute("y")*1,
-    //     width = $ele[0].getAttribute("width")*1,
-    //     height = $ele[0].getAttribute("height")*1;
-    // //console.log("******"+x+","+y+",");
-    // $ele.cx = x*1+width/2;
-    // $ele.cy = y*1+height/2;
-    return [0,0];
+    // if($ele.attr("id")!="XMLID_93_")
+    //   return [0,0];
+    var i,j,
+        points=[],
+        ave=[0,0],
+        commands = $ele.attr("d").match(/[a-zA-Z][^a-zA-Z]*/g);
+    //console.log($ele.attr("d"));
+    //console.log(commands);
+    for(i=0;i<commands.length;++i){
+      commands[i] =
+        commands[i].match(/[a-zA-Z]|(-?([^a-zA-Z,\s-])+)/g);
+      for(j=1;j<commands[i].length;++j){
+        commands[i][j] *=1;
+      }
+      caculatePoints(commands[i],points);
+    }
+    for(i=0;i<points.length;++i){
+      ave[0]+=points[i][0];
+      ave[1]+=points[i][1];
+    }
+    ave[0] /=points.length;
+    ave[1] /=points.length;
+    // console.log(points);
+    // console.log("center="+ave[0]+","+ave[1]);
+    return ave;
   }
+  function caculatePoints(command,points){
+    var point=null,
+        pre;
+    if(points && points.length>0){
+      pre = points[points.length-1];
+    }
+    switch (command[0]) {
+      case 'M':
+        point=[command[1],command[2]];
+        break;
+      case 'L':
+        point=[command[1],command[2]];
+        break;
+      case 'l':
+        point=[pre[0]+command[1],pre[1]+command[2]];
+        break;
+      case 'H':
+        point=[command[1],pre[1]];
+        break;
+      case 'h':
+        point=[pre[0]+command[1],pre[1]];
+        break;
+      case 'V':
+        point=[pre[0],command[1]];
+        break;
+      case 'v':
+        point=[pre[0],pre[1]+command[1]];
+        break;
+      case 'C':
+        point=[command[5],command[6]];
+        break;
+      case 'c':
+        point=[pre[0]+command[5],pre[1]+command[6]];
+        break;
+      default:
+        break;
+    }
+    if(point){
+      points.push(point);
+    }
+  }
+
+
   function actAni($ele){
     var ret = false;
     if($ele.ani){
@@ -133,8 +190,8 @@ jQuery(function($){
   function setStyle($ele){
 
     var transformStyle = getTranslateStyle($ele)
-          + getScaleStyle($ele);
-          // + getRotateStyle($ele.cx,$ele.cy,$ele.r);
+          + getScaleStyle($ele)
+          + getRotateStyle($ele);
 
     $ele.css("transform",transformStyle);
     $ele.css("stroke-opacity",getOpacityStyle($ele));
