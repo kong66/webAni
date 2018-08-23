@@ -69,7 +69,6 @@ jQuery(function($){
     }
     doAni();
   }
-
   function onAniState(){
     if(aniState==0){
       aniState++;
@@ -81,7 +80,6 @@ jQuery(function($){
       aniState = 0;
     }
   }
-
   function doAni(){
     timer = window.setInterval(function(){
       var letter,it,it2;
@@ -100,7 +98,6 @@ jQuery(function($){
       }
     },frameTime);
   }
-
   function setAniInfo($ele,delay,dur,aniArray){
     var i;
     var c = getCenter($ele);
@@ -115,14 +112,18 @@ jQuery(function($){
     }
   }
   function getCenter($ele){
+    // if($ele.attr("id")!="XMLID_110_")
+    //   return [0,0];
     var i,j,
         points=[],
         ave=[0,0],
         commands = $ele.attr("d").match(/[a-zA-Z][^a-zA-Z]*/g);
+        console.log(commands);
 
     for(i=0;i<commands.length;++i){
       commands[i] =
         commands[i].match(/[a-zA-Z]|(-?([^a-zA-Z,\s-])+)/g);
+      console.log(commands[i]);
       for(j=1;j<commands[i].length;++j){
         commands[i][j] *=1;
       }
@@ -134,7 +135,6 @@ jQuery(function($){
     }
     ave[0] /=points.length;
     ave[1] /=points.length;
-
     return ave;
   }
   function caculatePoints(command,points){
@@ -181,7 +181,7 @@ jQuery(function($){
   function actAni($ele){
     var ret = false;
     if($ele.ani){
-      if($ele.timer <= $ele.dur + $ele.delay ){
+      if($ele.timer < $ele.dur + $ele.delay ){
         $ele.timer += frameTime;
         if($ele.timer>=$ele.delay){
           setStyle($ele);
@@ -193,9 +193,7 @@ jQuery(function($){
     }
     return ret;
   }
-
   function setStyle($ele){
-
     var transformStyle = getTranslateStyle($ele)
           + getScaleStyle($ele)
           + getRotateStyle($ele);
