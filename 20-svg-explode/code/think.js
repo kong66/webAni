@@ -5,7 +5,7 @@ jQuery(function($){
       $letters = $('.text>.letter'),
       $rect = $('rect'),
       frameTime = (1000/30).toFixed(2)*1,
-      pieces = [],
+      pieces = null,
       aniNum = 0,
       timer = null,
       aniState =0;
@@ -13,29 +13,39 @@ jQuery(function($){
   init();
 
   function init(){
+    loadPieces();
     $text.on("click",onClickText);
   }
-  function setInfo(){
-    pieces = [];
+  function loadPieces(){
+    pieces =[];
     $letters.each(function(n){
       var $pieces = $(this).find("path");
       pieces.push([]);
       $pieces.each(function(index){
-          var $this = $(this),
-              tx = getRandom(-500,500),
-              ty = getRandom(-300,300),
-              r = getRandom(30,1080),
-              dur = getRandom(2000,3000);
+          var $this = $(this);
           pieces[n].push($this);
-          setAniInfo($this,800*n,dur,
-            [ ["tx",[0,tx]  ],
-              ["ty",[0,ty]  ],
-              ["sx",[1,0.5] ],
-              ["sy",[1,0.5] ],
-              ["r", [0,r]   ],
-              ["o", [1,0]   ]  ]);
+        });
       });
-    });
+  }
+  function setInfo(){
+    var i,j,$this,tx,ty,r,dur,delay;
+    for(i=0;i<pieces.length;++i){
+      for(j=0;j<pieces[i].length;++j){
+        $piece = pieces[i][j];
+        tx = getRandom(-500,500),
+        ty = getRandom(-300,300),
+        r = getRandom(30,1080),
+        dur = getRandom(2000,3000);
+        delay = 800*i;
+        setAniInfo($piece,delay,dur,
+          [ ["tx",[0,tx]  ],
+            ["ty",[0,ty]  ],
+            ["sx",[1,0.2] ],
+            ["sy",[1,0.2] ],
+            ["r", [0,r]   ],
+            ["o", [1,0]   ]  ]);
+      }
+    }
   }
   function getRandom(begin,end){
     return begin + Math.random()*(end-begin);
@@ -124,7 +134,7 @@ jQuery(function($){
     }
     ave[0] /=points.length;
     ave[1] /=points.length;
-    
+
     return ave;
   }
   function caculatePoints(command,points){
@@ -168,8 +178,6 @@ jQuery(function($){
       points.push(point);
     }
   }
-
-
   function actAni($ele){
     var ret = false;
     if($ele.ani){
