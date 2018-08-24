@@ -10,3 +10,7 @@ html,body,.page,svg{
   margin: 0;
   padding: 0;
 }
+.tree{
+  stroke:green;
+  stroke-width:2;
+}
