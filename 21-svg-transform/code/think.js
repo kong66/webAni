@@ -1,7 +1,7 @@
 jQuery(function($){
 
   var $path1 = $("#text_a"),
-      $path2 = $("#text_k"),
+      $path2 = $("#text_q"),
       pathes1,
       pathes2,
       $ele = $("#abc");
@@ -18,9 +18,7 @@ jQuery(function($){
   p.beginElement();
 
   function pathToValue($path){
-    var i,
-        j,
-        k,
+    var i,j,k,
         pathes = $path.attr("d").match(/M[^M]*[zZ]/g);
     for(i=0;i<pathes.length;++i){
       pathes[i] = pathes[i].match(/[a-zA-Z][^a-zA-Z]*/g);
@@ -31,28 +29,27 @@ jQuery(function($){
         }
       }
     }
-    console.log(pathes);
     return pathes;
   }
   function toUpperCaseCommand(pathes){
-    var i,j,k,points=[];
+    var i,j,k,points;
     for(i=0;i<pathes.length;++i){
+      points=[];
       for(j=0;j<pathes[i].length;++j){
         toAbasolutePoint(pathes[i][j],points);
       }
     }
-    console.log(pathes);
   }
 
   function toAbasolutePoint(command,points){
     var point=null,
-        pre=[0,0];
+        pre=[[0,0],null];
     if(points && points.length>0){
       pre = points[points.length-1];
     }
     switch (command[0]) {
       case 'M':
-        point=[command[1],command[2]];
+        point=[[command[1],command[2]],command];
         break;
       case 'h':
       case 'H':
@@ -68,6 +65,10 @@ jQuery(function($){
       case "L":
         point=lToC(command,pre);
         break;
+      case 's':
+      case 'S':
+        point = sToC(command,pre);
+        break;
       case 'c':
       case 'C':
         point=cToC(command,pre);
@@ -76,50 +77,65 @@ jQuery(function($){
         break;
     }
     points.push(point);
-
   }
   function hToL(command,pre){
     if(command[0] == 'h'){
-      command[1]+=pre[0];
+      command[1]+=pre[0][0];
     }
     command[0] = 'L';
-    command[2] = pre[1];
-    return [command[1],command[2]];
+    command[2] = pre[0][1];
+    return [[command[1],command[2]],command];
   }
   function vToL(command,pre){
     if(command[0] == 'v'){
-      command[1]+=pre[1];
+      command[1]+=pre[0][1];
     }
     command[0] = 'L';
     command[2] = command[1];
-    command[1] = pre[0];
-    return [command[1],command[2]];
+    command[1] = pre[0][0];
+    return [[command[1],command[2]],command];
   }
   function lToC(command,pre){
     if(command[0] == 'l'){
-      command[1]+=pre[0];
-      command[2]+=pre[1];
+      command[1]+=pre[0][0];
+      command[2]+=pre[0][1];
     }
     command[0]='C';
     command[5] = command[1];
     command[6] = command[2];
-    command[1] = pre[0];
-    command[2] = pre[1];
+    command[1] = pre[0][0];
+    command[2] = pre[0][1];
     command[3] = command[5];
     command[4] = command[6];
-    return [command[5],command[6]];
+    return [[command[5],command[6]],command];
+  }
+  function sToC(command,pre){
+    if(command[0]=='s'){
+      command[1]+=pre[0][0];
+      command[2]+=pre[0][1];
+      command[3]+=pre[0][0];
+      command[4]+=pre[0][1];
+    }
+    command[0] ='C';
+    command[5] = command[3];
+    command[6] = command[4];
+    command[3] = command[1];
+    command[4] = command[2];
+    command[1] =pre[1][5]*2 - pre[1][3];
+    command[2] =pre[1][6]*2 - pre[1][4];
+    return [[command[5],command[6]],command];
   }
   function cToC(command,pre){
     if(command[0] == 'c'){
       command[0] = 'C';
-      command[1] += pre[0];
-      command[2] += pre[1];
-      command[3] += pre[0];
-      command[4] += pre[1];
-      command[5] += pre[0];
-      command[6] += pre[1];
+      command[1] += pre[0][0];
+      command[2] += pre[0][1];
+      command[3] += pre[0][0];
+      command[4] += pre[0][1];
+      command[5] += pre[0][0];
+      command[6] += pre[0][1];
     }
-    return [command[5],command[6]];
+    return [[command[5],command[6]],command];
   }
   function toSameNumPath(target,source){
     var i,j,addNum,pathesA,pathesB;
@@ -151,7 +167,7 @@ jQuery(function($){
     return newPath;
   }
   function toSameNumPoints(pathA,pathB){
-    var less,i,j,point;
+    var less,i,j,point,n;
     if(pathA.length!=pathB.length){
       if(pathA.length < pathB.length){
         less = pathA;
@@ -160,19 +176,17 @@ jQuery(function($){
       }
       addNum = Math.abs(pathA.length - pathB.length);
       if(less.length>2){
-        point=less[less.length-2];
         for(i=0;i<addNum;++i){
-          less.splice(less.length-1,0,clonePoint(point));
+          n=1 + Math.round(Math.random()*(less.length-3));
+          less.splice(n+1,0,clonePoint(less[n]));
         }
       }
 
     }
   }
-  function clonePoint(points){
-    var i,newPoints=[];
-    for(i=0;i<points.length;++i){
-      newPoints.push(points[i]);
-    }
+  function clonePoint(point){
+    var newPoints=['C',point[5],point[6],
+      point[5],point[6],point[5],point[6]];
     return newPoints;
   }
 
