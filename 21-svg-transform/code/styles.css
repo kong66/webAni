@@ -10,3 +10,9 @@ html,body,.page,svg{
   margin: 0;
   padding: 0;
 }
+path{
+  fill:none;
+  stroke:red;
+  stroke-width:3;
+  fill:none;
+}

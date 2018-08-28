@@ -1,47 +1,147 @@
 jQuery(function($){
 
-  var $path1 = $("#text_a"),
-      $path2 = $("#text_q"),
-      pathes1,
-      pathes2,
-      $ele = $("#abc");
-  pathes1 = pathToValue($path1);
-  toUpperCaseCommand(pathes1);
-  pathes2 = pathToValue($path2);
-  toUpperCaseCommand(pathes2);
-  toSameNumPath(pathes1,pathes2);
+  var $svg = $('svg'),
+      $area = $(".text-area"),
+      $template = $('.letter'),
+      letters ={
+        max_path_num:0,
+        max_point_num:0
+      },
+      show_text={
+        aniFlag:false,
+        index:0,
+        textArray:[],
+        $letters:null,
+      };
 
-  $ele.attr("d",valueToPath(pathes1));
-  var p = $ele.find("animate")[0];
-  p.setAttribute("from",valueToPath(pathes1));
-  p.setAttribute("to",valueToPath(pathes2));
-  p.beginElement();
 
-  function pathToValue($path){
-    var i,j,k,
-        pathes = $path.attr("d").match(/M[^M]*[zZ]/g);
-    for(i=0;i<pathes.length;++i){
-      pathes[i] = pathes[i].match(/[a-zA-Z][^a-zA-Z]*/g);
-      for(j=0;j<pathes[i].length;++j){
-        pathes[i][j]=pathes[i][j].match(/[a-zA-Z]|(-?([^a-zA-Z,\s-])+)/g);
-        for(k=1;k<pathes[i][j].length;++k){
-          pathes[i][j][k] *=1;
-        }
-      }
-    }
-    return pathes;
+  init();
+
+  function init(){
+    $svg.on('click',onclickSVG);
+    loadLetters();
+    testLetterByClick($('.test .letter'));
+    loadTransformLetters();
+    showText();
   }
-  function toUpperCaseCommand(pathes){
-    var i,j,k,points;
+
+  function onclickSVG(){
+    var i;
+    for(i=0;i<show_text.$letters.length;++i){
+      var $ani  = $(show_text.$letters[i]).find('animate');
+      $ani[0].beginElement();
+    }
+    if(++show_text.index>=show_text.textArray.length){
+      show_text.index = 0;
+    }
+    showText();
+  }
+
+  function showText(){
+    var i,char,nextChar,$letter,$animate,nextStr,
+        str = show_text.textArray[show_text.index];
+    i = show_text.index+1;
+    if(i>=show_text.textArray.length){
+      i = 0;
+    }
+    nextStr = show_text.textArray[i];
+    for(i=0;i<show_text.$letters.length;++i){
+      $letter = $(show_text.$letters[i]);
+      char = i<str.length?
+          str.charAt(i):"empty";
+      nextchar = i<nextStr.length?
+          nextStr.charAt(i):"empty";
+      $animate = $letter.find('animate');
+      $letter.attr('key',char);
+      $letter.attr('d',valueToPath(letters[char]));
+      $animate.attr('from',valueToPath(letters[char]));
+      $animate.attr('to',valueToPath(letters[nextchar]));
+      //console.log(letters[char]);
+    }
+  }
+  function loadTransformLetters(){
+    var $transform_letters = $('.transform-letters');
+    show_text.textArray =
+      $transform_letters.attr('letters').split(';');
+    show_text.$letters = $('.text-area .letter');
+    console.log(show_text);
+  }
+
+  function testLetterByClick($ele){
+    var a=[],i=0,n;
+    for(var n in letters){
+      a.push(n);
+    }
+    $ele[0].setAttribute("d",valueToPath(letters['0']));
+    $(document).on('click',function(){
+      var e = $ele.find('animate')[0];
+      if(i<a.length-1){
+        ++i;
+      }
+      $ele[0].setAttribute("d",valueToPath(letters[a[i-1]]));
+      e.setAttribute("from",valueToPath(letters[a[i-1]]));
+      e.setAttribute("to",valueToPath(letters[a[i]]));
+      e.beginElement();
+    });
+  }
+
+  function loadLetters(){
+    var i,
+        $letters = $('#letters path');
+    $letters.each(function(n){
+      var $this = $(this),
+          d = $this.attr('d'),
+          key = $this.attr('key');
+      letters[key] = pathToValue(d);
+    });
+    for(var i in letters){
+      toMaxPathes(letters[i]);
+    }
+    console.log(letters);
+  }
+  function pathToValue(pathes){
+    var i,j,k,path,command,points;
+    pathes = matchPathes(pathes);
     for(i=0;i<pathes.length;++i){
+      pathes[i] = matchPath(pathes[i]);
       points=[];
       for(j=0;j<pathes[i].length;++j){
-        toAbasolutePoint(pathes[i][j],points);
+        pathes[i][j] = matchCommand(pathes[i][j]);
+        toAbsCommand(pathes[i][j],points);
       }
     }
+    //console.log(pathes);
+    return pathes;
   }
-
-  function toAbasolutePoint(command,points){
+  function matchPathes(pathes){
+    var res;
+    res = pathes.match(/M[^M]*[zZ]/g);
+    if(res.length> letters.max_path_num){
+      letters.max_path_num = res.length;
+    }
+    return res;
+  }
+  function matchPath(path){
+    var res;
+    res = path.match(/[a-zA-Z][^a-zA-Z]*/g);
+    if(res.length > letters.max_point_num){
+      letters.max_point_num = res.length;
+    }
+    return res;
+  }
+  function matchCommand(command){
+    var res;
+    res=command.match(/[a-zA-Z]|(-?([^a-zA-Z,\s-])+)/g);
+    commandStrToDigital(res);
+    return res;
+  }
+  function commandStrToDigital(command){
+    var k;
+    for(k=1;k<command.length;++k){
+      command[k] *=1;
+    }
+  }
+  function toAbsCommand(command,points){
     var point=null,
         pre=[[0,0],null];
     if(points && points.length>0){
@@ -137,25 +237,25 @@ jQuery(function($){
     }
     return [[command[5],command[6]],command];
   }
-  function toSameNumPath(target,source){
-    var i,j,addNum,pathesA,pathesB;
-    if(target.length < source.length){
-      pathesA = target;
-      pathesB = source;
-    }else{
-      pathesB = target;
-      pathesA = source;
+  function toMaxPathes(pathes){
+    var i,j,
+        addPath = letters.max_path_num - pathes.length;
+    for(i=0;i<addPath;++i){
+      pathes.push(clonePath(pathes[0]));
     }
-    addNum = Math.abs(target.length - source.length);
-    for(i=0;i<addNum;++i){
-      pathesA.push(clonePath(pathesA[0]));
-    }
-    for(i=0;i<pathesA.length;++i){
-      for(j=0;j<pathesA[i].length;++j){
-        toSameNumPoints(pathesA[i],pathesB[i]);
-      }
+    for(i=0;i<pathes.length;++i){
+      toMaxCommand(pathes[i]);
     }
   }
+  function toMaxCommand(path){
+    var i,j,
+        add = letters.max_point_num - path.length;
+    for(i=0;i<add;++i){
+      n=1+Math.round(Math.random()*(path.length-2));
+      path.splice(n,0,addCCommand(path[n-1]));
+    }
+  }
+
   function clonePath(path){
     var i,j,newPath =[];
     for(i=0;i<path.length;++i){
@@ -166,27 +266,18 @@ jQuery(function($){
     }
     return newPath;
   }
-  function toSameNumPoints(pathA,pathB){
-    var less,i,j,point,n;
-    if(pathA.length!=pathB.length){
-      if(pathA.length < pathB.length){
-        less = pathA;
-      }else{
-        less = pathB;
-      }
-      addNum = Math.abs(pathA.length - pathB.length);
-      if(less.length>2){
-        for(i=0;i<addNum;++i){
-          n=1 + Math.round(Math.random()*(less.length-3));
-          less.splice(n+1,0,clonePoint(less[n]));
-        }
-      }
 
+  function addCCommand(point){
+    var x,y;
+
+    if(point[0]=='M'){
+      x = point[1];
+      y = point[2];
+    }else{
+      x = point[5];
+      y = point[6];
     }
-  }
-  function clonePoint(point){
-    var newPoints=['C',point[5],point[6],
-      point[5],point[6],point[5],point[6]];
+    var newPoints=['C',x,y,x,y,x,y];
     return newPoints;
   }
 
@@ -204,7 +295,7 @@ jQuery(function($){
         }
       }
     }
-    console.log(str);
+    //console.log(str);
     return str;
   }
 
