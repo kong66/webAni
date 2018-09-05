@@ -150,7 +150,6 @@ jQuery(function($){
     var line,$p;
     line = document.createElementNS(
       svgNS,"line");
-
     $p = $(line);
     setLinePoint($p,leafXY);
     $p.attr("stroke",getColorStr(layerN));
