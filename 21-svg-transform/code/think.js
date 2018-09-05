@@ -110,7 +110,7 @@ jQuery(function($){
         toAbsCommand(pathes[i][j],points);
       }
     }
-    //console.log(pathes);
+    console.log(pathes);
     return pathes;
   }
   function matchPathes(pathes){
@@ -269,7 +269,6 @@ jQuery(function($){
 
   function addCCommand(point){
     var x,y;
-
     if(point[0]=='M'){
       x = point[1];
       y = point[2];
