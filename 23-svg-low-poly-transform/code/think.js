@@ -43,10 +43,11 @@ jQuery(function($){
     }
   }
   function clearTimer(){
-    var i;
+    var i,j;
     for(i=0;i<$polygons.length;++i){
-      $polygons[i].timer_c = 0;
-      $polygons[i].timer_p = 0;
+      for(j=0;j<$polygons[i].aniArray.length;++j){
+        $polygons[i].aniArray[j].clear();
+      }
     }
   }
   function actAni(){
@@ -59,54 +60,41 @@ jQuery(function($){
     return end ==i;
   }
   function actPolygonAni($p){
-    var c,p;
-    c = actPolygonAni_c($p);
-    p = actPolygonAni_p($p);
-    return c&&p;
-  }
-  function actPolygonAni_c($p){
-    if($p.timer_p< $p.dur_p){
-      $p.attr("points",getPointsInterpolation($p));
-      $p.timer_p += frameTime;
-      return false;
-    }else{
-      return true;
+    var endAni = true,i;
+    for(i=0;i<$p.aniArray.length;++i){
+      if(!actAniInfo($p.aniArray[i])){
+        endAni = false;
+      }
     }
+    if(!endAni){
+      $p.attr('points',getPointsStyle($p));
+      $p.attr('fill',getColorStyle($p));
+    }
+    return endAni;
   }
-  function actPolygonAni_p($p){
-    if($p.timer_c< $p.dur_c){
-      $p.attr("fill",getColorInterpolation($p));
-      $p.timer_c += frameTime;
+  function actAniInfo(aniInfo){
+    if(aniInfo.timer < aniInfo.dur + aniInfo.delay){
+      if(aniInfo.timer> aniInfo.delay){
+        aniInfo.cur = interpolate(aniInfo.begin,aniInfo.end,aniInfo.timer-aniInfo.delay,aniInfo.dur);
+      }
+      aniInfo.timer += frameTime;
       return false;
     }else{
       return true;
     }
   }
 
-  function getPointsInterpolation($p){
-    var i,point,curPoints=[];
-    for(i=0;i<$p.from.points.length;++i){
-      point = interpolate(
-        $p.from.points[i],
-        $p.to.points[i],
-        $p.timer_p,
-        $p.dur_p
-      );
-      curPoints.push(point);
+  function getPointsStyle($p){
+    var a=[],it,res = $p.aniArray.slice(1,7);
+    for(it in res){
+      a.push(res[it].cur);
     }
-    return curPoints.join(',');
+    return a.join(',');
   }
-  function getColorInterpolation($p){
-    var res;
-    res = interpolate(
-            $p.from.color,
-            $p.to.color,
-            $p.timer_c,
-            $p.dur_c);
+  function getColorStyle($p){
+    var res = $p.aniArray[0].cur;
     return intToColor(res);
   }
-
-
   function getCurAnimal(){
     return animals[names[aniNum]];
   }
@@ -118,32 +106,48 @@ jQuery(function($){
     return animals[names[i]];
   }
   function setPolygonsAniInfo(){
-    var i,j,$p,$from,$to,cur,next;
+    var i,j,$p,from,to,cur,next;
     cur = getCurAnimal();
     next = getNextAnimal();
     for(i=0;i<$polygons.length;++i){
       $p = $polygons[i];
       if(i<cur.length){
-        $from = cur[i];
+        from = cur[i];
       }else{
-        $from = cur[getRandomIndex(cur.length-1)];
+        from = cur[getRandomIndex(cur.length-1)];
       }
       if(i<next.length){
-        $to = next[i];
+        to = next[i];
       }else{
-        $to = next[getRandomIndex(next.length-1)];
+        to = next[getRandomIndex(next.length-1)];
       }
 
-      setPolygonAniInfo($p,$from,$to);
+      setPolygonAniInfo($p,from,to);
     }
   }
-  function setPolygonAniInfo($p,$from,$to){
-    $p.from = $from;
-    $p.to = $to;
-    $p.timer_c = 0;
-    $p.timer_p = 0;
-    $p.dur_c = getRandom(100,500);
-    $p.dur_p = getRandom(1000,2000);
+  function setPolygonAniInfo($p,from,to){
+    var i, info,dur_c,dur_p;
+    $p.aniArray = [];
+    dur_p = getRandom(1000,2000);
+    dur_c = getRandom(100,500);
+    info = new AniInfo(from.color,to.color,dur_c,dur_p/2);
+    $p.aniArray.push(info);
+    for(i=0;i<from.points.length;++i){
+      info = new AniInfo(from.points[i],to.points[i],dur_p,0);
+      $p.aniArray.push(info);
+    }
+  }
+  function AniInfo(begin,end,dur,delay){
+    this.begin = begin;
+    this.cur = begin;
+    this.end = end;
+    this.dur = dur;
+    this.delay = delay;
+    this.timer = 0;
+    this.clear = function(){
+      this.timer = 0;
+      this.cur = begin;
+    }
   }
 
   function setPolygonsStyle(){
@@ -191,7 +195,7 @@ jQuery(function($){
   }
 
   function loadAnimals(){
-    var $animals = $('def .animal'),
+    var $animals = $('defs .animal'),
         i;
     $animals.each(function(index){
       var $this = $(this),
