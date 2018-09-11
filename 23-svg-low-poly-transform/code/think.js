@@ -16,14 +16,13 @@ jQuery(function($){
   function init(){
     loadAnimals();
     createPolygons();
-    setPolygonsStyle();
     setPolygonsAniInfo();
+    setPolygonsStyle();
     $svg.on('click',onClickSVG);
   }
 
   function onClickSVG(){
     if(timer<0){
-      clearTimer();
       setPolygonsAniInfo();
       startAni();
     }
@@ -55,6 +54,8 @@ jQuery(function($){
     for(i=0;i<$polygons.length;++i){
       if(actPolygonAni($polygons[i])){
         ++end;
+      }else{
+        setPolygonStyle($polygons[i]);
       }
     }
     return end ==i;
@@ -65,10 +66,6 @@ jQuery(function($){
       if(!actAniInfo($p.aniArray[i])){
         endAni = false;
       }
-    }
-    if(!endAni){
-      $p.attr('points',getPointsStyle($p));
-      $p.attr('fill',getColorStyle($p));
     }
     return endAni;
   }
@@ -84,17 +81,6 @@ jQuery(function($){
     }
   }
 
-  function getPointsStyle($p){
-    var a=[],it,res = $p.aniArray.slice(1,7);
-    for(it in res){
-      a.push(res[it].cur);
-    }
-    return a.join(',');
-  }
-  function getColorStyle($p){
-    var res = $p.aniArray[0].cur;
-    return intToColor(res);
-  }
   function getCurAnimal(){
     return animals[names[aniNum]];
   }
@@ -121,7 +107,6 @@ jQuery(function($){
       }else{
         to = next[getRandomIndex(next.length-1)];
       }
-
       setPolygonAniInfo($p,from,to);
     }
   }
@@ -151,21 +136,24 @@ jQuery(function($){
   }
 
   function setPolygonsStyle(){
-    var animal,i,j,$p,$a;
-    animal = getCurAnimal();
-    for(i=0,j=0;i<$polygons.length;++i,++j){
-      $p = $polygons[i];
-      if(j< animal.length){
-        $a = animal[j];
-      }else{
-        $a = animal[Math.round(Math.random()*(animal.length-1))];
-      }
-      setPolygonStyle($a,$p);
+    for(i=0;i<$polygons.length;++i){
+      setPolygonStyle($polygons[i]);
     }
   }
-  function setPolygonStyle($a,$p){
-    $p.attr("fill",intToColor($a.color));
-    $p.attr("points",$a.points.join(','));
+  function setPolygonStyle($p){
+    $p.attr('points',getPointsStyle($p));
+    $p.attr('fill',getColorStyle($p));
+  }
+  function getPointsStyle($p){
+    var a=[],it,res = $p.aniArray.slice(1,7);
+    for(it in res){
+      a.push(res[it].cur);
+    }
+    return a.join(',');
+  }
+  function getColorStyle($p){
+    var res = $p.aniArray[0].cur;
+    return intToColor(res);
   }
   function intToColor(color){
     var n=0,str="",i=Math.pow(16,5);
@@ -177,6 +165,7 @@ jQuery(function($){
     }
     return "#"+str;
   }
+
   function createPolygons(){
     var i,
         $g = $('.show_group'),
@@ -234,7 +223,6 @@ jQuery(function($){
     for(i in points){
       points[i] *=1;
     }
-
     return points;
   }
 
