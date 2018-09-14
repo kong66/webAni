@@ -8,7 +8,6 @@ jQuery(function($){
       maxPolygonNum = 0,
       aniNum = 0,
       $polygons = [],
-      emptyPolygon = {color:0,points:[0,0,0,0,0,0]},
       timer=-1;
 
   test();
