@@ -58,7 +58,8 @@ var id = 10;
     setFlyParams($newItem);
     return $newItem;
   }
-
+  // y = a*(x-x0)*(x-x0-w) + y0;
+  // a = 4*(y0-y)/(w*w)
   function setFlyParams($flower){
     var x0,y0,w,h,a;
     x0 = 600;
