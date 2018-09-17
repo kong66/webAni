@@ -2,33 +2,120 @@ jQuery(function($){
 
   var svgNS=$('svg').attr('xmlns'),
       $svg = $('svg'),
+      $root = $('.root'),
       frameTime = (1000/30).toFixed(2)*1,
       animals={},
       names=[],
       maxPolygonNum = 0,
       aniNum = 0,
-      $polygons = [],
-      timer=-1;
+      $flowers = [],
+      timer=-1,
+      $templates,
+      minh,
+      maxh,
+      maxw,
+      minw,
+      x0,y0,
+      colors=["#f44336","#e91e63","#9c27b0","#673ab7","#3f51b5","#00bcd4","#03a9f4","#009688","#4caf50","#8bc34a","#cddc39","#ffeb3b","#ffc107","#ff9800","#ff5722","#795548","#9e9e9e","#607d8b"];
+var id = 10;
+  init();
 
-  test();
+  function init(){
+    initCurveParam();
+    $svg.on('click',onClickSVG);
+    loadTemplate();
+  }
+  function onClickSVG(){
+    var $item;
+    $item = cloneTemplate();
+    actAni2($item);
+  }
+  function loadTemplate(){
+    $templates = $('.template');
+  }
+  function initCurveParam(){
+    minh = 0;
+    maxh = 600;
+    maxw = 600;
+    minw = -600;
+    x0 = 600;
+    y0 = 800;
+  }
+  function getRandomTemplate(){
+    var index = getRandomIndex($templates.length-1);
+    return $($templates[index]);
+  }
+  function getRandomColor(){
+    var index = getRandomIndex(colors.length-1);
+    return colors[index];
+  }
+  function cloneTemplate(){
+    var $tem = getRandomTemplate();
+    var $newItem = $tem.clone();
+    $root.append($newItem);
+    $newItem.attr("fill",getRandomColor());
+    $newItem.attr('id',++id);
+    setFlyParams($newItem);
+    return $newItem;
+  }
+
+  function setFlyParams($flower){
+    var x0,y0,w,h,a;
+    x0 = 600;
+    y0=800;
+    w =getRandom(minw,maxw);
+    h = getRandom(minh,maxh);
+    if(Math.abs(w)<1){
+      a = 1;
+    }else{
+      a = 4*(y0-h)/(w*w);
+    }
+    console.log("w="+w+"  h="+h+"  a="+a);
+    $flower.curve={
+      x0:x0,
+      y0:y0,
+      w: w,
+      h: h,
+      a: a
+    };
+
+  }
+
+
+
+  function actAni2($item){
+    var x0 = $item.curve.x0,
+        y0 = $item.curve.y0,
+        a = $item.curve.a,
+        w = $item.curve.w,
+        x = x0,
+        y = 0;
+
+    window.setInterval(function(){
+      if(w>0){
+        x+=5;
+      }else{
+        x-=5;
+      }
+      y = a*(x-x0)*(x-x0-w) + y0;
+      $item.attr("transform","translate("+x+","+y+")");
+      //console.log($item.attr('id'));
+    },1000/30);
+  }
 
   function test(){
     var x= 600,y,
         $rect = $('rect');
     window.setInterval(function(){
-      x+=2;
+      x+=5;
       y = 1/90*(x-600)*(x-1200) + 1000;
       $rect.attr("x",x);
       $rect.attr("y",y);
+
     },1000/30);
   }
 
-  function onClickSVG(){
-    if(timer<0){
-      setPolygonsAniInfo();
-      startAni();
-    }
-  }
+
   function startAni(){
     timer = window.setInterval(function(){
       if(actAni()){
