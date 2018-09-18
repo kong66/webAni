@@ -84,7 +84,8 @@ $(function(){
 					left:ballLeft+'px',
 					top:ballTop+'px',
 				});
-		lidTop = Math.max(ballTop-ballR*2,0.1);
-		$eyelid.css({transform:"scaleY("+lidTop/rimR+")"});
+		lidTop = ballTop-ballR*2;
+		$eyelid.css({transform:"scaleY("
+				+	Math.max(lidTop/rimR,0.1) + ")"});
 	}
 });
