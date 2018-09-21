@@ -10,9 +10,10 @@ jQuery(function($){
       $dot,
       timer=-1,
       templates={},
-      aniElements=[],
+      aniNodeList = new NodeList(),
       aniNum=0,
       flowerNum = 20,
+      trackPoint = 'trackPoint',
       colors=["#f44336","#e91e63","#9c27b0","#673ab7","#3f51b5","#00bcd4","#03a9f4","#009688","#4caf50","#8bc34a","#cddc39","#ffeb3b","#ffc107","#ff9800","#ff5722","#795548","#9e9e9e","#607d8b"];
 var id = 10;
   init();
@@ -29,34 +30,44 @@ var id = 10;
   }
 
   function startAni(){
-    if(aniElements.length>0 && timer==-1){
+    if(aniNodeList.count>0 && timer==-1){
       timer = window.setInterval(actAni,frameTime);
     }
   }
   function stopAni(){
-    if(aniElements.length == 0 && timer!=-1){
+    if(aniNodeList.count == 0 && timer!=-1){
       window.clearInterval(timer);
-      timer = 0;
+      timer = -1;
     }
   }
   function actAni(){
-    var i,item,finish;
-    for(i=0;i<aniElements.length;++i){
-      item = aniElements[i];
-      finish = item.moveInfo.update(frameTime);
-      setPos(item);
+    var i,item,finish,prev;
+    console.log("aniNodeList.count="+aniNodeList.count);
+    console.log("shape"+$('.root .template').length);
+    item = aniNodeList.head;
+    while(true){
+      if(item==null)
+        break;
+      finish = item.data.moveInfo.update(frameTime);
+      setPos(item.data);
+      prev = item;
+      item = item.next;
+      if(finish){
+        aniNodeList.remove(prev);
+        flowers[prev.data.shape].insertAfter(prev);
+      }
     }
-    if(aniElements.length==0){
-      console.log("*************");
+    if(aniNodeList.count==0){
+      //console.log("ani end -------------");
       stopAni();
     }
   }
   function createFireworks(svgPos){
-    var $flower,i;
+    var node,i;
     for(i=0;i<flowerNum;++i){
-      $flower = getRandomFlower();
-      setColor($flower);
-      setFlyParams($flower,svgPos);
+      node = getRandomFlower();
+      setColor(node.data);
+      setFlyParams(node.data,svgPos);
     }
   }
   function loadTemplate(){
@@ -67,7 +78,7 @@ var id = 10;
       shape = $item.attr('shape');
       $item.shape = shape;
       if(!(shape in flowers)){
-        flowers[shape] = [];
+        flowers[shape] = new NodeList();
       }
       templates[shape] = $item;
       shapes.push(shape);
@@ -93,7 +104,54 @@ var id = 10;
         g = 0.00015,
         delay = 0,
         dur = 6000;
-    $flower.moveInfo = new MoveInfo(x0,y0,vx0,vy0,g,dur,delay);
+    if($flower.moveInfo){
+      $flower.moveInfo.reset(x0,y0,vx0,vy0,g,dur,delay);
+    }else{
+      $flower.moveInfo = new MoveInfo(x0,y0,vx0,vy0,g,dur,delay);
+    }
+  }
+  function PropertyAniInfo(name,begin,end,dur,delay){
+    this.propertyName = name;
+    this.begin;
+    this.cur;
+    this.end;
+    this.dur;
+    this.delay;
+    this.time;
+    this.reset(begin,end,dur,delay);
+    this.reset = function(){
+      this.begin = begin;
+      this.cur = begin;
+      this.end = end;
+      this.dur = dur;
+      this.delay = delay;
+      this.time = 0;
+    }
+    this.update = function(delta){
+      var k,i
+          finish =false;
+      if(this.time < this.delay + this.dur){
+        if(this.time > this.delay){
+          if(Math.abs(this.time-this.dur)<frameTime){
+            this.cur = this.end;
+            for(i=0;i<this.cur.length;++i){
+              this.cur[i] = this.end[i];
+            }
+          }else{
+            k = (this.time-this.delay)/this.dur;
+            for(i=0;i<this.cur.length;++i){
+              this.cur[i] = this.begin[i] +
+                (this.end[i]-this.begin[i])*k;
+            }
+          }
+        }
+        this.time += delta;
+      }else {
+        finish = true;
+      }
+      return finish;
+    };
+
   }
   function MoveInfo(x0,y0,vx0,vy0,g,dur,delay){
     this.x0 = x0;
@@ -112,9 +170,12 @@ var id = 10;
       if(this.time < this.delay + this.dur){
         if(this.time > this.delay){
           this.time += delta;
-          this.x = this.x0 + this.vx0* this.time;
-          this.vy = this.vy0 + this.g*this.time;
-          this.y = this.y0 + (this.vy0+this.vy)/2*this.time;
+          this.x = this.x0 +
+            this.vx0* (this.time-this.delay);
+          this.vy =
+            this.vy0 + this.g*(this.time-this.delay);
+          this.y = this.y0 +
+            (this.vy0+this.vy)/2*(this.time - this.delay);
           //console.log('x,y='+this.x+" "+this.y);
         }
         this.time += delta;
@@ -137,18 +198,22 @@ var id = 10;
       this.delay = delay;
     };
   }
-  function getRandomFlower(){
-    var index,shape,temp,$flower;
-    index = getRandomIndex(shapes.length-1);
-    shape = shapes[index];
-    if(flowers[shape].length>0){
-      $flower = flowers[shape].pop();
-    }else{
-      $flower = templates[shape].clone();
+
+  function getRandomFlower(shape){
+    var index,temp,node;
+    if(!shape){
+      index = getRandomIndex(shapes.length-1);
+      shape = shapes[index];
     }
-    $root.append($flower);
-    aniElements.push($flower);
-    return $flower;
+    if(!flowers[shape].isEmpty()){
+      node = flowers[shape].deQueue();
+    }else{
+      node = new Node(templates[shape].clone());
+      node.data.shape = shape;
+    }
+    $root.append(node.data);
+    aniNodeList.insertAfter(node);
+    return node;
   }
   function getRandomColor(){
     var index = getRandomIndex(colors.length-1);
@@ -183,16 +248,93 @@ var id = 10;
 
   function NodeList(){
     this.count = 0;
-    this.head = node;
-    this.tail = node;
-
-    this.push =function(node){
-
+    this.head = null;
+    this.tail = null;
+    this.deQueue = function(){
+      var res =null;
+      if(!this.isEmpty()){
+        res = this.head;
+        this.remove(this.head);
+      }
+      return res;
+    }
+    this.enQueue = function(node){
+      if(node){
+        this.insertAfter(node);
+      }
+    }
+    this.insertAfter =function(node,refe){
+      if(!node){
+        conosle.log("error:node is null");
+        return;
+      }
+      if(!refe){
+        refe = this.tail;
+      }
+      if(refe==null){
+        this.head = node;
+        this.tail = node;
+      }else{
+        node.prev = refe;
+        node.next = refe.next;
+        if(refe.next==null){
+          this.tail = node;
+        }else{
+          refe.next.peve = node;
+        }
+        refe.next = node;
+      }
+      ++this.count;
+    };
+    this.insertBefore = function(node,refe){
+      if(!node){
+        conosle.log("error:node is null");
+        return;
+      }
+      if(!refe){
+        refe = this.head;
+      }
+      if(refe==null){
+        this.head = node;
+        this.tail = node;
+      }else{
+        node.next = refe;
+        node.prev = refe.prev;
+        if(refe.prev==null){
+          this.head = node;
+        }else{
+          refe.prev.next = node;
+        }
+        refe.prev = node;
+      }
+      ++this.count;
     };
     this.remove =function(node){
-
+      if(!node){
+        conosle.log("error:node is null");
+        return;
+      }
+      if(this.isEmpty()){
+        return;
+      }else{
+        if(node.prev==null){
+          this.head = node.next;
+        }else{
+          node.prev.next = node.next;
+        }
+        if(node.next == null){
+          this.tail = node.prev;
+        }else{
+          node.next.prev = node.prev;
+        }
+        node.next = null;
+        node.prev = null;
+        --this.count;
+      }
     };
-    this.
+    this.isEmpty = function(){
+      return this.count === 0;
+    };
   }
   function Node(data){
     this.data = data;
