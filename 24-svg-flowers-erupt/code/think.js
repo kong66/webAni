@@ -9,8 +9,9 @@ jQuery(function($){
       templates={},
       aniNodeList = new NodeList(),
       flowerNum = 20,
-      trialNum = 10;
-      colors=["#f44336","#e91e63","#9c27b0","#673ab7","#3f51b5","#00bcd4","#03a9f4","#009688","#4caf50","#8bc34a","#cddc39","#ffeb3b","#ffc107","#ff9800","#ff5722","#795548","#9e9e9e","#607d8b"];
+      trialNum = 10,
+      g = 0.00015,
+      colors=["#f44336","#e91e63","#9c27b0","#673ab7","#3f51b5","#00bcd4","#03a9f4","#009688","#4caf50","#8bc34a","#cddc39","#ffeb3b","#ffc107","#ff9800","#ff5722","#795548","#9e9e9e","#607d8b","#00000000"];
 
   init();
   function init(){
@@ -74,25 +75,41 @@ jQuery(function($){
     }
   }
   function createFireworks(svgPos){
-    var node,i,j,trail,color,opacity,delay;
+    var node,i,j,trail,color,opacity,delay,shape,
+      vx0,vy0,delay,dur;
     for(i=0;i<flowerNum;++i){
-      node = getRandomFlower("circle");
-      setMoveAniInfo(node.data,svgPos);
+      shape = "circle";
+      vx0 = getRandom(-0.2,0.2),//0.1
+      vy0 = getRandom(-0.2,0.2),//0.53332 6s
+      dur = (3500 + 500 * Math.random()).toFixed(0);
       color = getRandomColor();
-      setProperty(node.data,'fill',color);
-      setProperty(node.data,'fill-opacity',1);
-      setPropertyAni(node.data,'fill-opacity',[1],[0],3000,0);
-      for(j=1;j<=trialNum;++j){
-        trail = getRandomFlower(node.data.shape);
-        trail.data.moveInfo = node.data.moveInfo.clone();
-        trail.data.moveInfo.delay = frameTime*j;
-        trail.data.moveInfo.time = 0;
-        setProperty(trail.data,'fill',color);
-        opacity = (1-j/(trialNum));
-        setProperty(trail.data,
-          'fill-opacity',opacity);
-        setPropertyAni(trail.data,'fill-opacity',[opacity],[0],3000,0);
+      for(j=0;j<trialNum;++j){
+        delay = frameTime*j/2;
+        opacity = (1-j/trialNum)/2,
+        node = getShapeNode(shape);
+        setMoveInfo(node.data,
+          svgPos.x,svgPos.y,vx0,vy0,g,dur,delay);
+        setProperty(node.data,'fill',color);
+        setProperty(node.data,'fill-opacity',1);
+        setPropertyAni(node.data,'fill-opacity',[opacity],[0],3000,0);
       }
+      //node = getRandomFlower("circle");
+      // setMoveAniInfo(node.data,svgPos);
+      // color = getRandomColor();
+      // setProperty(node.data,'fill',color);
+      // setProperty(node.data,'fill-opacity',1);
+      // setPropertyAni(node.data,'fill-opacity',[1],[0],3000,0);
+      // for(j=1;j<=trialNum;++j){
+      //   trail = getRandomFlower(node.data.shape);
+      //   trail.data.moveInfo = node.data.moveInfo.clone();
+      //   trail.data.moveInfo.delay = frameTime*j/2;
+      //   trail.data.moveInfo.time = 0;
+      //   setProperty(trail.data,'fill',color);
+      //   opacity = (1-j/trialNum)/2;
+      //   setProperty(trail.data,
+      //     'fill-opacity',opacity);
+      //   setPropertyAni(trail.data,'fill-opacity',[opacity],[0],3000,0);
+      // }
     }
   }
 
@@ -121,6 +138,15 @@ jQuery(function($){
     $ele[propertyName] = value;
   }
 
+  function setMoveInfo($flower,x0,y0,vx0,vy0,g,dur,delay){
+    if($flower.moveInfo){
+      $flower.moveInfo.reset(x0,y0,vx0,vy0,g,dur,delay);
+    }else{
+      $flower.moveInfo = new
+        MoveInfo(x0,y0,vx0,vy0,g,dur,delay);
+    }
+  }
+
   function setMoveAniInfo($flower,svgPos){
     var x0 = svgPos.x,
         y0 = svgPos.y,
@@ -132,7 +158,8 @@ jQuery(function($){
     if($flower.moveInfo){
       $flower.moveInfo.reset(x0,y0,vx0,vy0,g,dur,delay);
     }else{
-      $flower.moveInfo = new MoveInfo(x0,y0,vx0,vy0,g,dur,delay);
+      $flower.moveInfo = new
+        MoveInfo(x0,y0,vx0,vy0,g,dur,delay);
     }
   }
   function setPropertyAni($node,name,begin,end,dur,delay){
@@ -144,7 +171,8 @@ jQuery(function($){
     if(name in $node.propertyAnis){
       $node.propertyAnis[name].reset(begin,end,dur,delay);
     }else{
-      $node.propertyAnis[name] = new PropertyAniInfo(name,begin,end,dur,delay);
+      $node.propertyAnis[name] = new
+        PropertyAniInfo(name,begin,end,dur,delay);
     }
   }
   function PropertyAniInfo(name,begin,end,dur,delay){
@@ -242,23 +270,38 @@ jQuery(function($){
         this.vx0,this.vy0,this.g,this.dur,this.delay);
     };
   }
-
-  function getRandomFlower(shape){
-    var index,temp,node;
-    if(!shape){
-      index = getRandomIndex(shapes.length-1);
-      shape = shapes[index];
-    }
+  function getRandomShape(){
+    var index;
+    index = getRandomIndex(shapes.length-1);
+    return shapes[index];
+  }
+  function getShapeNode(shape){
     if(!flowers[shape].isEmpty()){
       node = flowers[shape].deQueue();
     }else{
       node = new Node(templates[shape].clone());
       node.data.shape = shape;
+      $root.append(node.data);
     }
-    $root.append(node.data);
     aniNodeList.insertAfter(node);
     return node;
   }
+  // function getRandomFlower(shape){
+  //   var index,temp,node;
+  //   if(!shape){
+  //     index = getRandomIndex(shapes.length-1);
+  //     shape = shapes[index];
+  //   }
+  //   if(!flowers[shape].isEmpty()){
+  //     node = flowers[shape].deQueue();
+  //   }else{
+  //     node = new Node(templates[shape].clone());
+  //     node.data.shape = shape;
+  //   }
+  //   $root.append(node.data);
+  //   aniNodeList.insertAfter(node);
+  //   return node;
+  // }
   function getRandomColor(){
     var index = getRandomIndex(colors.length-1);
     return colors[index];
@@ -289,7 +332,6 @@ jQuery(function($){
     }
     return res;
   }
-
   function NodeList(){
     this.count = 0;
     this.head = null;
