@@ -2,16 +2,17 @@ jQuery(function($){
 
   var $svg = $('svg'),
       $root = $('.root'),
-      frameTime = (1000/30).toFixed(2)*1,
+      frameTime = (1000/30).toFixed(1)*1,
       flowers = {},
       shapes=[],
       timer=-1,
       templates={},
       aniNodeList = new NodeList(),
-      flowerNum = 20,
+      flowerNum = 30,
       trialNum = 10,
-      g = 0.00015,
-      colors=["#f44336","#e91e63","#9c27b0","#673ab7","#3f51b5","#00bcd4","#03a9f4","#009688","#4caf50","#8bc34a","#cddc39","#ffeb3b","#ffc107","#ff9800","#ff5722","#795548","#9e9e9e","#607d8b","#00000000"];
+      g = 0.00005,
+      degToRand = Math.PI/180,
+      colors=["#f44336","#e91e63","#9c27b0","#673ab7","#3f51b5","#00bcd4","#03a9f4","#009688","#4caf50","#8bc34a","#cddc39","#ffeb3b","#ffc107","#ff9800","#ff5722","#795548","#9e9e9e","#607d8b"];
 
   init();
   function init(){
@@ -24,7 +25,6 @@ jQuery(function($){
     createFireworks(svgPos);
     startAni();
   }
-
   function startAni(){
     if(aniNodeList.count>0 && timer==-1){
       timer = window.setInterval(actAni,frameTime);
@@ -36,11 +36,8 @@ jQuery(function($){
       timer = -1;
     }
   }
-
   function actAni(){
-    var i,item,finish,prev,x,y,j,finish2;
-    // console.log("aniNodeList.count="+aniNodeList.count);
-    // console.log("shape"+$('.root .template').length);
+    var i,j,item,prev,finish,finish2;
     item = aniNodeList.head;
     while(true){
       if(item==null)
@@ -48,18 +45,16 @@ jQuery(function($){
       finish = true;
       if(item.data.moveInfo){
         finish = item.data.moveInfo.update(frameTime);
-        x = item.data.moveInfo.x;
-        y = item.data.moveInfo.y;
-        setTransPos(item.data,x,y);
-        // console.log("t="+item.data.moveInfo.time);
+        setTransPos(item.data,
+          item.data.moveInfo.x,
+          item.data.moveInfo.y);
       }
       if(item.data.propertyAnis){
         for(var i in item.data.propertyAnis){
           finish2 = item.data.propertyAnis[i].update(frameTime);
           finish = finish && finish2;
-          setProperty(item.data,i,item.data.propertyAnis[i].cur[0]);
-          // console.log("t="+item.data.propertyAnis[i].time);
-          // console.log(i+"="+item.data.propertyAnis[i].cur[0]);
+          setProperty(item.data,
+            i,item.data.propertyAnis[i].cur[0]);
         }
       }
       prev = item;
@@ -67,49 +62,45 @@ jQuery(function($){
       if(finish){
         aniNodeList.remove(prev);
         flowers[prev.data.shape].insertAfter(prev);
+        setTransPos(prev.data,-500,-500);
       }
     }
     if(aniNodeList.count==0){
       //console.log("ani end -------------");
       stopAni();
     }
+    console.log("aniNodeList.count="+aniNodeList.count);
+    console.log("shape"+$('.root .template').length);
   }
   function createFireworks(svgPos){
-    var node,i,j,trail,color,opacity,delay,shape,
-      vx0,vy0,delay,dur;
+    var node,i,j,color,opacity,shape,
+        v,deg,vx0,vy0,delay,dur,dur2,hollow;
     for(i=0;i<flowerNum;++i){
-      shape = "circle";
-      vx0 = getRandom(-0.2,0.2),//0.1
-      vy0 = getRandom(-0.2,0.2),//0.53332 6s
-      dur = (3500 + 500 * Math.random()).toFixed(0);
+      shape = getRandomShape();
+      v = 0.1 + 0.05*Math.random();
+      deg = 360 * Math.random();
+      vx0 = v * Math.cos(deg*degToRand);
+      vy0 = v * Math.sin(deg*degToRand);
+      dur = 5000 + 1000*Math.random();
       color = getRandomColor();
+      hollow = Math.random()>0.5;
       for(j=0;j<trialNum;++j){
-        delay = frameTime*j/2;
-        opacity = (1-j/trialNum)/2,
         node = getShapeNode(shape);
-        setMoveInfo(node.data,
+        delay = frameTime*j;
+        opacity = 1-j/trialNum,
+        dur2 = 2000 + 1000*Math.random();
+        if(hollow){
+          setProperty(node.data,'fill','transparent');
+          setProperty(node.data,'stroke',color);
+          setPropertyAniInfo(node.data,'stroke-opacity',[opacity],[0],dur2,1500);
+        }else{
+          setProperty(node.data,'stroke','transparent');
+          setProperty(node.data,'fill',color);
+          setPropertyAniInfo(node.data,'fill-opacity',[opacity],[0],dur2,1500);
+        }
+        setMoveAniInfo(node.data,
           svgPos.x,svgPos.y,vx0,vy0,g,dur,delay);
-        setProperty(node.data,'fill',color);
-        setProperty(node.data,'fill-opacity',1);
-        setPropertyAni(node.data,'fill-opacity',[opacity],[0],3000,0);
       }
-      //node = getRandomFlower("circle");
-      // setMoveAniInfo(node.data,svgPos);
-      // color = getRandomColor();
-      // setProperty(node.data,'fill',color);
-      // setProperty(node.data,'fill-opacity',1);
-      // setPropertyAni(node.data,'fill-opacity',[1],[0],3000,0);
-      // for(j=1;j<=trialNum;++j){
-      //   trail = getRandomFlower(node.data.shape);
-      //   trail.data.moveInfo = node.data.moveInfo.clone();
-      //   trail.data.moveInfo.delay = frameTime*j/2;
-      //   trail.data.moveInfo.time = 0;
-      //   setProperty(trail.data,'fill',color);
-      //   opacity = (1-j/trialNum)/2;
-      //   setProperty(trail.data,
-      //     'fill-opacity',opacity);
-      //   setPropertyAni(trail.data,'fill-opacity',[opacity],[0],3000,0);
-      // }
     }
   }
 
@@ -127,18 +118,16 @@ jQuery(function($){
       shapes.push(shape);
     }
   }
-
-
   function setTransPos($ele,x,y){
     $ele.attr("transform","translate("+x+","+y+")");
   }
-
   function setProperty($ele,propertyName,value){
     $ele.attr(propertyName,value);
     $ele[propertyName] = value;
   }
 
-  function setMoveInfo($flower,x0,y0,vx0,vy0,g,dur,delay){
+  function setMoveAniInfo($flower,
+    x0,y0,vx0,vy0,g,dur,delay){
     if($flower.moveInfo){
       $flower.moveInfo.reset(x0,y0,vx0,vy0,g,dur,delay);
     }else{
@@ -147,22 +136,8 @@ jQuery(function($){
     }
   }
 
-  function setMoveAniInfo($flower,svgPos){
-    var x0 = svgPos.x,
-        y0 = svgPos.y,
-        vx0 = getRandom(-0.2,0.2),//0.1
-        vy0 = getRandom(-0.2,0.2),//0.53332 6s
-        g = 0.00015,
-        delay = 0,
-        dur = 4000;
-    if($flower.moveInfo){
-      $flower.moveInfo.reset(x0,y0,vx0,vy0,g,dur,delay);
-    }else{
-      $flower.moveInfo = new
-        MoveInfo(x0,y0,vx0,vy0,g,dur,delay);
-    }
-  }
-  function setPropertyAni($node,name,begin,end,dur,delay){
+  function setPropertyAniInfo($node,name,
+    begin,end,dur,delay){
     if(!$node || !name)
       return;
     if(!$node.propertyAnis){
@@ -183,7 +158,6 @@ jQuery(function($){
     this.dur;
     this.delay;
     this.time;
-
     this.reset = function(begin,end,dur,delay){
       this.begin = begin;
       this.cur = begin;
@@ -286,22 +260,6 @@ jQuery(function($){
     aniNodeList.insertAfter(node);
     return node;
   }
-  // function getRandomFlower(shape){
-  //   var index,temp,node;
-  //   if(!shape){
-  //     index = getRandomIndex(shapes.length-1);
-  //     shape = shapes[index];
-  //   }
-  //   if(!flowers[shape].isEmpty()){
-  //     node = flowers[shape].deQueue();
-  //   }else{
-  //     node = new Node(templates[shape].clone());
-  //     node.data.shape = shape;
-  //   }
-  //   $root.append(node.data);
-  //   aniNodeList.insertAfter(node);
-  //   return node;
-  // }
   function getRandomColor(){
     var index = getRandomIndex(colors.length-1);
     return colors[index];
