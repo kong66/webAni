@@ -1,6 +1,6 @@
 $(function(){
 
-	//******************鼠标通过橡皮筋拖动大白**********************
+	//************鼠标通过橡皮筋拖动大白**********************
 	var $bigWhite = $(".bigWhite"),
 			$win = $(window),
 			$doc = $(document),
@@ -30,7 +30,6 @@ $(function(){
 			clearTimeout(timerHandler);
 			timerHandler = 0;
 		}
-
 		$this.addClass("drag");
 		bw_pos_x = $bigWhite.offset().left - $doc.scrollLeft();
 		bw_pos_y = $bigWhite.offset().top - $doc.scrollTop();
@@ -38,9 +37,19 @@ $(function(){
 		deltaY = bw_pos_y - e.screenY;
 		mouseX = e.screenX;
 		mouseY = e.screenY;
-		$bigWhite.css({"position":"fixed","left":bw_pos_x,"top":bw_pos_y});
+		$bigWhite.css({
+			"position":"fixed",
+			"left":bw_pos_x,
+			"top":bw_pos_y});
+			registerUpAndDown();
+	}
+	function registerUpAndDown(){
 		$doc.on("mouseup",onMouseUp);
 		$doc.on("mousemove",onMouseMove);
+	}
+	function unregisterUpAndDown(){
+		$doc.off("mouseup",onMouseUp);
+		$doc.off("mousemove",onMouseMove);
 	}
 	function onMouseUp(e){
 		if($bigWhite.hasClass("drag")){
@@ -50,8 +59,7 @@ $(function(){
 				timerHandler = 0;
 			}
 			slide();
-			$doc.off("mouseup",onMouseUp);
-			$doc.off("mousemove",onMouseMove);
+			unregisterUpAndDown();
 		}
 	}
 
