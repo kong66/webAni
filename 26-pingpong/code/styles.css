@@ -27,12 +27,17 @@ h1{
 		text-indent: 2em;
 }
 
-h1 img{
-	position: absolute;
+img{
+	position: fixed;
 	display: block;
-	left:0%;top:0%;
-	width: 2em;
+	left:50%;
+	top:50%;
+	transform: translate(-50%,-50%);
+	width: 10em;
 	z-index: 2;
+	transition: filter 1s ease-out;
 }
-h1 img.drag{
+img.move{
+	filter:drop-shadow(5px 5px 20px red);
+	transition: filter 1s;
 }
