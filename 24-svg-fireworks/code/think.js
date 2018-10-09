@@ -3,9 +3,9 @@ jQuery(function($){
   var $svg = $('svg'),
       $root = $('.root'),
       frameTime = (1000/30).toFixed(1)*1,
+      timer=-1,
       flowers = {},
       shapes=[],
-      timer=-1,
       templates={},
       aniNodeList = new NodeList(),
       flowerNum = 30,
@@ -61,16 +61,15 @@ jQuery(function($){
       item = item.next;
       if(finish){
         aniNodeList.remove(prev);
-        flowers[prev.data.shape].insertAfter(prev);
+        flowers[prev.data.shape].enQueue(prev);
         setTransPos(prev.data,-500,-500);
       }
     }
     if(aniNodeList.count==0){
-      //console.log("ani end -------------");
       stopAni();
     }
     console.log("aniNodeList.count="+aniNodeList.count);
-    console.log("shape"+$('.root .template').length);
+    console.log("shape total="+$('.root .template').length);
   }
   function createFireworks(svgPos){
     var node,i,j,color,opacity,shape,
@@ -218,7 +217,6 @@ jQuery(function($){
             (this.vy0+this.vy)/2*(this.time - this.delay);
           this.x = this.x.toFixed(1);
           this.y = this.y.toFixed(1);
-          //console.log('x,y='+this.x+" "+this.y);
         }
         this.time += delta;
       }else{
@@ -257,7 +255,7 @@ jQuery(function($){
       node.data.shape = shape;
       $root.append(node.data);
     }
-    aniNodeList.insertAfter(node);
+    aniNodeList.enQueue(node);
     return node;
   }
   function getRandomColor(){
@@ -279,16 +277,6 @@ jQuery(function($){
     svgPoint.y = e.clientY;
     svgXY = svgPoint.matrixTransform(matrix);
     return svgXY;
-  }
-  function interpolate(begin,end,t,dur){
-    var k = t/dur,
-        res;
-    if(Math.abs(t-dur)<frameTime){
-      res = end;
-    }else{
-      res = begin + (end-begin)*k;
-    }
-    return res;
   }
   function NodeList(){
     this.count = 0;
