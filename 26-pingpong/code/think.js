@@ -53,17 +53,17 @@ $(function(){
 		posY += vy*frameT;
 		if(posX + w/2 > width){
 			posX = width - w/2;
-			vx = -vx;
+			vx = -vx*0.9;
 		}else if(posX < w/2){
 			posX = w/2;
-			vx = -vx;
+			vx = -vx*0.9;
 		}
 		if(posY + h/2 > height){
 			posY = height - h/2;
-			vy = -vy;
-		}else if(posY < 0){
+			vy = -vy*0.9;
+		}else if(posY < h/2){
 			posY = h/2;
-			vy = -vy;
+			vy = -vy*0.9;
 		}
 	}
 
@@ -78,28 +78,28 @@ $(function(){
 			Fy = 0;
 		}
 		Fmod = Math.sqrt(Fx*Fx + Fy*Fy);
-		//console.log("F="+Fx+","+Fy);
+		console.log("		F="+Fx+","+Fy);
 	}
 	function caculateFriction(){
 		vmod = Math.sqrt(vx*vx + vy*vy);
-		fx = vmod>0 ? -vx/vmod*u : (Fmod>0? Fx/Fmod*u : 0);
-		fy = vmod>0 ? -vy/vmod*u : (Fmod>0? Fy/Fmod*u : 0);
-		//console.log("f="+fx+","+fy);
+		fx = vmod>0 ? -vx/vmod*u : (Fmod>0? -Fx/Fmod*u : 0);
+		fy = vmod>0 ? -vy/vmod*u : (Fmod>0? -Fy/Fmod*u : 0);
+		console.log("		f="+fx+","+fy);
 	}
 	function caculateVelocity(){
-		if(Math.abs(fx)>Math.abs(Fx) && vx*(fx+Fx)<0 && Math.abs(vx)< Math.abs(frameT*(fx+Fx))){
+		if(Math.abs(fx)>Math.abs(Fx) && Math.abs(vx)< Math.abs(frameT*(fx+Fx))){
 			vx = 0;
 		}
 		else {
 			vx += frameT* (fx + Fx); //m=1;
 		}
-		if(Math.abs(fy)>Math.abs(Fy) && vy*(fy+Fy)<0 && Math.abs(vy)< Math.abs(frameT*(fy+Fy))){
+		if(Math.abs(fy)>Math.abs(Fy) && Math.abs(vy)< Math.abs(frameT*(fy+Fy))){
 			vy = 0;
 		}
 		else {
 			vy += frameT* (fy + Fy); //m=1;
 		}
-		//console.log("v="+vx+","+vy);
+		console.log("v="+vx+","+vy);
 	}
 
 	function setPosStyle(){
