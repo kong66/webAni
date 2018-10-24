@@ -41,7 +41,7 @@ html,body,.page{
 	transition:text-shadow .5s;
 }
 .text:hover .long-shadow span{
-	transition:text-shadow .5s;
+	transition:text-shadow .8s;
 	text-shadow:
 		1px 1px 0px #2274b2,
 		2px 2px 0px #2274b2,
