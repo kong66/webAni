@@ -1,0 +1,104 @@
+body,html,p,h1,div,span,i,b,ul,ol,li{
+	margin: 0;
+	padding: 0;
+}
+ul,ul,li{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+}
+html{
+	font-size: 100px;
+}
+body{
+	color:white;
+	background-color: black;
+	font-family: "Microsoft YaHei",sans-serif;
+}
+html,body{
+	width: 100%;
+	height: 100%;
+}
+body{
+	display: flex;
+	flex-direction:row;
+	justify-content: center;
+	align-items: center;
+}
+.screen{
+	width: 5rem;
+	height: 2rem;
+	border-radius: .12rem;
+	background: #ddd;
+	position: relative;
+}
+.digital-area{
+	position: absolute;
+	bottom:.2rem;
+	left:50%;
+	width: 3.5rem;
+	height: 1.2rem;
+	transform: translate(-50%,0);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border:solid red 1px;
+}
+.number{
+	width: .45rem;
+	height: .9rem;
+
+	position: relative;
+}
+.branch{
+	position: absolute;
+	transform: translate(-50%,-50%);
+	width: .35rem;
+	height: .06rem;
+	background: black;
+}
+
+.up{
+	top:0;
+}
+.middle{
+	top:50%;
+}
+.down{
+	top:100%;
+}
+.up.left,.up.right{
+	top:25%;
+}
+.down.left,.down.right{
+	top:75%;
+}
+.center{
+	left:50%;
+}
+.left{
+	left:0%;
+}
+.right{
+	left:100%;
+}
+.left,.right{
+	transform: translate(-50%,-50%) rotate(90deg);
+}
+
+.branch::after,.branch::before{
+	content: "";
+	display: block;
+	position: absolute;
+	top:0;
+	border:0.03rem solid transparent;
+}
+.branch::before{
+	right:100%;
+	border-right-color: black;
+}
+.branch::after{
+	left:100%;
+	border-left-color: black;
+}
