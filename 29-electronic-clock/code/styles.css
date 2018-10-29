@@ -46,17 +46,18 @@ body{
 	border:solid red 1px;
 }
 .number{
-	width: .45rem;
-	height: .9rem;
-
+	width: .35rem;
+	height: .7rem;
+	margin:auto .1rem;
 	position: relative;
 }
 .branch{
 	position: absolute;
 	transform: translate(-50%,-50%);
-	width: .35rem;
+	width: .25rem;
 	height: .06rem;
-	background: black;
+	background-color: #ccc;
+	transition: background-color .3s;
 }
 
 .up{
@@ -96,9 +97,42 @@ body{
 }
 .branch::before{
 	right:100%;
-	border-right-color: black;
+	border-right-color: #ccc;
+	transition: border-color .3s;
 }
 .branch::after{
 	left:100%;
-	border-left-color: black;
+	border-left-color: #ccc;
+	transition: border-color .3s;
 }
+
+.branch.light{
+	background-color: black;
+	transition: background-color .3s;
+}
+.branch.light::before{
+	border-right-color: black;
+	transition: border-color .3s;
+}
+.branch.light::after{
+	border-left-color: black;
+	transition: border-color .3s;
+}
+
+/* */
+/*.num-1 .up.right,
+.num-1 .down.right{
+	background: black;
+}
+.num-1 .up.right::before,
+.num-1 .up.right::before,
+.num-1 .down.right::before,
+.num-1 .down.right::before{
+	border-right-color: black;
+}
+.num-1 .up.right::after,
+.num-1 .up.right::after,
+.num-1 .down.right::after,
+.num-1 .down.right::after{
+	border-left-color: black;
+}*/
