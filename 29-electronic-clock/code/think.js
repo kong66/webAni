@@ -5,7 +5,7 @@ jQuery(function($){
 					"2":['.up.center','.up.right','.middle.center','.down.left','.down.center'],
 					"3":['.up.center','.up.right','.middle.center','.down.right','.down.center'],
 					"4":['.up.left','.up.right','.middle.center','.down.right'],
-					"5":['.up.center','.up.right','.middle.center','.down.right','.down.center'],
+					"5":['.up.center','.up.left','.middle.center','.down.right','.down.center'],
 					"6":['.up.center','.up.left','.middle.center','.down.left','.down.right','.down.center'],
 					"7":['.up.center','.up.right','.down.right'],
 					"8":['.up.center','.up.left','.up.right','.middle.center','.down.left','.down.right','.down.center'],
@@ -20,7 +20,8 @@ jQuery(function($){
 				m = t.getMinutes(),
 				s = t.getSeconds(),
 				nums = [];
-
+		showAMPM(h);
+		showWeekDay(t);
 		getNum(h,nums);
 		getNum(m,nums);
 		getNum(s,nums);
@@ -40,6 +41,21 @@ jQuery(function($){
 			var $b = $branchs.filter(lightBranch[i]);
 			$b.addClass('light');
 		}
+	}
+
+	function showAMPM(h){
+		if(h>=12){
+			$('.am').removeClass('show');
+			$('.pm').addClass('show');
+		}else{
+			$('.am').addClass('show');
+			$('.pm').removeClass('show');
+		}
+	}
+	function showWeekDay(t){
+		var day = t.getDay();
+		$('.weekday div.show').removeClass('show');
+		$('.weekday div').eq(day).addClass('show');
 	}
 
 	function getNum(t,nums){
