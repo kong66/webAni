@@ -32,6 +32,7 @@ body{
 	height: 1.8rem;
 	position: relative;
 	border-radius:.1rem;
+	flex-shrink: 0;
 }
 .screen{
 	width: 4.5rem;
@@ -54,11 +55,23 @@ body{
 	height: 120%;
 	border-radius: 30%;
 }
-.frame:hover .lamp{
+.lamp.active,
+.frame.active .lamp{
 	background:radial-gradient(#d54343cf, #c45059a1, #e9b3b885);
 }
+.frame.active .lamp.blink,
+.lamp.blink{
+	animation:lamp-blink 1s infinite;
+}
+@keyframes lamp-blink {
+	50%{
+		background:radial-gradient(#d5434390, #c4505970, #e9b3b860);
+	}
+}
+
 /***************numbers*******************/
-.digital-area{
+.numbers,
+.shadows{
 	position: absolute;
 	bottom:.3rem;
 	left:50%;
@@ -80,8 +93,6 @@ body{
 	transform: translate(-50%,-50%);
 	width: .22rem;
 	height: .06rem;
-	background-color: #d0d0d0;
-	/*transition: background-color .3s;*/
 }
 .up{
 	top:0;
@@ -110,11 +121,8 @@ body{
 .left,.right{
 	transform: translate(-50%,-50%) rotate(-90deg);
 }
-.frame:hover .branch:not(.light){
-	background-color: #d0d0d015;
-}
-
-.branch::after,.branch::before{
+.branch::after,
+.branch::before{
 	content: "";
 	display: block;
 	position: absolute;
@@ -123,35 +131,9 @@ body{
 }
 .branch::before{
 	right:100%;
-	border-right-color: #d0d0d0;
-	/*transition: border-color .3s;*/
 }
 .branch::after{
 	left:100%;
-	border-left-color: #d0d0d0;
-	/*transition: border-color .3s;*/
-}
-.frame:hover .branch:not(.light)::after{
-	border-left-color: #d0d0d015;
-}
-.frame:hover .branch:not(.light)::before{
-	border-right-color: #d0d0d015;
-}
-.branch.light{
-	background-color: black;
-	transition: background-color .3s;
-	box-shadow: -2px 2px 2px #aaa;
-}
-.frame:hover .branch.light{
-	box-shadow: none;
-}
-.branch.light::before{
-	border-right-color: black;
-	transition: border-color .3s;
-}
-.branch.light::after{
-	border-left-color: black;
-	transition: border-color .3s;
 }
 .dot{
 	width: .15rem;
@@ -166,18 +148,79 @@ body{
 	display: block;
 	width: 0.06rem;
 	height: 0.06rem;
-	background-color: black;
 	margin:0.09rem auto;
-	animation: blink 1s infinite;
-	box-shadow: 2px 2px 1px #bbb;
-}
-@keyframes blink {
-	50%{background-color: transparent;}
 }
 
-.frame:hover .dot::before,
-.frame:hover .dot::after{
+/********************number  color */
+.shadows .branch{
+	background-color: #d0d0d0;
+}
+.shadows .branch::before{
+	border-right-color: #d0d0d0;
+}
+.shadows .branch::after{
+	border-left-color: #d0d0d0;
+}
+
+.frame.active .shadows .branch{
+	background-color: #d0d0d015;
+}
+.frame.active .shadows .branch::before{
+	border-right-color: #d0d0d015;
+}
+.frame.active .shadows .branch::after{
+	border-left-color: #d0d0d015;
+}
+.numbers .branch{
+	background-color: transparent;
+}
+.numbers .branch::before{
+	border-right-color: transparent;
+}
+.numbers .branch::after{
+	border-left-color: transparent;
+}
+.numbers .branch.light{
+	background-color: black;
+	box-shadow: -2px 2px 2px #aaa;
+	transition: background-color .3s;
+}
+.numbers .branch.light::before{
+	border-right-color: black;
+	transition: border-color .3s;
+}
+.numbers .branch.light::after{
+	border-left-color: black;
+	transition: border-color .3s;
+}
+
+.frame.active .numbers .branch.light{
 	box-shadow: none;
+}
+
+.shadows .dot::before,
+.shadows .dot::after{
+	background-color: #d0d0d0;
+}
+.frame.active .shadows .dot::before,
+.frame.active .shadows .dot::after{
+	background-color: #d0d0d015;
+}
+.numbers .dot::before,
+.numbers .dot::after{
+	background-color: black;
+	box-shadow: 2px 2px 1px #bbb;
+	animation: blink 1s infinite;
+}
+.frame.active .numbers .dot::before,
+.frame.active .numbers .dot::after{
+	box-shadow: none;
+}
+
+.numbers .number.blink>.branch.light,
+.numbers .number.blink>.branch.light::before,
+.numbers .number.blink>.branch.light::after{
+	animation: blink 1s infinite ease-in-out;
 }
 
 /*week am pm*/
@@ -206,15 +249,15 @@ p.am.show,p.pm.show{
 	font-size:.16rem;
 	color:#d0d0d0;
 }
-.frame:hover .weekday{
+.frame.active .weekday{
 	color:#d0d0d040;
 }
 .weekday div.show{
 	color:black;
 	text-shadow: 2px 2px 1px #aaa;
 }
-.frame:hover .weekday div.show,
-.frame:hover .ampm{
+.frame.active .weekday div.show,
+.frame.active .ampm{
 	text-shadow: none;
 }
 
@@ -308,7 +351,7 @@ p.am.show,p.pm.show{
 	border-top-right-radius: 50% 100%;
 }
 
-/******************color****************/
+/******************alarm color****************/
 .alarm .feet .left::after,
 .alarm .feet .right::before,
 .alarm .ears .left::after,
@@ -320,18 +363,45 @@ p.am.show,p.pm.show{
 .alarm .rim{
 	border-color: #ccc;
 }
-.frame:hover .alarm .feet .left::after,
-.frame:hover .alarm .right::before,
-.frame:hover .alarm .ears .left::after,
-.frame:hover .alarm .ears .right::before,
-.frame:hover .alarm .hou-hand::after,
-.frame:hover .alarm .min-hand::after{
+.frame.active .alarm .feet .left::after,
+.frame.active .alarm .feet .right::before,
+.frame.active .alarm .ears .left::after,
+.frame.active .alarm .ears .right::before,
+.frame.active .alarm .hou-hand::after,
+.frame.active .alarm .min-hand::after{
 	background-color: #d0d0d040;
 }
-.frame:hover .alarm .rim{
+.frame.active .alarm .rim{
 	border-color: #d0d0d040;
 }
-
+.alarm.blink .feet .left::after,
+.alarm.blink .feet .right::before,
+.alarm.blink .ears .left::after,
+.alarm.blink .ears .right::before,
+.alarm.blink .hou-hand::after,
+.alarm.blink .min-hand::after,
+.alarm.blink .rim{
+	animation: blink 1s infinite;
+}
+.frame.active .alarm.active .feet .left::after,
+.frame.active .alarm.active .feet .right::before,
+.frame.active .alarm.active .ears .left::after,
+.frame.active .alarm.active .ears .right::before,
+.frame.active .alarm.active .hou-hand::after,
+.frame.active .alarm.active .min-hand::after,
+.alarm.active .feet .left::after,
+.alarm.active .feet .right::before,
+.alarm.active .ears .left::after,
+.alarm.active .ears .right::before,
+.alarm.active .hou-hand::after,
+.alarm.active .min-hand::after{
+	background-color: black;
+}
+.frame.active .alarm.active .rim,
+.alarm.active .rim{
+	border-color: black;
+}
+/*******************控制按钮************/
 .ctrl-area{
 	position: absolute;
 	top:10%;
@@ -342,7 +412,6 @@ p.am.show,p.pm.show{
 	flex-direction: column;
 	justify-content:space-around;
 }
-
 .ctrl-area .btn{
 	display: block;
 	position:relative;
@@ -351,10 +420,9 @@ p.am.show,p.pm.show{
 	border-radius: 50%;
 	background-color:#e0e0e0;
 	background:radial-gradient(#e0e0e0,#ccc);
-	box-shadow:1px 1px white;
-						 /*1px 1px #ccc inset;*/
+	box-shadow:1px 1px white,
+						 1px 1px #ccc inset;
 }
-
 .ctrl-area .btn::before{
 	content:"";
 	display: block;
@@ -379,7 +447,6 @@ p.am.show,p.pm.show{
 		1px 1px 1px rgba(0, 0, 0, .1),
 	 	2px 2px 3px rgba(0, 0, 0, .05);
 }
-
 .ctrl-area .btn::after{
 	content:"";
 	display: block;
@@ -393,20 +460,28 @@ p.am.show,p.pm.show{
 }
 .ctrl-area .btn:active::after{
 	top:calc(50% + 1px);
-	color:rgba(5,148,37,.7);
+	color:rgba(221,9,9,1);
 	text-shadow:
-		1px 1px 5px rgba(0,255,0,.3),
-		2px 2px 20px rgba(0,255,0,.3),
-		-1px -1px 5px rgba(0,255,0,.3),
-		-2px -2px 20px rgba(0,255,0,.3);
+		1px 1px 5px rgba(255,0,0,.3),
+		2px 2px 20px rgba(255,0,0,.3),
+		-1px -1px 5px rgba(255,0,0,.3),
+		-2px -2px 20px rgba(255,0,0,.3);
 }
-
 .ctrl-area .cmd::after{
-	content:"\2764";
+	content:"\2618";
 }
 .ctrl-area .add::after{
 	content:"\25B2";
 }
 .ctrl-area .sub::after{
 	content:"\25BC";
+}
+
+/************* animation*/
+@keyframes blink {
+	50%{
+		background-color: transparent;
+		border-color: transparent;
+		box-shadow: 0 0 transparent;
+	}
 }
