@@ -1,0 +1,195 @@
+html,body,h1,p,div,a,ul,ol,input{
+	margin: 0px;
+	padding: 0px;
+}
+ul,ol{	list-style-type: none;}
+
+html{
+	font-size: 100px;
+	background-color: #555;
+	-webkit-font-smoothing:antialiased;
+}
+body{
+	font-family: "Microsoft YaHei",sans-serif;
+	font-size: 0.12rem;
+	background-size: 200px 200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: black;
+}
+html,body,.page{
+	width: 100%;
+	height: 100%;
+}
+
+.clock{
+	background: gray;
+	position: relative;
+	width: auto;
+	height: auto;
+}
+.outer{
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+	width: calc(100% + 1rem);
+	height: calc(100% + .6rem);
+	z-index: 0;
+
+	border-radius: .12rem;
+	background-color:hsl(0,0%,90%);
+	background-color:red;
+	background-image:
+		repeating-linear-gradient(45deg,
+				hsla(0,0%,100%,0) 0%,
+				hsla(0,0%,100%,0) 3%,
+				hsla(0,0%,100%, .2) 3.5%),
+    repeating-linear-gradient(45deg,
+				hsla(0,0%,  0%,0) 0%,
+				hsla(0,0%,  0%,0) 2%,
+				hsla(0,0%,  0%,.03) 2.5%),
+    repeating-linear-gradient(45deg,
+				hsla(0,0%,100%,0) 0%,
+				hsla(0,0%,100%,0) .6%,
+				hsla(0,0%,100%,.15) 1.1%),
+    linear-gradient(180deg,
+				hsl(0,0%,78%)  0%,
+    		hsl(0,0%,90%) 47%,
+    		hsl(0,0%,78%) 53%,
+    		hsl(0,0%,70%)100%);
+	box-shadow:
+		inset hsla(0,0%,5%,1) 0  0 0 2px,
+  	inset hsla(0,0%,10%,.8) 0 -1px 5px 2px,
+  	inset hsla(0,0%,0%,.3) 0 -1px 0px 5px,
+  	inset hsla(0,0%,100%,.7) 0  2px 1px 5px;
+}
+
+.inner{
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+	width: calc(100% + .06rem);
+	height: calc(100% + .06rem);
+	background: rgb(30,30,30);
+	border-radius: .03rem;
+	z-index: 1;
+	background-image:red;
+	box-shadow:
+		0  0 0 2px hsla(0,0%,0%,1),
+		0  0 5px 3px hsla(0,0%,2%,.7),
+		1px 2px 0 4px hsla(0,0%,100%,.7),
+		inset 0 0 3px black,
+		inset 1px 2px black,
+		inset 2px 3px 10px black;
+}
+.mask{
+	position: absolute;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to bottom,hsla(0,0%,0%,.95) 15%,transparent 50%,hsla(0,0%,0%,.95) 85% );
+	z-index: 3;
+}
+.numbers{
+	height: 1.4rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	overflow: hidden;
+}
+.wheel{
+	width: .82rem;
+	position: relative;
+	animation: r1 3s;
+}
+@keyframes r1 {
+	from{top:0;}
+	to{top:1rem;}
+}
+.number.up{
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-150%);
+}
+.number.middle{
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+}
+.number.down{
+		position: absolute;
+		top:50%;
+		left:50%;
+		transform: translate(-50%,50%);
+}
+
+.number{
+	width: .8rem;
+	height: 1.2rem;
+	box-sizing: border-box;
+	background: gray;
+	border:silver solid .02rem;
+	text-align: center;
+	position: relative;
+	box-shadow:
+		0 1px #666,
+		1px 2px black inset,
+		2px 3px 10px black inset;
+		z-index: 2;
+
+	background-color: #666;
+	background-size: 3px 3px,3px 3px;
+	background-image:
+			radial-gradient(circle,
+						rgba(0,0,0,0) 60%,
+						#000 61%),
+			radial-gradient(circle,
+						rgba(0,0,0,0) 55%,
+						rgba(134, 134, 134, 0.4) 56%);
+
+		/*background-size: 3px 3px;
+		background-image:
+				linear-gradient(-135deg,
+            transparent 20%,
+            rgba(0,0,0,0.1) 20%,
+            rgba(0,0,0,0.1) 30%,
+            transparent 30%,
+            transparent 70%,
+            rgba(0,0,0,0.1) 70%,
+            rgba(0,0,0,0.1) 80%,
+            transparent 80%),
+		    linear-gradient(135deg,
+            transparent 20%,
+            rgba(0,0,0,0.4) 20%,
+            rgba(0,0,0,0.4) 30%,
+            rgba(0,0,0,0.1) 30%,
+            rgba(0,0,0,0.1) 40%,
+            transparent 40%,
+            transparent 70%,
+            rgba(0,0,0,0.4) 70%,
+            rgba(0,0,0,0.4) 80%,
+            rgba(0,0,0,0.1) 80%,
+            rgba(0,0,0,0.1) 90%,
+            transparent 90%);*/
+}
+.number .text{
+	position: absolute;
+	display: inline-block;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+	color:white;
+	font-size: 1rem;
+	text-shadow:
+		0 1px #aaa,
+		0 2px #666,
+		0 3px #444,
+		0 4px black,
+		0 5px 10px black;
+}
