@@ -4,10 +4,11 @@ jQuery(function($){
     init();
     function init(){
       time = [0,0,0,0,0];
-      $numbers = $('.number');
-      $numbers.find('.card.after').on("animationend",onfinish);
+      $numbers = $('.wheel.number');
+      $numbers.find('.cell.down')
+              .on("animationend",onfinish);
       window.setInterval(refreshTime,1000);
-      //$(document).on('click',refreshTime);
+      // $(document).on('click',refreshTime);
     }
 
     function refreshTime(){
@@ -35,17 +36,22 @@ jQuery(function($){
 
     function refreshNumber($number,num){
       var $text;
-      $text = $number.find('.card.after .text span');
+      $text = $number.find('.up .text');
       $text.text(num+"");
       $number.addClass('active');
     }
     function onfinish(){
-      var $a,$b,$number = $(this).closest('.number');
+      var $up,
+          $middle,
+          $down,
+          $number = $(this).closest('.wheel');
       $number.removeClass('active');
-      $b = $number.find('.card.before');
-      $a = $number.find('.card.after');
-      $a.removeClass('after').addClass('before');
-      $b.removeClass('before').addClass('after');
+      $up = $number.find('.up');
+      $middle = $number.find('.middle');
+      $down = $number.find('.down');
+      $up.removeClass('up').addClass('middle');
+      $middle.removeClass('middle').addClass('down');
+      $down.removeClass('down').addClass('up');
     }
 
 
