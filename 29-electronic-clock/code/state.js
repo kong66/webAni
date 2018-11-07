@@ -1,16 +1,25 @@
 
 function View(){
   this.tubeMap={
-					"0":['.up.center','.up.left','.up.right','.down.left','.down.right','.down.center'],
+					"0":['.up.center','.up.left','.up.right',
+            '.down.left','.down.right','.down.center'],
 					"1":['.up.right','.down.right'],
-					"2":['.up.center','.up.right','.middle.center','.down.left','.down.center'],
-					"3":['.up.center','.up.right','.middle.center','.down.right','.down.center'],
-					"4":['.up.left','.up.right','.middle.center','.down.right'],
-					"5":['.up.center','.up.left','.middle.center','.down.right','.down.center'],
-					"6":['.up.center','.up.left','.middle.center','.down.left','.down.right','.down.center'],
+					"2":['.up.center','.up.right','.middle.center',
+              '.down.left','.down.center'],
+					"3":['.up.center','.up.right','.middle.center',
+              '.down.right','.down.center'],
+					"4":['.up.left','.up.right','.middle.center',
+              '.down.right'],
+					"5":['.up.center','.up.left','.middle.center',
+              '.down.right','.down.center'],
+					"6":['.up.center','.up.left','.middle.center',
+              '.down.left','.down.right','.down.center'],
 					"7":['.up.center','.up.right','.down.right'],
-					"8":['.up.center','.up.left','.up.right','.middle.center','.down.left','.down.right','.down.center'],
-					"9":['.up.center','.up.left','.up.right','.middle.center','.down.right','.down.center']
+					"8":['.up.center','.up.left','.up.right',
+              '.middle.center','.down.left','.down.right',
+              '.down.center'],
+					"9":['.up.center','.up.left','.up.right',
+              '.middle.center','.down.right','.down.center']
 				};
   this.$nums = $('.numbers .number');
   this.models=['date','time','alarm','alarm-hour',
@@ -219,7 +228,9 @@ function State(name){
     m = t.getMinutes();
     s = t.getSeconds();
     nums = nums.concat(
-              this.getNum(h),this.getNum(m),this.getNum(s));
+              this.getNum(h),
+              this.getNum(m),
+              this.getNum(s));
     State.view.refreshNumbers(nums);
   };
   this.refreshWeekDayAndAMPM=function(t){
@@ -235,7 +246,9 @@ function State(name){
     mon = t.getMonth()+1;
     date = t.getDate();
     nums = nums.concat(
-      this.getNum(year),this.getNum(mon),this.getNum(date));
+      this.getNum(year),
+      this.getNum(mon),
+      this.getNum(date));
     State.view.refreshNumbers(nums);
   };
   this.onMouseEnter=function(){

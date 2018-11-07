@@ -26,6 +26,7 @@ body{
 	justify-content: center;
 	align-items: center;
 }
+
 .frame{
 	background-color: #efefef;
 	width: 6rem;
@@ -456,7 +457,9 @@ p.am.show,p.pm.show{
 	transform:translate(-50%,-50%);
 	font-size: .2rem;
 	color:#aaa;
-	text-shadow: 1px 1px white;
+	text-shadow:
+		-1px -1px #888,
+		1px 1px white;
 }
 .ctrl-area .btn:active::after{
 	top:calc(50% + 1px);
