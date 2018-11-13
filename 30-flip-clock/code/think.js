@@ -16,9 +16,7 @@ jQuery(function($){
       h = t.getHours();
       m = t.getMinutes();
       s = t.getSeconds();
-
       nums = nums.concat(getNums(h),getNums(m),getNums(s));
-      console.log(nums);
       for(i=0;i<nums.length;++i){
         if(nums[i]==time[i])
           continue;
@@ -27,6 +25,7 @@ jQuery(function($){
         refreshNumber($number,nums[i]);
         $number.addClass('active');
       }
+      console.log(nums);
     }
 
     function getNums(num){

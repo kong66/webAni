@@ -149,12 +149,7 @@ html,body,.page{
 .number .card.down .text{
 	bottom:0;
 }
-.number .card.before{
-	z-index: 3;
-}
-.number .card.after{
-	z-index: 1;
-}
+
 .number::after{
 	content:"";
 	position: absolute;
@@ -163,8 +158,8 @@ html,body,.page{
 	height: 2px;
 	width: 100%;
 	background: black;
-	z-index: 5;
 	box-shadow:0 1px #333,0 -1px #333;
+	z-index: 5;
 }
 
 /*card*/
