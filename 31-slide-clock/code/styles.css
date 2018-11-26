@@ -26,6 +26,7 @@ html,body,.page{
 .clock{
 	background: gray;
 	position: relative;
+
 }
 .outer,
 .inner,
@@ -42,7 +43,6 @@ html,body,.page{
 	z-index: 0;
 
 	border-radius: .12rem;
-	background-color:hsl(0,0%,90%);
 	background-color:red;
 	background-image:
 		repeating-linear-gradient(45deg,
@@ -76,10 +76,9 @@ html,body,.page{
 
 	background: rgb(30,30,30);
 	border-radius: .03rem;
-	background-image:red;
 	box-shadow:
 		0  0 0 2px hsla(0,0%,0%,1),
-		0  0 5px 3px hsla(0,0%,2%,.7),
+		0  0 3px 3px hsla(0,0%,2%,.7),
 		1px 2px 0 4px hsla(0,0%,100%,.7),
 		inset 0 0 3px black,
 		inset 1px 2px black,
@@ -88,7 +87,10 @@ html,body,.page{
 .mask{
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(to bottom,hsla(0,0%,0%,.95) 15%,transparent 50%,hsla(0,0%,0%,.95) 85% );
+	background: linear-gradient(to
+							bottom,hsla(0,0%,0%,.95) 15%,
+							transparent 50%,
+							hsla(0,0%,0%,.95) 85% );
 	z-index: 3;
 }
 .feet{
@@ -114,7 +116,6 @@ html,body,.page{
 .feet::before{
 	right:6%;
 }
-
 
 .numbers{
 	height: 1.4rem;
@@ -144,20 +145,32 @@ html,body,.page{
 		2px 3px 10px black inset;
 		z-index: 2;
 
-	background-color: rgba(200,60,60,.5);
-	/*background-color: #666;*/
-	background-size: 3px 3px,3px 3px;
 	background-image:
-			radial-gradient(circle,
-						rgba(0,0,0,0) 60%,
-						#000 61%),
-			radial-gradient(circle,
-						rgba(0,0,0,0) 55%,
-						rgba(134, 134, 134, 0.4) 56%);
-
-		/*background-size: 6px 6px;
+		repeating-linear-gradient(0deg,
+				hsla(0,0%,0%,.1) 1px,
+				hsla(0,0%,0%,.1) 4px,
+				rgba(200,60,60,.5) 5px,
+				rgba(200,60,60,.5) 6px),
+		repeating-linear-gradient(90deg,
+			hsla(0,0%,0%,.1) 1px,
+			hsla(0,0%,0%,.1) 4px,
+			rgba(200,60,60,.5) 5px,
+			rgba(200,60,60,.5) 6px),
+		repeating-linear-gradient(0,black,black);
+		/*
+		background-size: 3px 3px,3px 3px;
 		background-image:
-				linear-gradient(-135deg,
+				radial-gradient(circle,
+							rgba(0,0,0,0) 60%,
+							#000 61%),
+				radial-gradient(circle,
+							rgba(0,0,0,0) 55%,
+							rgba(134, 134, 134, 0.4) 56%);*/
+		/*
+		background-color: rgba(200,60,60,.5);
+		background-size: 6px 6px;
+		background-image:
+				linear-gradient(0deg,
             transparent 20%,
             rgba(0,0,0,0.1) 20%,
             rgba(0,0,0,0.1) 30%,
@@ -166,7 +179,7 @@ html,body,.page{
             rgba(0,0,0,0.1) 70%,
             rgba(0,0,0,0.1) 80%,
             transparent 80%),
-		    linear-gradient(135deg,
+		    linear-gradient(90deg,
             transparent 20%,
             rgba(0,0,0,0.4) 20%,
             rgba(0,0,0,0.4) 30%,
@@ -195,6 +208,7 @@ html,body,.page{
 .cell .text{
 	position: absolute;
 	display: inline-block;
+	/*display: none;*/
 	top:50%;
 	left:50%;
 	transform: translate(-50%,-50%);
