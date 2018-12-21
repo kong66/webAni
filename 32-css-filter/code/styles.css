@@ -35,7 +35,7 @@ html,body,.page{
 }
 .poster:hover img{
 	opacity: 1;
-	transition: all 1s;
+	/*transition: all 1s;*/
 }
 
 .pencil-effect {
@@ -46,6 +46,7 @@ html,body,.page{
 
 @supports (filter: invert(1)) and (background-blend-mode: difference) {
   .pencil-effect {
+		transition: all 1s;
     background-image: url(iron-man.jpg), url(iron-man.jpg);
     background-blend-mode: difference;
     background-position: calc(50% - 1px) calc(50% - 1px), calc(50% + 1px) calc(50% + 1px);
