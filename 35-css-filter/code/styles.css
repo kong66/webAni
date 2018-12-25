@@ -6,58 +6,245 @@ ul,ol{	list-style-type: none;}
 
 html{
 	font-size: 100px;
-	background-color: #555;
+	background-color: white;
 	-webkit-font-smoothing:antialiased;
 }
 body{
 	font-family: "Microsoft YaHei",sans-serif;
-	font-size: 0.12rem;
-	background-size: 200px 200px;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background: black;
-}
-html,body,.page{
-	width: 100%;
-	height: 100%;
 }
 
 
-.poster{
-	width: 100%;
-	height: auto;
-}
-.poster img{
+.poster img,
+.ani img{
 	width: 100%;
 	height: auto;
 	opacity: 0;
 }
-.poster:hover img{
-	opacity: 1;
-	/*transition: all 1s;*/
+.poster{
+	width: 60%;
+	height: auto;
+  background: url(deer.jpg) center/contain no-repeat;
+}
+.poster:hover{
+	filter: none;
+	background-blend-mode:normal,normal;
+	mix-blend-mode:normal;
+	transition: all .5s ease-out;
 }
 
-.pencil-effect {
-  background-image: url(iron-man.jpg);
-  background-size: cover;
-  background-position: center;
+
+
+.ani{
+	width: 60%;
+	height: auto;
+	position: relative;
+	background-image: url(deer.jpg);
+	background-position:center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-blend-mode:normal;
+	mix-blend-mode:normal;
+	filter: none;
+	animation: filterAni 8s 3s  infinite;
+}
+.ani::before,
+.ani::after{
+	transition: all 1s;
+	display: block;
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-repeat: no-repeat;
+}
+.ani::before{
+	background-image:
+		url(deer.jpg),
+		url(deer.jpg);
+	background-position:
+			calc(50% - 1px) calc(50% - 1px),
+			calc(50% + 1px) calc(50% + 1px);
+	background-size:contain,contain;
+	background-blend-mode: difference;
+	filter: brightness(2) invert(1) grayscale(1);
+	animation: filterBeforeAni 8s  3s infinite;
+}
+.ani::after{
+	background-image: url(deer.jpg);
+	background-position: center;
+	background-size: 0;
+	mix-blend-mode:normal;
+	filter:none;
+	background-size: contain;
+	mix-blend-mode: color;
+	animation: fiterAfterAni 8s 3s infinite;
 }
 
-@supports (filter: invert(1)) and (background-blend-mode: difference) {
+@keyframes filterAni {
+	0%{
+		background-image:
+			url(deer.jpg),
+			url(deer.jpg),
+			url(deer.jpg);
+		background-position: center;
+		background-size: contain;
+		background-blend-mode:normal;
+		filter: brightness(1) invert(0) grayscale(0);
+	}
+	15%{
+		background-position:
+			calc(50% - 1px) calc(50% - 1px),
+			calc(50% + 1px) calc(50% + 1px),
+			center;
+		background-size: contain;
+    background-blend-mode:difference,normal;
+    filter: brightness(2) invert(1) grayscale(1);
+	}
+	30%{
+		background-blend-mode:normal;
+		filter: none;
+	}
+	45%{
+		background-position:
+			calc(50% - 1px) calc(50% - 1px),
+			calc(50% + 1px) calc(50% + 1px),
+			center;
+    background-blend-mode:difference,normal;
+    filter: brightness(2) invert(0) grayscale(1);
+	}
+	50%{
+		background-blend-mode: color, difference;
+    filter: brightness(1) invert(0) grayscale(1);
+	}
+	60%{
+		background-blend-mode: color, difference;
+    filter: brightness(2) invert(0) grayscale(0);
+	}
+	75%{
+		background-blend-mode: difference, screen;
+		background-position:
+			calc(50% - 1px) calc(50% - 1px),
+			calc(50% + 1px) calc(50% + 1px),
+			center;
+		filter: brightness(2) invert(1) grayscale(1);
+	}
+}
+@keyframes filterBeforeAni {
+	0%,15%,45%,100%{
+		opacity: 0;
+	}
+	30%{
+		opacity: 1;
+	}
+}
+@keyframes fiterAfterAni {
+	0%,15%,45%,100%{
+		opacity: 0;
+	}
+	30%{
+		opacity: 1;
+	}
+}
+
+/*pencil*/
+@supports (filter: invert(1) ) and (background-blend-mode: difference) {
   .pencil-effect {
-		transition: all 1s;
-    background-image: url(iron-man.jpg), url(iron-man.jpg);
-    background-blend-mode: difference;
+		transition: all .5s;
+    background-image: url(deer.jpg), url(deer.jpg);
     background-position: calc(50% - 1px) calc(50% - 1px), calc(50% + 1px) calc(50% + 1px);
+		background-blend-mode:difference;
     filter: brightness(2) invert(1) grayscale(1);
     box-shadow: inset 0 0 0 1px black;
   }
-	.pencil-effect:hover{
-		transition: all 1s;
-		filter: none;
+}
+/*colored-pencil*/
+@supports (filter: invert(1)) and (mix-blend-mode: color) and (background-blend-mode: difference) {
+  .colored-pencil-effect {
+    position: relative;
+  }
+	.colored-pencil-effect:hover:before, .colored-pencil-effect:hover:after {
 		background-blend-mode:normal;
 		filter:none;
-		box-shadow:none;
 	}
+  .colored-pencil-effect:before, .colored-pencil-effect:after {
+		transition: all 1s;
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: contain;
+    box-shadow: inset 0 0 0 1px black;
+  }
+  .colored-pencil-effect:before {
+		transition: all 1s;
+    background-image:
+			url(deer.jpg),
+			url(deer.jpg);
+		background-position:
+			calc(50% - 1px) calc(50% - 1px),
+			calc(50% + 1px) calc(50% + 1px);
+		background-blend-mode: difference;
+    filter: brightness(2) invert(1) grayscale(1);
+  }
+  .colored-pencil-effect:after {
+		transition: all 1s;
+    background: inherit;
+    mix-blend-mode: color;
+  }
+}
+/*chalkboard*/
+@supports (filter: grayscale(1)) and (background-blend-mode: difference) {
+  .chalkboard-effect {
+		transition: all .5s;
+    background-image:
+			url(deer.jpg),
+			url(deer.jpg);
+		background-position:
+			calc(50% - 1px) calc(50% - 1px),
+			calc(50% + 1px) calc(50% + 1px);
+    background-blend-mode: difference;
+    filter: brightness(2) grayscale(1);
+  }
+}
+/*colored-chalkboard*/
+@supports (filter: brightness(2)) and (background-blend-mode: color, difference) {
+  .colored-chalkboard-effect {
+		transition: all .5s;
+    background-image:
+				url(deer.jpg),
+				url(deer.jpg),
+				url(deer.jpg);
+    background-size: contain;
+    background-position:
+				calc(50% - 1px) calc(50% - 1px),
+				calc(50% + 1px) calc(50% + 1px),
+				center;
+    background-blend-mode: color, difference;
+    filter: brightness(2);
+  }
+}
+/*emboss*/
+@supports (filter: invert(1)) and (background-blend-mode: difference, screen) {
+  .emboss-effect {
+		transition: all .5s;
+		background-image:
+				url(deer.jpg),
+				url(deer.jpg),
+				url(deer.jpg);
+		background-blend-mode: difference, screen;
+		background-position:
+			calc(50% - 1px) calc(50% - 1px),
+			calc(50% + 1px) calc(50% + 1px),
+			center;
+		filter: brightness(2) invert(1) grayscale(1);
+  }
 }
