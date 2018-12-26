@@ -27,15 +27,17 @@ body{
 	border:1px solid black;
 }
 
-.filters{
-	display: flex;
-	flex-direction: column;
-}
-
 .filters label{
+	display: block;
+	width: 100%;
 	font-size: .2rem;
 	color:#555;
 	margin:3px 0;
+}
+.filters label span{
+	display: inline-block;
+	text-align: left;
+	width: 350px;
 }
 
 input[type="range"]{

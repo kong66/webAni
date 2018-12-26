@@ -1,46 +1,47 @@
 jQuery(function($){
 
-    var $target= $(".pic img");
-    var $filters=$(".filters");
-    var $filter=$(".filter");
-    $filters.on('input',onInput);
-    $filter.each(function(){
-      var $this,value,name;
-      $this = $(this);
-      $this.filterName = $this.attr('filter');
-      $this.filterDes = $this.closest('label').find('span');
-      $this.filterValue = getFilterProperty($this);
-      $this.filterStr = $this.filterName+'('+$this.filterValue+')';
-      setFilterValueText($this);
-    });
+    var $target= $(".pic img"),
+        $filter_map={};
 
-    function onInput(e){
-      var $target = $(e.target)
-      var name = $target.attr('filter');
-      var value = getFilterProperty($target);
-      filter_map[name] = value;
+    $(".filters").on('input',oninput);
+    $(".filter").each(function(){init($(this));});
+
+    function init($this){
+      $this.fName = $this.attr('filter');
+      $this.fTextEle=$this.closest('label').find('span');
+      $this.fValue = $this[0].value;
+      $this.fUnit = $this.attr('unit');
+      refreshValueStr($this);
+      $filter_map[$this.fName] = $this;
+    }
+    function oninput(e){
+      var name,$filter;
+      name = $(e.target).attr('filter');
+      $filter = $filter_map[name];
+      $filter.fValue = $filter[0].value;
+      refreshValueStr($filter);
       setFilterProperty();
     }
-    function getFilterProperty($filter){
-      var res;
-      if($filter.filterName!='drop-shadow'){
-        res = $filter[0].value + $filter.attr('unit');
+    function refreshValueStr($filter){
+      if($filter.fName!="drop-shadow"){
+        $filter.fValueStr = $filter.fName +'('
+          +$filter.fValue + $filter.fUnit +')';
       }else{
-
+        $filter.fValueStr = $filter.fName + '('
+          + $filter.fValue + $filter.fUnit +' '
+          + $filter.fValue + $filter.fUnit
+          + ' 6px black)';
       }
-      return res;
+      $filter.fTextEle.text($filter.fValueStr);
     }
     function setFilterProperty(){
       var i,value="";
-      for(i in filter_map){
-        value += ' '+setFilterValueText()
+      for(i in $filter_map){
+        value +=  $filter_map[i].fValueStr +' ';
       }
       console.log(value);
+      $target[0].style.filter = value;
     }
-    function setFilterValueText($filter){
-      $filter.filterDes.text($filter.filterStr);
-    }
-    function getFilterStr(filter,value){
 
-    }
+
 });
