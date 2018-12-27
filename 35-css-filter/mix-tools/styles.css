@@ -1,0 +1,88 @@
+html,body,h1,p,div,a,ul,ol,input{
+	margin: 0px;
+	padding: 0px;
+}
+ul,ol{	list-style-type: none;}
+
+html{
+	font-size: 100px;
+	background-color: white;
+	-webkit-font-smoothing:antialiased;
+}
+body{
+	font-family: "Microsoft YaHei",sans-serif;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+label{
+	font-size: 20px;
+}
+input[type="checkbox"]{
+}
+select{
+	/*appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  -ms-appearance:none;*/
+	width: 200px;
+	height: 30px;
+	border-radius: 6px;
+	font-size: 20px;
+	text-align: center;
+	outline: none;
+}
+select.bg{
+	background-color: skyblue;
+}
+select.mix{
+	background-color: orange;
+}
+option:hover{
+	appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  -ms-appearance:none;
+	background:darkblue;
+}
+div.blend{
+	display: inline-block;
+	height: auto;
+	margin: .2rem auto;
+}
+.background-blend{
+	width: 300px;
+	height: 300px;
+	display: inline-block;
+	background-image: url(bg.png),url(deer.jpg);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-blend-mode: normal;
+}
+.background-blend.exchange{
+	background-image: url(deer.jpg),url(bg.png);
+}
+.mix-blend{
+	display: inline-block;
+	width: 300px;
+	height: 300px;
+	position: relative;
+}
+.mix-blend>img{
+	display: inline-block;
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+	width: 100%;
+	height: auto;
+	z-index: 2;
+}
+.mix-blend>img:last-child{
+	z-index: 1;
+}
+.mix-blend.exchange>img:last-child{
+	z-index: 3;
+}

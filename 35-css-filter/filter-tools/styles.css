@@ -41,7 +41,10 @@ body{
 }
 
 input[type="range"]{
-	-webkit-appearance: none;
+	appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  -ms-appearance:none;
 	width: 300px;
 	height: 10px;
 	background-color: #333;
