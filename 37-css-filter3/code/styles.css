@@ -39,7 +39,7 @@ html,body{
 	overflow: hidden;
 }
 .bg{
-	background: black url(./bg1.jpg) center/contain no-repeat;
+	background: black url(./bg2.jpg) center/contain no-repeat;
 }
 .text{
 	font-size: .12rem;
@@ -54,32 +54,38 @@ html,body{
 	position: relative;
 	top:0;
 	left:0;
-
-	/*animation: blink 3s both cubic-bezier(0, 0, 0, 0.98);*/
-	/*animation: fly 1s both ease-out;*/
-	animation: fly2 1s both ease-out;
 }
-@keyframes blink {
-	0%,40%,80%{color:black}
+
+.text.fly-in span{
+	animation: fly-in 1s both ease-out;
+}
+.text.fly-out span{
+	animation: fly-out 1s both ease-out;
+}
+.text.blink-in span{
+	animation: blink-in 1s both ease-out;
+}
+.text.blink-out span{
+	animation: blink-out 1s both ease-out;
+}
+
+@keyframes blink-in {
+	0%,20%,40%,80%{color:black}
 	10%,30%,50%,70%,90%,100%{color:white;}
 }
-@keyframes fly {
-	0%{
-		left:100%;
-		top:100%;
-	};
-	100%{
-		left:0;
-		right:0;
-	}
+@keyframes blink-out {
+	0%,20%,40%,80%{color:white}
+	10%,30%,50%,70%,90%,100%{color:black;}
 }
-@keyframes fly2 {
+@keyframes fly-in {
+	0%{left:100%;}
+	100%{left:0;}
+}
+@keyframes fly-out {
 	0%{
-		color:black;
-		left:100%;
-	};
-	100%{
-		color:white;
 		left:0;
+	}
+	100%{
+		left:-100%;
 	}
 }
