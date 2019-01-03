@@ -8,7 +8,7 @@ jQuery(function($){
   init();
 
   function init(){
-    var i,j,particles,x,$text;
+    var i,j,particles,x;
     for(i=0;i<total;++i){
       particles = getParticles(getRandomInt(30,50));
       x = getRandomInt(0,90);
@@ -16,8 +16,7 @@ jQuery(function($){
         setAni(particles[j],x);
       }
     }
-    $text=$('.fire-text');
-    $text.on('click',function(){
+    $('.fire-text').on('click',function(){
       $fire.toggleClass('burning');
       });
   }
@@ -40,7 +39,6 @@ jQuery(function($){
     radius = Math.random()>0.3? 3:10;
     left = (xCenter+Math.random()*radius)+"%";
     delay = Math.random()+"s";
-
     $particle.css({
       left:left,
       animationDelay:delay
