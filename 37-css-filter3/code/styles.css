@@ -14,84 +14,72 @@ body{
 	color: white;
 	text-align: center;
 }
-/*.smoke-text{
-	margin: auto;
-	font-weight:bolder;
-}
-.smoke-text p{
-	animation: smoke 5s infinite;
-}
-@keyframes smoke {
-	0%{filter:blur(0)}
-	50%{
-		filter:blur(30px);
-		letter-spacing: -.5em;
-	}
-	100%{
-		filter:blur(10);
-	}
-}*/
-
-/*fire*/
-.fire-text{
-	margin:2rem auto;
-	position: relative;
-	display: inline-block;
-	padding: .1rem .5rem;
-}
-.fire-text .text{
-	color:darkred;
-	font-size: 1rem;
-	font-weight: bolder;
-	filter:blur(0);
+html,body{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 
-.fire {
-  font-size: .2rem;
-  width: 100%;
-  height: 100%;
+.text-pic{
+	width: 800px;
+	height: 800px;
+	position: fixed;
+	overflow: hidden;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+}
+
+.text,.bg{
 	position: absolute;
+	width: 100%;
+	height: 100%;
 	top:0;
 	left:0;
-	filter: blur(.01em);
-	mix-blend-mode:hard-light;
+	overflow: hidden;
 }
-
-.particle {
-	position: absolute;
-  bottom: 0;
-	width: 0;
-  height:0;
-  background-image:
-		radial-gradient(#ff5000 20%, rgba(255, 80, 0, 0) 70%);
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  opacity: 0;
+.bg{
+	background: black url(./bg1.jpg) center/contain no-repeat;
+}
+.text{
+	font-size: .12rem;
+	line-height: 1;
+	word-break:break-all;
+	color:#fff;
+	background: black;
+	mix-blend-mode:multiply;
+	background: -1px -1px 2px black inset;
+}
+.text span{
+	position: relative;
+	top:0;
 	left:0;
-	animation: riseup 1s ease-in infinite;
-	transition: width 2s,height 2s;
-}
-.fire.burning>.particle{
-	width: 2em;
-  height:2em;
-	transition: width 2s,height 2s;
-}
-.particle:nth-child(1){
-	display: none;
-}
 
-@keyframes riseup {
-  from {
-    opacity: 0;
-    transform:  translateX(-50%) scale(1);
-		bottom:20%;
-  }
-  25% {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-		bottom:90%;
-    transform: translateX(-50%) scale(0);
-  }
+	/*animation: blink 3s both cubic-bezier(0, 0, 0, 0.98);*/
+	/*animation: fly 1s both ease-out;*/
+	animation: fly2 1s both ease-out;
+}
+@keyframes blink {
+	0%,40%,80%{color:black}
+	10%,30%,50%,70%,90%,100%{color:white;}
+}
+@keyframes fly {
+	0%{
+		left:100%;
+		top:100%;
+	};
+	100%{
+		left:0;
+		right:0;
+	}
+}
+@keyframes fly2 {
+	0%{
+		color:black;
+		left:100%;
+	};
+	100%{
+		color:white;
+		left:0;
+	}
 }

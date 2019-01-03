@@ -1,49 +1,25 @@
 jQuery(function($){
 
-  var $fire = $('.fire'),
-      $tem = $('.particle:first'),
-      particles_array=[],
-      total=8;
-
+  var $text = $('.text');
   init();
 
   function init(){
-    var i,j,particles,x,$text;
-    for(i=0;i<total;++i){
-      particles = getParticles(getRandomInt(30,50));
-      x = getRandomInt(0,90);
-      for(j in particles){
-        setAni(particles[j],x);
-      }
+    var i,str="",temp = $("<span>KONG66</span>");
+    for(i=0;i<1000;++i){
+      $text.append(temp.clone());
     }
-    $text=$('.fire-text');
-    $text.on('click',function(){
-      $fire.toggleClass('burning');
-      });
+    $('.text span').each(function(){
+      setAni($(this));
+    });
   }
   function getRandomInt(s,e){
     return s+Math.round(Math.random()*(e-s));
   }
 
-  function getParticles(n){
-    var i,particle,particles=[];
-    for(i=0;i<n;++i){
-      particle = $tem.clone();
-      particles.push(particle);
-      $fire.append(particle);
-    }
-    return particles;
-  }
-
-  function setAni($particle,xCenter){
-    var left,delay,radius;
-    radius = Math.random()>0.3? 3:10;
-    left = (xCenter+Math.random()*radius)+"%";
-    delay = Math.random()+"s";
-
-    $particle.css({
-      left:left,
-      animationDelay:delay
+  function setAni($word){
+    $word.css({
+      // animationDelay:(Math.random()*5+1)+"s",
+      animationDelay:(Math.random()*2+1)+"s",
     });
   }
 
