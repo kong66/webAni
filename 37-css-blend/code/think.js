@@ -15,9 +15,7 @@ jQuery(function($){
   init();
 
   function init(){
-    var i,str="",
-        temp = $("<span>KONG66</span>"),
-        $new;
+    var i,$new,temp = $("<span>KONG66</span>");
     for(i=0;i<wordsNum;++i){
       $new = temp.clone();
       $new.on('animationend',onAnimationFinish);
