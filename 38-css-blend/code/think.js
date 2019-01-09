@@ -7,6 +7,7 @@ jQuery(function($){
   $(document).on('mousedown',mousedown);
   $(document).on('mouseup',mouseup);
   $(document).on('mousemove',mousemove);
+  createSnow();
 
   function mousedown(e){
     drag = true;
@@ -35,5 +36,21 @@ jQuery(function($){
     $(this).remove();
   }
 
+  function createSnow(){
+    var i,snow,snowflake,temp,level;
+    snow = $('.snow');
+    temp = snow.children(':first');
+    for(i=0;i<300;++i){
+      snowflake = temp.clone();
+      snow.append(snowflake);
+      level = 1+Math.round(Math.random()*4);
+      snowflake.addClass('level'+level);
+      snowflake.css({
+        top:-(50+Math.random()*150)+"%",
+        left:Math.random()*100+"%",
+        animationDuration:(30/(level*2)+Math.random()*3)+"s",
+      });
+    }
+  }
 
 });
