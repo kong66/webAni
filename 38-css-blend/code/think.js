@@ -12,7 +12,6 @@ jQuery(function($){
   function mousedown(e){
     drag = true;
   }
-
   function mousemove(e){
     if(drag){
       x = e.clientX;
@@ -27,7 +26,6 @@ jQuery(function($){
       $new.on('animationend',onAniFinished);
     }
   }
-
   function mouseup(){
     drag = false;
   }
@@ -48,7 +46,7 @@ jQuery(function($){
       snowflake.css({
         top:-(50+Math.random()*150)+"%",
         left:Math.random()*100+"%",
-        animationDuration:(30/(level*2)+Math.random()*3)+"s",
+        animationDuration:(50/(level*4)+Math.random()*3)+"s",
       });
     }
   }

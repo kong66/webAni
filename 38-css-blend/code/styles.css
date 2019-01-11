@@ -31,7 +31,6 @@ html,body{
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-blend-mode: screen;
-
 }
 .text{
 	font-size: 3rem;
@@ -44,8 +43,7 @@ html,body{
 	user-select: none;
 }
 .trails{
-	background: url(bg.jpg) center/cover no-repeat;
-	background: rgba(255,255,255,1);
+	background: white;
 	filter:blur(15px);
 	mix-blend-mode:lighten;
 }
@@ -54,23 +52,19 @@ html,body{
 }
 .circle{
 	position: absolute;
-	top:50%;
-	left:50%;
 	width: 1rem;
 	height: 1rem;
 	border-radius: 50%;
-	background: white;
+	background: black;
 	transform: translate(-50%,-50%);
 	animation:blur 2s 1s both ;
 }
 @keyframes blur{
 	from{
 		opacity: 1;
-		background-color:black;
 	}
 	to{
 		opacity: 0;
-
 	}
 }
 
@@ -116,7 +110,6 @@ html,body{
 	height: .15rem;
 	box-shadow:0 0 15px 6px white;
 }
-
 
 @keyframes  down{
 	to{top:100%;}
