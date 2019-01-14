@@ -1,10 +1,10 @@
 jQuery(function($){
   var $bg = $('.bg'),
-      $pieces = $('.pieces'),
+      $box = $('.box'),
       $allPieces,
       mx,my,
       index=0,
-      bgs=['bg1.jpg','bg2.jpg','bg3.jpg'],
+      bgs=['bg2.jpg','bg3.jpg','bg1.jpg'],
       aniState=0,
       aniCount = 0;
 
@@ -12,76 +12,71 @@ jQuery(function($){
   function onclick(){
     if(!aniState){
       aniState++;
-      setOutAni();
-      $allPieces.addClass('out');
+      $box.addClass('out');
     }
-
   }
   function onTransitionEnd(){
-    console.log("agdafads="+aniCount);
     if(++aniCount == $allPieces.length){
       if(aniState==1){
         aniState++;
         changeAllBG();
         setAllPiecesStyle();
-        $allPieces.removeClass('out');
-        $allPieces.addClass('in');
+        $box.removeClass('out');
+        $box.addClass('in');
       }else if(aniState == 2){
         aniState = 0;
-        $allPieces.removeClass('in');
+        $box.removeClass('in');
       }
       aniCount = 0;
     }
   }
-  function setOutAni(){
-    $allPieces.each(function(){
-      $(this).css({
-        transitionDelay:Math.random()*1+"s",
-        left:'-100%'
-      });
-    });
-  }
-  function setInAni(){
-    $allPieces.each(function(){
-      $(this).css({
-        transitionDelay:Math.random()*1+"s",
-      });
-    });
-  }
+
   function init(){
     createPieces();
     setAllPiecesStyle();
     changeAllBG();
-    // $(document).on('mousemove',onmousemove);
+    $(document).on('mousemove',onmousemove);
     $(document).on('click',onclick);
   }
   function createPieces(){
     var $piece,i;
-    for(i=0;i<100;++i){
+    for(i=0;i<160;++i){
       $piece = $('<div class="piece"></div>');
-      $pieces.append($piece);
-      $piece.on('transitionend',onTransitionEnd);
+      $box.append($piece);
+      $piece.on('animationend',onTransitionEnd);
     }
     $allPieces=$('.piece');
   }
   function setAllPiecesStyle(){
-    $allPieces.each(setPieceStyle);
+    var r=450,levels=5,nums,minR,maxR,w;
+    nums = Math.floor($allPieces.length/levels);
+    for(var i=0;i<levels;++i){
+      for(var j=0;j<nums;++j){
+        var $this = $($allPieces.get(i*nums+j));
+        maxR = r/levels * (i+1);
+        minR = r/levels * i;
+        w = r/(i+1);
+        setPieceStyle($this,minR,maxR,w,i);
+      }
+      console.log("minR,maxR,w=  "+minR+"   "+maxR+"   "+w);
+    }
   }
-  function setPieceStyle(){
-    var $this = $(this),
-        w,h,top,left,z;
-    w = randomInt(50,250);
-    h = randomInt(50,250);
-    top = randomInt(0,800-h);
-    left = randomInt(0,1000-w);
-    z = randomInt(0,10);
+  function setPieceStyle($this,minR,maxR,maxW,z){
+    var deg,r,w,h,top,left,z;
+    w = randomInt(maxW*0.8,maxW);
+    h = randomInt(maxW*0.8,maxW);
+    deg = randomInt(0,360);
+    r = randomInt(minR,maxR);
+    top = 400 + Math.sin(deg)*r - h/2;
+    left = 500 + Math.cos(deg)*r - w/2;
+
     $this.css({
       width:w+"",
       height:h+"",
       top:top+"px",
       left:left+"px",
       backgroundPosition:(-left)+"px "+(-top)+"px",
-      transform:"translate("+z+"px)"
+      animationDelay:Math.random()*1+"s"
     });
     $this[0].top = top;
     $this[0].left = left;
@@ -108,14 +103,11 @@ jQuery(function($){
     mx = $(window).width()/2 - e.clientX ;
     my =   $(window).height()/2 -e.clientY ;
     $allPieces.each(move);
-    console.log("x,y="+mx+" "+my);
   }
   function move(){
     var $this = $(this);
-    //var left = parseFloat($this.css('left'));
-    //var top = parseFloat($this.css('top'));
-    var left = $this[0].left + mx * 0.01* $this[0].z;
-    var top = $this[0].top+my *0.01 *$this[0].z;
+    var left = $this[0].left + mx * 0.02 * $this[0].z;
+    var top = $this[0].top + my * 0.02 * $this[0].z;
     $this.css({
       top:top,
       left:left,
