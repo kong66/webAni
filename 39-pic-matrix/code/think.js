@@ -1,46 +1,47 @@
 jQuery(function($){
-  var $bg = $('.bg'),
-      $box = $('.box'),
+  var $box = $('.box'),
       $allPieces,
-      mx,my,
-      index=0,
-      bgs=['bg2.jpg','bg3.jpg','bg1.jpg'],
-      aniState=0,
-      aniCount = 0;
+      bgs=['bg2.jpg','bg3.jpg','bg1.jpg'];
 
   init();
-  function onclick(){
-    if(!aniState){
-      aniState++;
-      $box.addClass('out');
-    }
-  }
-  function onTransitionEnd(){
-    if(++aniCount == $allPieces.length){
-      if(aniState==1){
-        aniState++;
-        changeAllBG();
-        setAllPiecesStyle();
-        $box.removeClass('out');
-        $box.addClass('in');
-      }else if(aniState == 2){
-        aniState = 0;
-        $box.removeClass('in');
-      }
-      aniCount = 0;
-    }
-  }
-
   function init(){
+    $box.aniCount = 0;
+    $box.index = 0;
+    $box.aniState = 0;
+    $box.cX = $box.width()/2;
+    $box.cY = $box.height()/2;
+    $box.r = ($box.width()+$box.height())/4+50;
+    $box.total = 160;
     createPieces();
     setAllPiecesStyle();
     changeAllBG();
     $(document).on('mousemove',onmousemove);
     $(document).on('click',onclick);
   }
+  function onclick(){
+    if(!$box.aniState){
+      $box.aniState++;
+      $box.addClass('out');
+    }
+  }
+  function onTransitionEnd(){
+    if(++$box.aniCount == $allPieces.length){
+      if($box.aniState==1){
+        $box.aniState++;
+        changeAllBG();
+        setAllPiecesStyle();
+        $box.removeClass('out');
+        $box.addClass('in');
+      }else if($box.aniState == 2){
+        $box.aniState = 0;
+        $box.removeClass('in');
+      }
+      $box.aniCount = 0;
+    }
+  }
   function createPieces(){
     var $piece,i;
-    for(i=0;i<160;++i){
+    for(i=0;i<$box.total;++i){
       $piece = $('<div class="piece"></div>');
       $box.append($piece);
       $piece.on('animationend',onTransitionEnd);
@@ -48,7 +49,7 @@ jQuery(function($){
     $allPieces=$('.piece');
   }
   function setAllPiecesStyle(){
-    var r=450,levels=5,nums,minR,maxR,w;
+    var r=$box.r,levels=5,nums,minR,maxR,w;
     nums = Math.floor($allPieces.length/levels);
     for(var i=0;i<levels;++i){
       for(var j=0;j<nums;++j){
@@ -58,7 +59,7 @@ jQuery(function($){
         w = r/(i+1);
         setPieceStyle($this,minR,maxR,w,i);
       }
-      console.log("minR,maxR,w=  "+minR+"   "+maxR+"   "+w);
+      console.log("minR,maxR,w= "+minR+" "+maxR+" "+w);
     }
   }
   function setPieceStyle($this,minR,maxR,maxW,z){
@@ -67,9 +68,8 @@ jQuery(function($){
     h = randomInt(maxW*0.8,maxW);
     deg = randomInt(0,360);
     r = randomInt(minR,maxR);
-    top = 400 + Math.sin(deg)*r - h/2;
-    left = 500 + Math.cos(deg)*r - w/2;
-
+    top = $box.cY + Math.sin(deg)*r - h/2;
+    left = $box.cX + Math.cos(deg)*r - w/2;
     $this.css({
       width:w+"",
       height:h+"",
@@ -88,30 +88,29 @@ jQuery(function($){
   }
 
   function changeAllBG(){
-    $allPieces.each(changeBG);
-    if(++index==bgs.length){
-      index = 0;
+    $allPieces.each(function(){
+      var $this = $(this);
+      $this.css({
+        backgroundImage:"url("+bgs[$box.index]+")"
+      });
+    });
+    if(++$box.index==bgs.length){
+      $box.index = 0;
     }
   }
-  function changeBG(){
-    var $this = $(this);
-    $this.css({
-      backgroundImage:"url("+bgs[index]+")"
-    });
-  }
+
   function onmousemove(e){
-    mx = $(window).width()/2 - e.clientX ;
-    my =   $(window).height()/2 -e.clientY ;
+    $box.mx = $(window).width()/2 - e.clientX ;
+    $box.my =   $(window).height()/2 -e.clientY ;
     $allPieces.each(move);
   }
   function move(){
     var $this = $(this);
-    var left = $this[0].left + mx * 0.02 * $this[0].z;
-    var top = $this[0].top + my * 0.02 * $this[0].z;
+    var left = $this[0].left + $box.mx * 0.02 * $this[0].z;
+    var top = $this[0].top + $box.my * 0.02 * $this[0].z;
     $this.css({
       top:top,
       left:left,
-      // backgroundPosition:(-left)+"px "+(-top)+"px"
     });
 
   }
