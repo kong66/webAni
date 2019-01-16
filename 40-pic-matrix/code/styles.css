@@ -1,0 +1,125 @@
+html,body,h1,p,div,a,ul,ol,input{
+	margin: 0px;
+	padding: 0px;
+}
+ul,ol{	list-style-type: none;}
+
+html{
+	font-size: 100px;
+	background-color: black;
+	-webkit-font-smoothing:antialiased;
+	font-family: "Microsoft YaHei",sans-serif;
+	color: white;
+	text-align: center;
+}
+html,body{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.bg{
+	width: 400px;
+	height: 400px;
+	position: fixed;
+	top:50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+.box{
+	position: absolute;
+	top:0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+	/*background: url(bg2.jpg) center/400px 400px no-repeat;*/
+	transform-style: preserve-3d;
+	perspective: 300px;
+	overflow: hidden;
+
+}
+.piece{
+	position: absolute;
+	transform-style: preserve-3d;
+	perspective: 300px;
+}
+.piece .up,
+.piece .down{
+	position: absolute;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 100%;
+	backface-visibility:hidden;
+}
+.piece .up{
+	z-index: 2;
+	/*filter:blur(2px);*/
+	box-sizing: border-box;
+	/*border:1px solid transparent;*/
+	/*background-clip: border-box;*/
+	/*border:1px solid black;*/
+	background:url(bg2.jpg) center/400px 400px no-repeat;
+}
+/*.box:hover .piece .up{
+	border:1px solid black;
+	transition: border 3s ease-out;
+}*/
+.piece:nth-child(2n){
+	/*animation: ro 3s infinite linear;*/
+}
+
+.piece .up.small{
+	transform: scale(0);
+	transition: transform 1s;
+}
+@keyframes ro {
+	to{transform: rotateY(360deg);}
+}
+.piece .down{
+	/*transform: rotateY(180deg);*/
+	background:url(bg3.jpg) center/400px 400px no-repeat;
+	z-index: 1;
+	/*display: none;*/
+}
+.box.flip .piece .up{
+	/*animation: flipup 3s both;*/
+	/*animation: down .5s ease-in;*/
+
+}
+.box.flip .piece .down{
+	/*animation: flipdown 3s both;*/
+}
+.box.hide .piece .up{
+	/*display: none;*/
+}
+
+@keyframes  down{
+	50%{
+		/*filter:saturate(0);*/
+	}
+	to{
+		transform: rotateX(720deg);
+		top:400px;
+	}
+}
+
+@keyframes flipup {
+	from{
+		transform: rotateY(0);
+		z-index: 2;
+	}
+	50%{
+		transform:rotateY(90deg);
+		z-index: 1;
+	}
+	to{
+		transform: rotateY(180deg);
+	}
+}
+@keyframes flipdown {
+	from{transform: rotateY(-180deg);z-index: 1;}
+	50%{transform:rotateY(-90deg);z-index: 2; }
+	to{transform: rotateY(0);}
+}
