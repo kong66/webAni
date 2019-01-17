@@ -19,107 +19,62 @@ html,body{
 }
 
 .bg{
-	width: 400px;
-	height: 400px;
+	width: 100%;
+	height: auto;
 	position: fixed;
-	top:50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
+	top:0%;
+	left: 0%;
 }
-.box{
+.bg .size{
+	width: 100%;
+	height: auto;
+	visibility: hidden;
+}
+
+.box,.set,.pic{
 	position: absolute;
 	top:0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	overflow: visible;
-	/*background: url(bg2.jpg) center/400px 400px no-repeat;*/
-	transform-style: preserve-3d;
-	perspective: 300px;
 	overflow: hidden;
-
 }
 .piece{
 	position: absolute;
-	transform-style: preserve-3d;
-	perspective: 300px;
 }
-.piece .up,
-.piece .down{
-	position: absolute;
-	top:0;
-	left:0;
-	width: 100%;
-	height: 100%;
-	backface-visibility:hidden;
-}
-.piece .up{
-	z-index: 2;
-	/*filter:blur(2px);*/
-	box-sizing: border-box;
-	/*border:1px solid transparent;*/
-	/*background-clip: border-box;*/
-	/*border:1px solid black;*/
-	background:url(bg2.jpg) center/400px 400px no-repeat;
-}
-/*.box:hover .piece .up{
-	border:1px solid black;
-	transition: border 3s ease-out;
-}*/
-.piece:nth-child(2n){
-	/*animation: ro 3s infinite linear;*/
-}
-
-.piece .up.small{
-	transform: scale(0);
-	transition: transform 1s;
-}
-@keyframes ro {
-	to{transform: rotateY(360deg);}
-}
-.piece .down{
-	/*transform: rotateY(180deg);*/
-	background:url(bg3.jpg) center/400px 400px no-repeat;
+.set{
 	z-index: 1;
-	/*display: none;*/
 }
-.box.flip .piece .up{
-	/*animation: flipup 3s both;*/
-	/*animation: down .5s ease-in;*/
-
+.pic{
+	z-index: 2;
 }
-.box.flip .piece .down{
-	/*animation: flipdown 3s both;*/
+.set .piece{
+	transform: rotate(0);
+	background:url(bg2.jpg) center/400px 400px no-repeat;
+	transition: alll 0s 0s;
 }
-.box.hide .piece .up{
-	/*display: none;*/
+.box.fall .set{
+	z-index: 2;
 }
-
-@keyframes  down{
-	50%{
-		/*filter:saturate(0);*/
-	}
+.box.fall .pic{
+	z-index: 1;
+}
+.box.fall .piece{
+	animation:
+		fall 1s ease-in forwards,
+		color 2s both ease-in;
+	transition: transform 1s ease-in;
+}
+@keyframes color {
 	to{
-		transform: rotateX(720deg);
-		top:400px;
-	}
+		filter:sepia(1);
+	};
 }
-
-@keyframes flipup {
+@keyframes  fall{
 	from{
-		transform: rotateY(0);
-		z-index: 2;
-	}
-	50%{
-		transform:rotateY(90deg);
-		z-index: 1;
+		box-shadow: 1px 1px 10px white;
 	}
 	to{
-		transform: rotateY(180deg);
+		top:110%;
 	}
-}
-@keyframes flipdown {
-	from{transform: rotateY(-180deg);z-index: 1;}
-	50%{transform:rotateY(-90deg);z-index: 2; }
-	to{transform: rotateY(0);}
 }

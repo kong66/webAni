@@ -1,83 +1,106 @@
 jQuery(function($){
   var $bg = $('.bg'),
       $box = $('.box'),
-      pieces=[],
-      side = 20,
-      bgs=['bg2.jpg','bg3.jpg','bg1.jpg'];
+      set,
+      side = 50,
+      bgs=['bg1.jpg','bg2.jpg','bg3.jpg','bg4.jpg','bg5.jpg'];
 
   init();
-  // changeBG();
-  // setDelay();
-  function changeBG(){
-    var down = $('.down');
-    // down.css({backgroundImage:"url("+bgs[1]+")"});
-  }
-  $box.on('click',function(e){
-    var c = $(e.target);
-    var h = c.parent().attr('i')*1;
-    var v = c.parent().attr('j')*1;
-    console.log('h,v='+h+" "+v);
-    var t = 0;
-    q = [];
-    for(i=0;i<$box.nw;++i){
 
+  function onclick(e){
+    if($box.hasClass('fall')){
+      return;
     }
-  });
-  function setDelay(){
-    var t = 0;
-    for(var i=0;i<$box.nw;++i){
-      t += 0.05;
-      for(var j=0;j<$box.nh;++j){
-        setPieceDelay(pieces[i*$box.nw+j],t);
+    setAni();
+    if(++$box.index==bgs.length){
+      $box.index = 0;
+    }
+    $box.$pic.attr('src',bgs[$box.index]);
+    $box.addClass('fall');
+  }
+
+  function setAni(){
+    var i,j,t,z = $box.nh*$box.nw;
+    for(i=0;i<$box.nw;++i){
+      t = Math.random()*0.4;
+      for(j=0;j<$box.nh;++j){
+        t += Math.random()*0.4;
+        // console.log("i,j="+i+" "+j+" "+t);
+        set[j][i].css({
+          animationDelay:t.toFixed(3)+"s,0s",
+          transform:"rotate("+90*Math.random()+"deg)",
+          transitionDelay:t.toFixed(3)+"s",
+          zIndex:(z--)+""
+        });
+      }
+      ++t;
+    }
+  }
+
+
+  function onAnimationEnd(e){
+    var piece;
+    if(e.originalEvent.animationName == "fall"){
+      piece = $(e.target);
+      piece.css({transform:'rotate(0)'});
+      if(++$box.counter==$box.total){
+        $box.counter = 0;
+        changeBG(set,bgs[$box.index]);
+        $box.removeClass('fall');
       }
     }
   }
-  function setPieceDelay($piece,t){
-    $piece.up.css({animationDelay:t+"s"});
-    $piece.down.css({animationDelay:t+"s"});
-    console.log($piece.attr('test')+"="+t);
-  }
-
   function init(){
-    var i,j,left,top,piece,up,down;
     $box.nw = Math.ceil($box.width()/side);
     $box.nh = Math.ceil($box.height()/side);
-    for(i=0;i<$box.nw;++i){
-      for(j=0;j<$box.nh;++j){
+    $box.index = 0;
+    $box.counter = 0;
+    $box.total = $box.nw*$box.nh;
+    $box.$set = $('.set');
+    $box.$pic = $('.pic');
+    $box.on('animationend',onAnimationEnd);
+    $box.$pic.on('click',onclick);
+    createPieces();
+    changeBG(set,bgs[$box.index]);
+  }
+  function createPieces(){
+    var i,j,piece,$before,$after;
+    for(i=0;i<$box.nh;++i){
+      for(j=0;j<$box.nw;++j){
         piece = $('<div class="piece"></div>');
-        up = $('<div class="up"></div>');
-        down = $('<div class="down"></div>');
-        left,top;
-        left = j*side;
-        top = i*side;
-        piece.attr('i',i);
-        piece.attr('j',j);
-        up.css({
-          backgroundPosition:(-left)+"px "+(-top)+"px",});
-        down.css({backgroundPosition:(-left)+"px "+(-top)+"px",});
-        piece.css({
-          left:left,
-          top:top,
-          width:side,
-          height:side,
-        });
-        $box.append(piece);
-        piece.append(up);
-        piece.append(down);
-        piece.up = up;
-        piece.down = down;
         piece.i = i;
         piece.j = j;
-        if(!pieces){
-          pieces = [];
+        piece.attr('i',i);
+        piece.attr('j',j);
+        //console.log('i,j='+i+" "+j);
+        piece.css({
+          left:j*side+"px",
+          top:i*side+"px",
+          width:side+"px",
+          height:side+"px",
+          backgroundPosition:(-j*side)+"px "+(-i*side)+"px",
+          backgroundSize:$box.width()+"px "+$box.height()+"px"
+        });
+        $box.$set.append(piece);
+        if(!set){
+          set = [];
         }
-        if(!pieces[i]){
-          pieces[i] = [];
+        if(!set[i]){
+          set[i] = [];
         }
-        pieces[i][j]= piece;
+        set[i][j]= piece;
       }
     }
-
+  }
+  function changeBG(set,bg){
+    var i,j;
+    for(i=0;i<set.length;++i){
+      for(j=0;j<set[i].length;++j){
+        set[i][j].css({
+          backgroundImage:"url("+bg+")"
+        });
+      }
+    }
   }
 
 
