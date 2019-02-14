@@ -25,15 +25,14 @@ jQuery(function($){
       t = Math.random()*0.4;
       for(j=0;j<$box.nh;++j){
         t += Math.random()*0.4;
-        // console.log("i,j="+i+" "+j+" "+t);
         set[j][i].css({
           animationDelay:t.toFixed(3)+"s,0s",
           transform:"rotate("+90*Math.random()+"deg)",
           transitionDelay:t.toFixed(3)+"s",
           zIndex:(z--)+""
         });
+        // console.log("i,j="+i+" "+j+" "+t);
       }
-      ++t;
     }
   }
 
@@ -68,11 +67,6 @@ jQuery(function($){
     for(i=0;i<$box.nh;++i){
       for(j=0;j<$box.nw;++j){
         piece = $('<div class="piece"></div>');
-        piece.i = i;
-        piece.j = j;
-        piece.attr('i',i);
-        piece.attr('j',j);
-        //console.log('i,j='+i+" "+j);
         piece.css({
           left:j*side+"px",
           top:i*side+"px",
@@ -89,6 +83,11 @@ jQuery(function($){
           set[i] = [];
         }
         set[i][j]= piece;
+        // piece.i = i;
+        // piece.j = j;
+        // piece.attr('i',i);
+        // piece.attr('j',j);
+        //console.log('i,j='+i+" "+j);
       }
     }
   }
