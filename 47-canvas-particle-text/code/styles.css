@@ -16,11 +16,9 @@ html,body{
 	height: 100%;
 	overflow: hidden;
 }
-#number{
+#textCanvas{
 	display: none;
 }
-
-
 #canvas{
 	position: fixed;
 	top:0;

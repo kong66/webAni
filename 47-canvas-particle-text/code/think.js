@@ -1,8 +1,7 @@
-var ctx =
-    document.getElementById('canvas').getContext('2d'),
-    canvas = document.getElementById('canvas'),
-    numCtx = document.getElementById('number').getContext('2d'),
-    number = document.getElementById('number'),
+var ctx,
+    canvas,
+    numCtx,
+    w,h,textW,textH,
     balls = [],
     coordinates=[],
     textArray = ['K','O','N','G','6','6'],
@@ -13,15 +12,46 @@ var ctx =
 init();
 
 function init(){
-  window.onresize = initCanvas;
-  initCanvas();
+  var textCanvas;
+  canvas=document.getElementById('canvas');
+  ctx=canvas.getContext('2d');
+  textCanvas = document.getElementById('textCanvas');
+  numCtx = textCanvas.getContext('2d');
+  textW = textCanvas.width;
+  textH = textCanvas.height;
+  window.onresize = resizeCanvas;
+  resizeCanvas();
   createBalls();
   collect();
-  window.requestAnimationFrame(update);
+  requestAniFrame(update);
+}
+function resizeCanvas(){
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+function createBalls(){
+  var n = 500,i=0,ball;
+  for(i=0;i<n;++i){
+    ball = new Ball();
+    balls.push(ball);
+    ball.render(0);
+  }
+}
+function update(t){
+  ctx.clearRect(0, 0, w, h);
+  renderBalls(t);
+  requestAniFrame(update);
+}
+function renderBalls(t){
+  var i;
+  for(i=0;i<balls.length;++i){
+    balls[i].render(t);
+  }
 }
 
 function collect(){
-  getTextCoordinates(textArray[index]);
+  drawText(textArray[index]);
+  getTextCoordinates();
   makeupText();
   if(++index==textArray.length){
     index = 0;
@@ -30,7 +60,7 @@ function collect(){
 }
 function disperse(){
   for(var i=0;i< coordinates.length;++i){
-    balls[i].reset(true,0,0,60,60);
+    balls[i].reset(true,0,0,1000,1000);
   }
   setTimeout(collect,2000);
 }
@@ -38,29 +68,28 @@ function disperse(){
 function makeupText(){
   var i,x,y;
   for(i=0;i< coordinates.length;++i){
-    x = coordinates[i].x + canvas.width/2 - number.width/2;
-    y = coordinates[i].y + canvas.height/2 - number.height/2;
-    balls[i].reset(false,x,y,30,60);
+    x = coordinates[i].x + w/2 - textW/2;
+    y = coordinates[i].y + h/2 - textH/2;
+    balls[i].reset(false,x,y,500,1000);
   }
 }
-
-function getTextCoordinates(text){
-  var imgData,x,y,i;
-  numCtx.clearRect(0,0,number.width,number.height);
+function drawText(text){
+  numCtx.clearRect(0,0,textW,textH);
   numCtx.fillStyle = '#ff1111';
   numCtx.textAlign = 'center';
   numCtx.font = 'bold 400px Arial';
   numCtx.fillText(text,300,300);
-
-  imgData = numCtx.getImageData(0,0,
-    number.width,number.height).data;
+}
+function getTextCoordinates(){
+  var imgData,x,y,i;
+  imgData = numCtx.getImageData(0,0,textW,textH).data;
   coordinates = [];
-  for(i=imgData.length;i>=0;i-=4){
+  for(i=0;i<imgData.length;i+=4){
     if(imgData[i]!==0){
-      x =  (i/4)%number.width;
-      // y = Math.floor(i/4/canvas.width);
-      y = Math.floor(Math.floor(i/number.width)/4)
-      if(x && (x%(R*2+3)==0) && y && (y%(R*2+3)==0)){
+      x =  (i/4)%textW;
+      y = Math.floor(i/4/textW);
+      if( x%(R*2+3)==0 &&
+       y%(R*2+3)==0){
         coordinates.push({x:x,y:y});
       }
     }
@@ -76,74 +105,60 @@ function Ball(){
   this.endX;
   this.endY;
   this.r = R;
-  this.F = 0;
+  this.t = 0;
+  this.old = 0;
   this.delay;
-  this.totalF = 120;
+  this.dur = 4000;
   this.color;
-
+  this.init = function(){
+    var hue,brightness;
+    hue = randomInt(0,30);
+    brightness = randomInt(30,70);
+    this.color = "hsl("+hue+",90%,"+brightness+"%)";
+  };
+  this.init();
   this.reset=function(auto,ex,ey,delay,dur){
     this.autoRender = auto;
-    this.F = 0;
-    var hue = randomInt(0,30);
-    var brightness = randomInt(30,70);
-    this.color = "hsl(" + hue + ",90%, " + brightness + "%)";
-
-
-    this.delay = (delay&& randomInt(0,delay) ) || randomInt(0,120);
-    this.totalF = dur || this.totalF;
-    this.x = this.x || randomInt(0,canvas.width);
-    this.y = this.y || randomInt(0,canvas.height);
+    this.t = 0;
+    this.old = 0;
+    this.delay = (delay&& randomInt(0,delay) ) || randomInt(0,3000);
+    this.dur = dur || this.dur;
+    this.x = this.x || randomInt(0,w);
+    this.y = this.y || randomInt(0,h);
     this.startX = this.x;
     this.startY = this.y;
-    this.endX = ex || randomInt(0,canvas.width);
-    this.endY = ey || randomInt(0,canvas.height);
+    this.endX = ex || randomInt(0,w);
+    this.endY = ey || randomInt(0,h);
   };
   this.reset(true);
-  this.render= function(){
-    if(this.F >this.delay && this.F < this.totalF + this.delay){
-      this.lerp_easeInOutCubic();
+  this.render= function(t){
+    if(!this.old){
+      this.old = t;
     }
+    this.t = t - this.old;
+    if(this.t >= this.delay){
+      if(this.t > this.dur + this.delay){
+        if(this.autoRender){
+          this.reset(true);
+        }
+      }else{
+        this.lerp();
+      }
+    }
+    this.draw();
+  };
+  this.draw = function(){
     ctx.beginPath();
     ctx.arc(this.x,this.y,this.r,0,2*Math.PI);
     ctx.fillStyle = this.color;
     ctx.fill();
-    if(++this.F > this.totalF + this.delay){
-      if(this.autoRender){
-        this.reset(true);
-      }
-    }
   };
-  this.lerp_easeInOutCubic = function(){
+  this.lerp = function(){
     var nor;
-    if(this.F> this.delay){
-      nor = normal(this.F- this.delay,0,this.totalF );
+    if(this.t> this.delay){
+      nor = normal(this.t-this.delay,0,this.dur );
       this.x = lerp_easeInOutCubic(nor,this.startX,this.endX);
       this.y = lerp_easeInOutCubic(nor,this.startY,this.endY);
     }
   };
-}
-
-function createBalls(){
-  var n = 500,
-      i=0,ball;
-  for(i=0;i<n;++i){
-    ball = new Ball();
-    balls.push(ball);
-    ball.render();
-  }
-}
-function initCanvas(){
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-function update(){
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  renderBalls();
-  window.requestAnimationFrame(update);
-}
-function renderBalls(){
-  var i;
-  for(i=0;i<balls.length;++i){
-    balls[i].render();
-  }
 }
