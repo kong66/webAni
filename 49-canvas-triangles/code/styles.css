@@ -16,10 +16,3 @@ html,body{
 	height: 100%;
 	overflow: hidden;
 }
-h1{
-	position: fixed;
-	left: 50%;
-	top:50%;
-	transform: translate(-50%,-50%);
-	opacity: 0.3;
-}

@@ -17,7 +17,7 @@ var canvas,ctx,h,w,size,
     createTriangles();
 
     update();
-    
+
   }
   function resizeFunc() {
     resize();
@@ -29,7 +29,7 @@ var canvas,ctx,h,w,size,
   function resize() {
     h = canvas.height = window.innerHeight;
     w = canvas.width = window.innerWidth;
-    size = w >= h ? w / 8 : h / 8;
+    size = w >= h ? w / 20 : h / 20;
     columns = Math.round( w / size+6);
     rows = Math.round( h / size+6);
   }
