@@ -1,21 +1,36 @@
 var canvas,
     ctx,
-    bar;
+    bar,
+    progress,
+    loadSpeed=0.5;
 
 init();
 
 function init(){
   canvas = document.getElementById("canvas");
   ctx = canvas.getContext("2d");
+  progress = 0;
   window.onresize = resize;
   resize();
   bar = new Bar();
   updateAni();
 }
+function drawLinearGradient(){
+  var gra = ctx.createLinearGradient(0,0,300,300);
+  gra.addColorStop(0,'red');
+  gra.addColorStop(0.5,'green');
+  gra.addColorStop(1,'blue');
+  ctx.fillStyle = gra;
+  ctx.fillRect(0,0,300,300);
+}
 
 function updateAni() {
+  progress += loadSpeed;
+  if(progress>100){
+    progress = 0;
+  }
   renderBG();
-  bar.render();
+  bar.render(progress);
   requestAnimationFrame(updateAni);
 }
 function resize(){
@@ -32,39 +47,43 @@ function renderBG() {
 }
 
 function Bar() {
-  this.curWidth = 0;
-  this.hue = 126;
-  this.hueSpeed = 0.8;
-  this.delta = 2;
+  this.curWidth;
+  this.hue;
+  this.minHue = 0;
+  this.maxHue = 90;
   this.w;
   this.h;
   this.l;
   this.t;
-  this.bgColor='#333',
+  this.bgColor='#333';
   this.density = 10;
   this.particles = [];
 
   this.reset =function(){
     this.curWidth = 0;
-    this.hue = 126;
+    this.hue = this.minHue;
     this.resize();
   };
-  this.resize = function(){
-    this.w = canvas.width * 0.8;
+  this.resize =function(){
+    this.w = canvas.width>800?600:canvas.width*0.8;
     this.h = 25;
     this.l = (canvas.width - this.w)/2;
     this.t = (canvas.height - this.h)/2;
   };
   this.reset();
-  this.render = function() {
-    bar.hue += this.hueSpeed;
-    bar.curWidth +=this.delta;
-    if(bar.curWidth>this.w){
-      this.reset();
-    }
+  this.render = function(ratio) {
+    this.caculate(ratio);
     this.drawBG();
     this.drawBar();
     this.renderParticle();
+  };
+  this.caculate=function(ratio){
+    ratio = ratio>100? 1:ratio/100;
+    bar.hue = this.minHue +
+      ratio*(this.maxHue - this.minHue);
+    bar.curWidth =this.w*ratio;
+    bar.curWidth = bar.curWidth>this.w?
+      this.w : bar.curWidth;
   };
   this.drawBG = function(){
     ctx.fillStyle = this.bgColor;
@@ -73,9 +92,10 @@ function Bar() {
   this.drawBar=function(){
     ctx.fillStyle = 'hsla(' + this.hue + ', 100%, 40%, 1)';
     ctx.fillRect(this.l, this.t, this.curWidth, this.h);
-    var grad = ctx.createLinearGradient(0, 0, 0, 130);
+    var grad = ctx.createLinearGradient(
+      this.l,this.t,this.l+this.curWidth,this.t+this.h);
     grad.addColorStop(0, "transparent");
-    grad.addColorStop(1, "rgba(0,0,0,0.5)");
+    grad.addColorStop(1, "rgba(0,0,0,0.7)");
     ctx.fillStyle = grad;
     ctx.fillRect(this.l, this.t, this.curWidth, this.h);
   };
@@ -84,7 +104,6 @@ function Bar() {
     for(i=0;i<this.density;++i){
       this.particles.push(new Particle(this.l+this.curWidth,this.t));
     }
-
     for(i=0;i<this.particles.length;++i){
       if(this.particles[i].active){
         activeParticels.push(this.particles[i]);
@@ -92,8 +111,7 @@ function Bar() {
       }
     }
     this.particles = activeParticels.slice(0);
-    console.log('particles number = '+this.particles.length);
-
+    // console.log('particles number = '+this.particles.length);
   };
 }
 
@@ -105,7 +123,6 @@ function Particle(l,t) {
   this.g = 0.1;
   this.curAlpha = 1;
   this.alphaSpeed = 0.01;
-
   this.active = true;
 
   this.render = function() {
@@ -123,10 +140,10 @@ function Particle(l,t) {
     this.x += this.vx;
     this.vy  += this.g;
     this.y += this.vy;
-    this.curAlpha  = Math.max(0,this.curAlpha - this.alphaSpeed);
+    this.curAlpha = Math.max(0,
+      this.curAlpha -this.alphaSpeed);
     if(this.curAlpha ==0){
       this.active = false;
-      console.log('active');
     }
   };
 }
