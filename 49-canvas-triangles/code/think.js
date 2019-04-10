@@ -16,8 +16,6 @@ function init() {
   resize();
   createGrid();
   createTriangles(grid);
-  renderTriangles();
-  drawText();
   requestInterval(update, 30);
 }
 function resizeFunc() {
@@ -36,8 +34,8 @@ function resize() {
 }
 function onmouseMove(e) {
   var rect = canvas.getBoundingClientRect();
-  mouseTarget.x = e.clientX - rect.left,
-  mouseTarget.y = e.clientY - rect.top
+  mouseTarget.x = e.clientX - rect.left;
+  mouseTarget.y = e.clientY - rect.top;
 }
 function updateMousePos(){
   mousePos.x += (mouseTarget.x-mousePos.x)/10;
@@ -102,7 +100,6 @@ function Triangle(p1,p2,p3){
     this.pointC = p3;
     this.hue;
     this.bright ;
-    this.maxBrightness = 90;
     this.reset = function(){
       this.caculate_hue();
       this.caculate_brightness();
@@ -140,11 +137,13 @@ function Triangle(p1,p2,p3){
       aveY /=3;
       aveX -= w/2;
       aveY -= h/2;
-      dis=Math.sqrt(aveX*aveX+aveY*aveY)/2;
-      this.bright = Math.round(this.maxBrightness*(1-dis/centerDIs));
+      dis = Math.sqrt(aveX*aveX+aveY*aveY)/2;
+      this.bright
+      = Math.round(this.maxBrightness*(1-dis/centerDIs));
     };
     this.reset();
 }
+Triangle.prototype.maxBrightness = 80;
 function createGrid() {
   var row,i,j;
   grid = [];
@@ -158,16 +157,16 @@ function createGrid() {
   }
 }
 function createTriangles(grid) {
-  var i,j,row,col,point1,point2,point3,point4;
+  var i,j,row,col,pA,pB,pC,pD;
   triangles = [];
   for (i = 0; i < rows-1; i ++) {
     for (j = 0; j < columns-1; j ++) {
-      point1 = grid[i][j];
-      point2 = grid[i+1][j];
-      point3 = grid[i+1][j+1];
-      point4 = grid[i][j+1];
-      triangles.push(new Triangle(point1,point2,point4));
-      triangles.push(new Triangle(point2,point3,point4));
+      pA = grid[i][j];
+      pB = grid[i+1][j];
+      pC = grid[i+1][j+1];
+      pD = grid[i][j+1];
+      triangles.push(new Triangle(pA,pB,pD));
+      triangles.push(new Triangle(pB,pC,pD));
     }
   }
 }
