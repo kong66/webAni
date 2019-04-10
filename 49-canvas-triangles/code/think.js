@@ -1,17 +1,12 @@
-var canvas,ctx,h,w,size,
-    randomRatio = 0.9,
-    dodgeRatio = 0.3,
-    dodgeThreshold,
-    maxBrightness = 80,
-    mouseFastX = 0,mouseFastY = 0,
-    mouseX = 0,mouseY = 0,
+var canvas,ctx,
+    h,w,size,
+    mouseTarget = {x:0,y:0},
+    mousePos={x:0,y:0},
     triangles = [],
-    dynamicGrid = [],
-    randomValues = [],
     grid = [],
-    columns,rows;
+    columns,rows,
+    centerDIs;
 
-init();
 function init() {
   canvas = document.createElement("canvas");
   document.getElementById("bg").appendChild(canvas);
@@ -21,8 +16,7 @@ function init() {
   resize();
   createGrid();
   createTriangles(grid);
-  setRandomTriangleValue();
-  drawTriangles();
+  renderTriangles();
   drawText();
   requestInterval(update, 30);
 }
@@ -30,138 +24,170 @@ function resizeFunc() {
   resize();
   createGrid();
   createTriangles(grid);
-  setRandomTriangleValue();
 }
-
 function resize() {
   h = canvas.height = window.innerHeight;
   w = canvas.width = window.innerWidth;
   size = w >= h ? w / 16 : h / 16;
-  dodgeThreshold= size*3;
-  columns = Math.round(1.2 * w / size);
-  rows = Math.round(1.2 * h / size);
+  columns = Math.round( w / size+6);
+  rows = Math.round( h / size+6);
+  centerDIs = Math.sqrt(w*w/4+h*h/4);
+  Point.prototype.dodgeThreshold= size*3;
+}
+function onmouseMove(e) {
+  var rect = canvas.getBoundingClientRect();
+  mouseTarget.x = e.clientX - rect.left,
+  mouseTarget.y = e.clientY - rect.top
+}
+function updateMousePos(){
+  mousePos.x += (mouseTarget.x-mousePos.x)/10;
+  mousePos.y += (mouseTarget.y-mousePos.y)/10;
+}
+function update() {
+  updateMousePos();
+  renderPoints(grid);
+  renderTriangles();
+  drawText();
 }
 
-function createGrid() {
-  var row;
-  grid = [];
-  for (j = -1- rows / 2; j < rows / 2 + 1; j++) {
-    row = [];
-    for (i = -1- columns / 2; i < columns / 2 + 1; i++) {
-      x = i * size  + Math.random() * size* randomRatio;
-      y = j * size + Math.random() * size* randomRatio;
-      row.push([x, y]);
+function Point(r,c){
+  this.row = r;
+  this.col = c;
+  this.x;
+  this.y;
+  this.ox;
+  this.oy;
+  this.init = function(){
+    var pos = this.createPos();
+    this.x = pos.x;
+    this.y = pos.y;
+    this.ox = this.x;
+    this.oy = this.y;
+    this.startTime = (new Date()).getTime();
+  };
+  this.createPos = function(){
+    return {
+      x:(this.col-3+Math.random()*this.randomRatio)*size,
+      y:(this.row-3+Math.random()*this.randomRatio)*size
+    };
+  };
+  this.render = function(time){
+    this.caculete_point_onMouse();
+  };
+  this.caculete_point_onMouse = function(){
+    var dx,dy,d,offsetX,offsetY,dodgeDis;
+    this.x = this.ox;
+    this.y = this.oy;
+    dx = this.x - mouseTarget.x;
+    dy = this.y - mouseTarget.y;
+    dy == 0 ? (dy = 0.001) : dy;
+    dx == 0 ? (dx = 0.001) : dx;
+    d = Math.sqrt(dx * dx + dy * dy);
+    if (d < this.dodgeThreshold) {
+      dodgeDis = (this.dodgeThreshold-d)*this.dodgeRatio;
+      offsetX = dodgeDis * dx/d;
+      offsetY = dodgeDis * dy/d;
+      this.x += offsetX;
+      this.y += offsetY;
     }
-    grid.push(row);
-  }
+  };
+  this.init();
 }
-
-function createTriangles(grid) {
-  var row,point1,point2,point3,point4;
-  triangles = [];
-  for (row = 0; row < grid.length - 1; row ++) {
-    for (j = 0; j < grid[row].length - 1; j ++) {
-
-      point1 = grid[row][j];
-      point2 = grid[row + 1][j];
-      point3 = grid[row+1][j + 1];
-      point4 = grid[row][j+1];
-
-      triangles.push([point1,point2,point4]);
-      triangles.push([point2,point3,point4]);
-    }
-  }
-}
-
-function createDynamicGrid() {
-  var d,dx,dy,
-      dodgeLength,
-      offsetX,
-      offsetY;
-  dynamicGrid = cloneArray(grid);
-  for (i = 0; i < dynamicGrid.length - 1; i++) {
-    for (j = 0; j < dynamicGrid[i].length - 1; j++) {
-      dx = dynamicGrid[i][j][0] - mouseX;
-      dy = dynamicGrid[i][j][1] - mouseY;
-      dy == 0 ? (dy = 0.001) : dy;
-      dx == 0 ? (dx = 0.001) : dx;
-      d = Math.sqrt(dx * dx + dy * dy);
-
-      if (d < dodgeThreshold) {
-        dodgeLength = (dodgeThreshold -  d) * dodgeRatio;
-        offsetX = dodgeLength * dx/d;
-        offsetY = dodgeLength * dy/d;
-        dynamicGrid[i][j][0] += offsetX;
-        dynamicGrid[i][j][1] += offsetY;
+Point.prototype.dodgeThreshold= 200;
+Point.prototype.dodgeRatio = 0.3;
+Point.prototype.randomRatio = 0.9;
+function Triangle(p1,p2,p3){
+    this.pointA = p1;
+    this.pointB = p2;
+    this.pointC = p3;
+    this.hue;
+    this.bright ;
+    this.maxBrightness = 90;
+    this.reset = function(){
+      this.caculate_hue();
+      this.caculate_brightness();
+    };
+    this.render =function(){
+      this.draw();
+    };
+    this.draw = function(){
+        var color;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(this.pointA.x,this.pointA.y);
+        ctx.lineTo(this.pointB.x,this.pointB.y);
+        ctx.lineTo(this.pointC.x,this.pointC.y);
+        ctx.closePath();
+        color = "hsl("+this.hue + ",80%,"+this.bright+"%)";
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.stroke();
+        ctx.fill();
+        ctx.restore();
+    };
+    this.caculate_hue = function(){
+      this.hue = Math.round(Math.random()* 20 + 220);
+    };
+    this.caculate_brightness = function() {
+      var i,dis,
+          aveX=0,aveY = 0,
+          points = [this.pointA,this.pointB,this.pointC];
+      for (i = 0; i < points.length; i++) {
+        aveX += points[i].x;
+        aveY += points[i].y;
       }
+      aveX /=3;
+      aveY /=3;
+      aveX -= w/2;
+      aveY -= h/2;
+      dis=Math.sqrt(aveX*aveX+aveY*aveY)/2;
+      this.bright = Math.round(this.maxBrightness*(1-dis/centerDIs));
+    };
+    this.reset();
+}
+function createGrid() {
+  var row,i,j;
+  grid = [];
+  for (i=0;i<rows;++i){
+    for(j=0;j<columns;++j){
+      if(j==0){
+        grid[i]=[];
+      }
+      grid[i][j]=new Point(i,j);
     }
   }
 }
-
-
-
-function cloneArray(arr) {
-  var len = arr.length;
-  var newArr = new Array(len);
-  for (var i = 0; i < len; i++) {
-    if (Array.isArray(arr[i])) {
-      newArr[i] = cloneArray(arr[i]);
-    } else {
-      newArr[i] = arr[i];
+function createTriangles(grid) {
+  var i,j,row,col,point1,point2,point3,point4;
+  triangles = [];
+  for (i = 0; i < rows-1; i ++) {
+    for (j = 0; j < columns-1; j ++) {
+      point1 = grid[i][j];
+      point2 = grid[i+1][j];
+      point3 = grid[i+1][j+1];
+      point4 = grid[i][j+1];
+      triangles.push(new Triangle(point1,point2,point4));
+      triangles.push(new Triangle(point2,point3,point4));
     }
   }
-  return newArr;
 }
-
-function setRandomTriangleValue() {
-  randomValues = [];
-  for (i = 0; i < triangles.length; i++) {
-    randomValues[i] = Math.random();
+function renderPoints() {
+  var i,j;
+  for (i = 0; i < grid.length; i++) {
+    for (j = 0; j < grid[i].length; j++) {
+      grid[i][j].render();
+    }
   }
 }
-
-function caculate_brightness(points) {
-  var brightness,i,avarage=0;
-  for (i = 0; i < points.length; i++) {
-    avarage += Math.abs(points[i][0]) + Math.abs(points[i][1]) ;
-  }
-  avarage /=3;
-  brightness = (w+h - avarage)/(w+h)*maxBrightness ;
-  return brightness;
-}
-
-
-function drawTriangle(p, rand) {
-  var hue,sumDistance,color,brightness;
-  ctx.save();
-  ctx.beginPath();
-  ctx.translate(w/2,h/2);
-  ctx.moveTo(p[0][0], p[0][1]);
-  ctx.lineTo(p[1][0], p[1][1]);
-  ctx.lineTo(p[2][0], p[2][1]);
-  ctx.closePath();
-
-  hue = rand * 10 + 220;
-  brightness = caculate_brightness(p);
-  color = "hsl(" + hue + ",50%, " + brightness + "%)";
-
-  ctx.strokeStyle = color;
-  ctx.fillStyle = color;
-  ctx.stroke();
-  ctx.fill();
-  ctx.restore();
-}
-
-function drawTriangles() {
+function renderTriangles() {
   var i;
   for (i=0;i < triangles.length;++i) {
-    drawTriangle(triangles[i], randomValues[i]);
+    triangles[i].render();
   }
 }
-
 function drawText(){
   ctx.save();
-  ctx.fillStyle= 'rgba(255,255,255,.2)';
+  ctx.fillStyle= 'rgba(255,0,0,.3)';
   ctx.textAlign= 'center';
   ctx.textBaseline = 'middle';
   ctx.font= '200px impact';
@@ -169,27 +195,4 @@ function drawText(){
   ctx.restore();
 }
 
-function update() {
-  createDynamicGrid(grid);
-  createTriangles(dynamicGrid);
-  var dMouseX = mouseFastX - mouseX;
-  var dMouseY = mouseFastY - mouseY;
-  mouseX += dMouseX/10;
-  mouseY += dMouseY/10;
-  drawTriangles();
-  drawText();
-}
-
-function getMousePos(canvas, evt) {
-  var rect = canvas.getBoundingClientRect();
-  return {
-    x: evt.clientX - rect.left,
-    y: evt.clientY - rect.top
-  };
-}
-
-function onmouseMove(evt) {
-  var mousePos = getMousePos(canvas, evt);
-  mouseFastX = mousePos.x - w / 2;
-  mouseFastY = mousePos.y - h / 2;
-}
+init();
