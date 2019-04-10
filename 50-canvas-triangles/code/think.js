@@ -91,8 +91,8 @@ var canvas,ctx,h,w,size,
       this.bright ;
       this.startHue;
       this.startBright;
-      this.endHue = 180+Math.round(Math.random() * 20);
-      this.endBright = 180+Math.round(Math.random() * 20);
+      this.endHue = 250+Math.round(Math.random() * 20);
+      this.endBright = 40+Math.round(Math.random() * 20);
       this.startTime;
       this.totalTime;
 
@@ -101,8 +101,8 @@ var canvas,ctx,h,w,size,
         this.totalTime = 0.1+Math.random()*2;
         this.hue = this.startHue = this.endHue;
         this.bright = this.startBright = this.endBright;
-        this.endHue = 180+Math.round(Math.random() * 20);
-        this.endBright = 25+Math.round(Math.random() * 25);
+        this.endHue = 250+Math.round(Math.random() * 20);
+        this.endBright = 40+Math.round(Math.random() * 25);
       };
       this.reset();
       this.draw = function(){
@@ -113,12 +113,12 @@ var canvas,ctx,h,w,size,
           ctx.lineTo(this.pointB.x,this.pointB.y);
           ctx.lineTo(this.pointC.x,this.pointC.y);
           ctx.closePath();
-          color = "hsl(" + this.hue + ",100%,"+this.bright+"%)";
+          color = "hsla(" + this.hue + ",50%,"+this.bright+"%,0.3)";
 
           //console.log(color);
           ctx.strokeStyle = color;
           ctx.fillStyle = color;
-          ctx.stroke();
+          // ctx.stroke();
           ctx.fill();
           ctx.restore();
       };
@@ -167,15 +167,12 @@ var canvas,ctx,h,w,size,
     triangles = [];
     for (i = 0; i < rows-1; i ++) {
       for (j = 0; j < columns-1; j ++) {
-
         point1 = grid[i][j];
         point2 = grid[i+1][j];
         point3 = grid[i+1][j+1];
         point4 = grid[i][j+1];
-
         triangles.push(new Triangle(point1,point2,point4));
         triangles.push(new Triangle(point2,point3,point4));
-
       }
     }
   }
@@ -190,7 +187,7 @@ var canvas,ctx,h,w,size,
 
   function drawText(){
     ctx.save();
-    ctx.fillStyle= 'rgba(255,255,255,.5)';
+    ctx.fillStyle= 'rgba(255,0,0,.5)';
     ctx.textAlign= 'center';
     ctx.textBaseline = 'middle';
     ctx.font= '200px impact';
